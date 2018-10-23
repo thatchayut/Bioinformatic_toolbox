@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import pandas as pd
 import numpy as np
+import calculate 
 
 def main():
     # these column names can be retrieved by <code> list(my_dataframe.columns.values) </code>
@@ -25,24 +26,36 @@ def main():
 
     # create list of input classes
     list_training_relapse = []
-    list_training_noRelapse = []
+    list_training_no_relapse = []
+    list_training_input = []
+
+    # list containing all input values
+    for column in training_input:
+        list_each_sample = []
+        for element in training_input[column]:
+            list_each_sample.append(element)
+        list_training_input.append(list_each_sample)
+
+    # list input for each class
     count = 0
     for column in training_input:
         list_each_sample = []
         if (list_training_output[count] == 0):
             for element in training_input[column]:
                 list_each_sample.append(element)
-            list_training_relapse.append(list_each_sample) 
+            list_training_no_relapse.append(list_each_sample) 
         elif(list_training_output[count] == 1):
             for element in training_input[column]:
                 list_each_sample.append(element)
-            list_training_noRelapse.append(list_each_sample) 
+            list_training_relapse.append(list_each_sample) 
         count += 1
+    print("-------------- List of Gene expression of all input -------------")
+    print(list_training_input)
     print("------------- List of Gene expression of each class -------------")
     print("Relapse within 5 years ...")
     print(list_training_relapse)
     print("NO relapse within 5 years")
-    print(list_training_noRelapse)
+    print(list_training_no_relapse)
     print("--------------------- List of output class ----------------------")
     print(list_training_output)
     print("-----------------------------------------------------------------")
@@ -50,20 +63,33 @@ def main():
 
 
     # create matrix using for calculating 
+    matrix_training_input = np.matrix(list_training_input)
     matrix_training_relapse = np.matrix(list_training_relapse)
-    matrix_training_noRelapse = np.matrix(list_training_noRelapse)
-    matrix_training_output = np.matrix(list_training_output).transpose(1,0)
+    matrix_training_no_relapse = np.matrix(list_training_no_relapse)
+    matrix_training_output = np.matrix(list_training_output).transpose()
     # print(matrix_training_output.transpose(1,0))
+    print("---------------------- Matrix for all input ---------------------")
+    print(matrix_training_input)
     print("-------------------- Matrix for each feature --------------------")
     print("Relapse within 5 years ... ")
     print(matrix_training_relapse)
     print("NO relapse within 5 years")
-    print(matrix_training_noRelapse)
+    print(matrix_training_no_relapse)
     print("-------------------- Matrix for output class --------------------")
     print(matrix_training_output)
     print("-----------------------------------------------------------------")
     print()
 
-    
+    # calculate average of each feature
+    avg_training_input = calculate.avgFromList(matrix_training_input)
+    avg_matrix_relapse = calculate.avgFromList(matrix_training_relapse)
+    avg_matrix_no_relapse = calculate.avgFromList(matrix_training_no_relapse)
+    print("average matrix training input : ")
+    print(avg_training_input)
+    print("average matrix relapse : ")
+    print(avg_matrix_relapse)
+    print("average matrix no relapse : ")
+    print(avg_matrix_no_relapse)
+
 if __name__ == '__main__':
     main()
