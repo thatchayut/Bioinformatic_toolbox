@@ -84,12 +84,12 @@ def main():
     avg_training_input = calculate.avgFromList(matrix_training_input)
     avg_matrix_relapse = calculate.avgFromList(matrix_training_relapse)
     avg_matrix_no_relapse = calculate.avgFromList(matrix_training_no_relapse)
-    print("average matrix training input : ")
-    print(avg_training_input)
-    print("average matrix relapse : ")
-    print(avg_matrix_relapse)
-    print("average matrix no relapse : ")
-    print(avg_matrix_no_relapse)
+    # print("average matrix training input : ")
+    # print(avg_training_input)
+    # print("average matrix relapse : ")
+    # print(avg_matrix_relapse)
+    # print("average matrix no relapse : ")
+    # print(avg_matrix_no_relapse)
 
     # calculate mean corrected data
     mean_corrected_relapse = calculate.meanCorrected(matrix_training_relapse, avg_training_input)
@@ -98,13 +98,28 @@ def main():
     # calculate covariance matrix
     covariance_relapse = calculate.covariance(mean_corrected_relapse)
     covariance_no_relapse = calculate.covariance(mean_corrected_no_relapse)
-    # print("covariance relapse : ")
-    # print(covariance_relapse)
 
     # calculate pooled covariance matrix
     number_of_sample_relapse = matrix_training_relapse.shape[0]
     number_of_sample_no_relapse = matrix_training_no_relapse.shape[0]
     number_of_sample = matrix_training_input.shape[0]
-    calculate.poolCovariance(covariance_relapse, covariance_no_relapse, number_of_sample, number_of_sample_relapse, number_of_sample_no_relapse)
+    pool_covariance = calculate.poolCovariance(covariance_relapse, covariance_no_relapse, number_of_sample, number_of_sample_relapse, \
+                      number_of_sample_no_relapse)
+    
+    # calculate inversed matrix
+    inversed_pool_covariance = calculate.inversed(pool_covariance)
+
+    #  If we do not know the prior probability, we just assume it is equal to total sample of each group divided by the total samples
+    prior_prob = calculate.findPriorProb(number_of_sample, number_of_sample_relapse, number_of_sample_no_relapse)
+
+    # find output 
+    f1 = calculate.findDiscriminative(matrix_training_input, avg_matrix_relapse, inversed_pool_covariance, prior_prob[0])
+    f2 = calculate.findDiscriminative(matrix_training_input, avg_matrix_no_relapse, inversed_pool_covariance, prior_prob[1])
+
+    actual_output = calculate.findOutput(f1, f2)
+
+    print("Actual output : " + str(actual_output))
+    print("Desired output : " + str(list_training_output))
+
 if __name__ == '__main__':
     main()
