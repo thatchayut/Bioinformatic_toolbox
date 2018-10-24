@@ -91,5 +91,20 @@ def main():
     print("average matrix no relapse : ")
     print(avg_matrix_no_relapse)
 
+    # calculate mean corrected data
+    mean_corrected_relapse = calculate.meanCorrected(matrix_training_relapse, avg_training_input)
+    mean_corrected_no_relapse = calculate.meanCorrected(matrix_training_no_relapse, avg_training_input)
+
+    # calculate covariance matrix
+    covariance_relapse = calculate.covariance(mean_corrected_relapse)
+    covariance_no_relapse = calculate.covariance(mean_corrected_no_relapse)
+    # print("covariance relapse : ")
+    # print(covariance_relapse)
+
+    # calculate pooled covariance matrix
+    number_of_sample_relapse = matrix_training_relapse.shape[0]
+    number_of_sample_no_relapse = matrix_training_no_relapse.shape[0]
+    number_of_sample = matrix_training_input.shape[0]
+    calculate.poolCovariance(covariance_relapse, covariance_no_relapse, number_of_sample, number_of_sample_relapse, number_of_sample_no_relapse)
 if __name__ == '__main__':
     main()
