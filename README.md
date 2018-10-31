@@ -1,1 +1,1 @@
-# Linear-Discrimination-Analysis
+# Classification
