@@ -5,7 +5,8 @@ import math
 
 def main():
     # read files to be used
-    row_to_read = 100
+    # number of all genes in GSE2034-22071 is 22283 genes
+    row_to_read = 22283
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
     file_training_output = pd.read_csv("mapping_sample_to_class.csv", usecols = ['GEO asscession number', 'relapses within 5 years (1 = yes, 0=no)'])
     
