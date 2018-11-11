@@ -47,16 +47,17 @@ def main():
     num_of_folds = int(num_of_folds)
 
     # split data into k parts
-    chunk_size = math.ceil(len(list_sample_relapse) / num_of_folds)
+    chunk_relapse_size = math.ceil(len(list_sample_relapse) / num_of_folds)
+    chunk_no_relapse_size = math.ceil(len(list_sample_no_relapse) / num_of_folds)
     # print(chunk_size)    
 
-    chunk_list_relapse = list(calculate.chunks(list_sample_relapse, chunk_size))
-    print("chunk_list_relapse SIZE = " + str(len(chunk_list_relapse)))
+    chunk_list_relapse = list(calculate.chunks(list_sample_relapse, chunk_relapse_size))
+    print("# chunks in chunk_list_relapse = " + str(len(chunk_list_relapse)))
 
-    chunk_list_no_relapse = list(calculate.chunks(list_sample_no_relapse, chunk_size))
-    print("chunk_list_no_relapse SIZE = " + str(len(chunk_list_no_relapse)))
+    chunk_list_no_relapse = list(calculate.chunks(list_sample_no_relapse, chunk_no_relapse_size))
+    print("# chunks in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse)))
 
-    # print(len(file_training_input.columns))
+    # print(chunk_list_no_relapse)
     # print(len(file_training_input.columns))
 
 if __name__ == '__main__':
