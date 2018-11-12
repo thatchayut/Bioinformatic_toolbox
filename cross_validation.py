@@ -57,8 +57,39 @@ def main():
     chunk_list_no_relapse = list(calculate.chunks(list_sample_no_relapse, chunk_no_relapse_size))
     print("# chunks in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse)))
 
-    # print(chunk_list_no_relapse)
+    check_valid = False
+    num_of_chunks = None
+    if (len(chunk_list_relapse) == len(chunk_list_no_relapse)):
+        check_valid = True
+        num_of_chunks = len(chunk_list_relapse)
+    else:
+        print("# chunks in 1 st set is not equal to # chunks in 2nd")
+
+    print(chunk_list_relapse)
     # print(len(file_training_input.columns))
+
+    # do only if number of chunks is equal
+    if (check_valid == True):
+        for first_layer_test_index in range(0, num_of_chunks):
+            # keep testing data from each class
+            first_layer_test_relapse = chunk_list_relapse[first_layer_test_index]
+            first_layer_test_no_relapse = chunk_list_no_relapse[first_layer_test_index]
+            print("INDEX : " + str(first_layer_test_index))
+            print("test relapse =" + str(first_layer_test_relapse))
+            print("test no relapse = " + str(first_layer_test_no_relapse))
+            # find training data
+            first_layer_train_relapse = []
+            for first_layer_train_index in range(0, num_of_chunks):
+                if (chunk_list_relapse[first_layer_train_index] not in first_layer_test_relapse):
+                    first_layer_train_relapse.append(chunk_list_relapse[first_layer_train_index])
+            print("train relapse = " + str(first_layer_train_relapse))
+
+            first_layer_train_no_relapse = []
+            for first_layer_train_index in range(0, num_of_chunks):
+                if (chunk_list_no_relapse[first_layer_train_index] not in first_layer_test_no_relapse):
+                    first_layer_train_no_relapse.append(chunk_list_no_relapse[first_layer_train_index])
+            print("train no relapse = " + str(first_layer_train_no_relapse))
+           
 
 if __name__ == '__main__':
     main()
