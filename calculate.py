@@ -99,4 +99,21 @@ def findOutput(f1, f2):
     # print(result)
     return result
 
+# split data l into n folds
+def chunks(l, n):
+    # For item i in a range that is a length of l,
+    for i in range(0, len(l), n):
+        # Create an index range for l of n items:
+        yield l[i:i+n]
+
+# check if 2 lists have equal size
+def checkEqualListSize(list_1, list_2):
+    check_valid = False
+    num_of_chunks = None
+    if (len(list_1) == len(list_2)):
+        check_valid = True
+        num_of_chunks = len(list_1)
+    else:
+        print("WARNING : # chunks in 1 st set is not equal to # chunks in 2nd")
+    return check_valid, num_of_chunks
 
