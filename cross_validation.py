@@ -74,21 +74,40 @@ def main():
             # keep testing data from each class
             first_layer_test_relapse = chunk_list_relapse[first_layer_test_index]
             first_layer_test_no_relapse = chunk_list_no_relapse[first_layer_test_index]
-            print("INDEX : " + str(first_layer_test_index))
+            print("\nINDEX : " + str(first_layer_test_index))
             print("test relapse =" + str(first_layer_test_relapse))
             print("test no relapse = " + str(first_layer_test_no_relapse))
+            print()
             # find training data
+            # first layer 
             first_layer_train_relapse = []
             for first_layer_train_index in range(0, num_of_chunks):
-                if (chunk_list_relapse[first_layer_train_index] not in first_layer_test_relapse):
+                if (chunk_list_relapse[first_layer_train_index] is not first_layer_test_relapse):
                     first_layer_train_relapse.append(chunk_list_relapse[first_layer_train_index])
-            print("train relapse = " + str(first_layer_train_relapse))
+            print("1st layer train relapse size = " + str(len(first_layer_train_relapse)))
+            print("1st layer train relapse = " + str(first_layer_train_relapse))
 
             first_layer_train_no_relapse = []
             for first_layer_train_index in range(0, num_of_chunks):
-                if (chunk_list_no_relapse[first_layer_train_index] not in first_layer_test_no_relapse):
+                if (chunk_list_no_relapse[first_layer_train_index] is not first_layer_test_no_relapse):
                     first_layer_train_no_relapse.append(chunk_list_no_relapse[first_layer_train_index])
-            print("train no relapse = " + str(first_layer_train_no_relapse))
+            print("1st layer train no relapse size = " + str(len(first_layer_train_no_relapse)))
+            print("1st layer train no relapse = " + str(first_layer_train_no_relapse))
+
+            # merge all element in each list to be used in second layer
+            print("\nmerge element in each list to be used in the next step")
+            second_list_sample_relapse = []
+            for i in range(0, len(first_layer_train_relapse)):
+                second_list_sample_relapse.extend(first_layer_train_relapse[i])
+            print("size of list sample relapse = " + str(len(second_list_sample_relapse)))
+            print("list sample relapse for next step = " + str(second_list_sample_relapse))
+
+            second_list_sample_no_relapse = []
+            for i in range(0, len(first_layer_train_no_relapse)):
+                second_list_sample_no_relapse.extend(first_layer_train_no_relapse[i])
+            print("size of list sample no relapse  = " + str(len(second_list_sample_no_relapse)))
+            print("list sample no relapse for next step = " + str(second_list_sample_no_relapse))
+
            
 
 if __name__ == '__main__':
