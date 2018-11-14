@@ -40,8 +40,8 @@ def main():
             print("WARNING : Number of folds exceeds the size of the 1st dataset")
         elif(int(num_of_folds) > len(list_sample_no_relapse)):
             print("WARNING : Number of folds exceeds the size of the 2nd dataset")
-        elif(int(num_of_folds) < 1):
-            print("WARNING : Number of folds cannot lower than 1")
+        elif(int(num_of_folds) <= 1):
+            print("WARNING : Number of folds cannot lower than or equal to 1")
         else:
             break
     num_of_folds = int(num_of_folds)
@@ -57,24 +57,25 @@ def main():
     chunk_list_no_relapse = list(calculate.chunks(list_sample_no_relapse, chunk_no_relapse_size))
     print("# chunks in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse)))
 
-    check_valid = False
-    num_of_chunks = None
-    if (len(chunk_list_relapse) == len(chunk_list_no_relapse)):
-        check_valid = True
-        num_of_chunks = len(chunk_list_relapse)
-    else:
-        print("# chunks in 1 st set is not equal to # chunks in 2nd")
+    # check_valid = False
+    # num_of_chunks = None
+    # if (len(chunk_list_relapse) == len(chunk_list_no_relapse)):
+    #     check_valid = True
+    #     num_of_chunks = len(chunk_list_relapse)
+    # else:
+    #     print("WARNING : # chunks in 1 st set is not equal to # chunks in 2nd")
+    check_valid, num_of_chunks = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
 
-    print(chunk_list_relapse)
+    # print(chunk_list_relapse)
     # print(len(file_training_input.columns))
 
-    # do only if number of chunks is equal
+    # do only if number of chunks of both datasets are equal
     if (check_valid == True):
         for first_layer_test_index in range(0, num_of_chunks):
             # keep testing data from each class
             first_layer_test_relapse = chunk_list_relapse[first_layer_test_index]
             first_layer_test_no_relapse = chunk_list_no_relapse[first_layer_test_index]
-            print("\nINDEX : " + str(first_layer_test_index))
+            print("\n------------------------------------------ K : " + str(first_layer_test_index) + " --------------------------------")
             print("test relapse =" + str(first_layer_test_relapse))
             print("test no relapse = " + str(first_layer_test_no_relapse))
             print()
@@ -95,7 +96,7 @@ def main():
             print("1st layer train no relapse = " + str(first_layer_train_no_relapse))
 
             # merge all element in each list to be used in second layer
-            print("\nmerge element in each list to be used in the next step")
+            print("\n##### merge remaining element in each training list to be used in the next step #####")
             second_list_sample_relapse = []
             for i in range(0, len(first_layer_train_relapse)):
                 second_list_sample_relapse.extend(first_layer_train_relapse[i])
@@ -108,7 +109,45 @@ def main():
             print("size of list sample no relapse  = " + str(len(second_list_sample_no_relapse)))
             print("list sample no relapse for next step = " + str(second_list_sample_no_relapse))
 
-           
+            # splitting lists to use them as testing and training set
+            # given that we use 4-fold cross validation in this level
+            print("\n#### given that we use 4-fold cross validation in this level ####")
+            second_num_of_fold = 4
+            second_chunk_relapse_size = math.ceil(len(second_list_sample_relapse) / second_num_of_fold)
+            second_chunk_no_relapse_size = math.ceil(len(second_list_sample_no_relapse) / second_num_of_fold)
+
+            second_chunk_list_relapse = list(calculate.chunks(second_list_sample_relapse, second_chunk_relapse_size))
+            print("# chunks in second_chunk_list_relapse = " + str(len(second_chunk_list_relapse)))
+            second_chunk_list_no_relapse = list(calculate.chunks(second_list_sample_no_relapse, second_chunk_no_relapse_size))
+            print("# chunks in second_chunk_list_no_relapse = " + str(len(second_chunk_list_no_relapse)))
+
+            second_check_valid, second_num_of_chunks = calculate.checkEqualListSize(second_chunk_list_relapse, second_chunk_list_no_relapse)
+
+            # do only if number of chunks of both datasets are equal
+            if (second_check_valid == True):
+                for second_layer_test_index in range(0, second_num_of_chunks):
+                    # keep testing data from eacch class
+                    second_layer_test_relapse =  second_chunk_list_relapse[second_layer_test_index]
+                    second_layer_test_no_relapse = second_chunk_list_no_relapse[second_layer_test_index]
+                    print("\n------------------------------------------ L : " + str(second_layer_test_index) + " --------------------------------")
+                    print("second test relapse =" + str(second_layer_test_relapse))
+                    print("second test no relapse = " + str(second_layer_test_no_relapse))
+                    print()
+                
+                    # separate training dataset from testing dataset to use in t-test ranking
+                    second_layer_train_relapse = []
+                    for second_layer_train_index in range(0, second_num_of_chunks):
+                        if (second_chunk_list_relapse[second_layer_train_index] is not second_layer_test_index):
+                            second_layer_train_relapse.append(second_chunk_list_relapse[second_layer_train_index])
+                    print("2nd layer train relapse size = " + str(len(second_layer_train_relapse)))
+                    print("2nd layer train relapse = " + str(second_layer_train_relapse))
+                    
+                    second_layer_train_no_relapse = []
+                    for second_layer_train_index in range(0, second_num_of_chunks):
+                        if (second_chunk_list_no_relapse[second_layer_train_index] is not second_layer_test_no_relapse):
+                            second_layer_train_no_relapse.append(second_chunk_list_no_relapse[second_layer_train_index])
+                    print("2nd layer train no relapse size = " + str(len(second_layer_train_no_relapse)))
+                    print("2nd layer train no relapse = " + str(second_layer_train_no_relapse))
 
 if __name__ == '__main__':
     main()
