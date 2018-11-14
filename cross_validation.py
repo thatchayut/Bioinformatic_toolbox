@@ -75,7 +75,7 @@ def main():
             # keep testing data from each class
             first_layer_test_relapse = chunk_list_relapse[first_layer_test_index]
             first_layer_test_no_relapse = chunk_list_no_relapse[first_layer_test_index]
-            print("\n------------------------------------------ K : " + str(first_layer_test_index) + " --------------------------------")
+            print("\n------------------------------------------ K : " + str(first_layer_test_index + 1) + " --------------------------------")
             print("test relapse =" + str(first_layer_test_relapse))
             print("test no relapse = " + str(first_layer_test_no_relapse))
             print()
@@ -129,7 +129,7 @@ def main():
                     # keep testing data from eacch class
                     second_layer_test_relapse =  second_chunk_list_relapse[second_layer_test_index]
                     second_layer_test_no_relapse = second_chunk_list_no_relapse[second_layer_test_index]
-                    print("\n------------------------------------------ L : " + str(second_layer_test_index) + " --------------------------------")
+                    print("\n------------------------------------------ L : " + str(second_layer_test_index + 1) + " --------------------------------")
                     print("second test relapse =" + str(second_layer_test_relapse))
                     print("second test no relapse = " + str(second_layer_test_no_relapse))
                     print()
