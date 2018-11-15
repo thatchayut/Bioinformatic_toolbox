@@ -9,7 +9,13 @@ def main():
     # prepare data
     row_to_read = 22283
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
-    file_training_output = pd.read_csv("mapping_sample_to_class.csv", usecols = ['GEO asscession number', 'relapses within 5 years (1 = yes, 0=no)'])
+
+    # version 1: consider only relapse and non-relapse within 5 years
+    # file_training_output = pd.read_csv("mapping_sample_to_class_relapse.csv", usecols = ['GEO asscession number', 'relapses within 5 years (1 = yes, 0=no)'])
+    
+    # version 2: consider non-relapse and relapse (not in specific period of time)
+    file_training_output_relapse = pd.read_csv("mapping_sample_to_class_relapse.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
+    file_training_output_no_relapse = pd.read_csv("mapping_sample_to_class_no_relapse.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # get gene order id with its name
     list_gene_name = []
@@ -22,8 +28,14 @@ def main():
     # print(list_gene_name)
 
     # separate data into 2 classes
-    sample_relapse = file_training_output.loc[file_training_output['relapses within 5 years (1 = yes, 0=no)'].isin(['1'])]
-    sample_no_relapse = file_training_output.loc[file_training_output['relapses within 5 years (1 = yes, 0=no)'].isin(['0'])]
+
+    # version 1: consider only relapse and non-relapse within 5 years
+    # sample_relapse = file_training_output.loc[file_training_output['relapses within 5 years (1 = yes, 0=no)'].isin(['1'])]
+    # sample_no_relapse = file_training_output.loc[file_training_output['relapses within 5 years (1 = yes, 0=no)'].isin(['0'])]
+
+    # version 2: consider non-relapse and relapse (not in specific period of time)
+    sample_relapse = file_training_output_relapse.loc[file_training_output_relapse['relapse (1=True)'].isin(['1'])]
+    sample_no_relapse = file_training_output_no_relapse.loc[file_training_output_no_relapse['relapse (1=True)'].isin(['0'])]
     # print(sample_no_relapse)
     
     # add GEO asscession number to each list
