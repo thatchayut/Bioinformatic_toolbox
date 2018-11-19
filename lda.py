@@ -7,7 +7,7 @@ def main():
     # these column names can be retrieved by <code> list(my_dataframe.columns.values) </code>
     cols_to_read = ['GSM36778','GSM36784', 'GSM36789', 'GSM36792', 'GSM36797', 'GSM36811', 'GSM36814']
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", usecols = cols_to_read, nrows = 10)
-    file_training_output = pd.read_csv("mapping_sample_to_class.csv", usecols = ['GEO asscession number', 'relapses within 5 years (1 = yes, 0=no)'])
+    file_training_output = pd.read_csv("mapping_sample_to_class_relapse.csv", usecols = ['GEO asscession number', 'relapses within 5 years (1 = yes, 0=no)'])
     
     # file_training_output.set_index("GEO asscession number", inplace=True)
     # data = data.loc['GSM36778']
