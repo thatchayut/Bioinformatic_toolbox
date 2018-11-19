@@ -7,7 +7,8 @@ from scipy import stats
 
 def main():
     # prepare data
-    row_to_read = 22283
+    # row_to_read = 22283
+    row_to_read = 50
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
 
     # version 1: consider only relapse and non-relapse within 5 years
@@ -195,7 +196,7 @@ def main():
                     print("size of ttest list sample no relapse = " + str(len(ttest_list_sample_no_relapse)))
                     print("ttest list sample no relapse = " + str(ttest_list_sample_no_relapse))
 
-                    # get gene expression for each gene from samples with relapse within 5 year
+                    # get gene expression for each gene from samples with relapse
                     list_gene_exp_relapse = []
                     for i in range(0, row_to_read):
                         gene_exp_relapse = []
@@ -204,7 +205,7 @@ def main():
                         list_gene_exp_relapse.append(gene_exp_relapse)
                     # print(list_gene_exp_relapse)
 
-                    # get gene expression for each gene from samples with no relapse within 5 years
+                    # get gene expression for each gene from samples with no relapse
                     list_gene_exp_no_relapse = []
                     for i in range(0, row_to_read):
                         gene_exp_no_relapse = []
@@ -239,9 +240,50 @@ def main():
                     # print(ranked_gene)
 
                     # show top ranked feature
+                    top_n_genes_name = []
                     print("#### t-test ranking ####")
                     for i in range(0, int(number_of_ranked_gene)):
+                        top_n_genes_name.append(ranked_gene[i])
                         print(ranked_gene[i] + " => " + "t-test value : " + str(ttest_result[i][1]))
+
+                    # rank gene id of each sample in testing data
+                    print("\n#### sorting gene order by t-test ranking for each class ####")
+                    # for class 'relapse'
+                    print("#### class 'Relapse' ####")
+                    col_to_read_relapse = ["ID_REF"]
+                    col_to_read_relapse.extend(second_layer_test_relapse)
+                    # print(col_to_read_relapse)
+
+                    file_training_input_relapse = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_relapse)
+                    # print(file_training_input_relapse)
+                    top_n_genes_relapse = file_training_input_relapse.loc[file_training_input_relapse['ID_REF'].isin(top_n_genes_name)]
+                    # print(top_n_genes_relapse)
+
+                    top_n_genes_relapse['gene_id'] = top_n_genes_relapse['ID_REF'].apply(lambda name: top_n_genes_name.index(name))
+                    # print(top_n_genes_relapse)
+
+                    top_n_genes_relapse_sorted  = top_n_genes_relapse.sort_values(by = ['gene_id'])
+                    top_n_genes_relapse_sorted.drop(columns = 'gene_id', inplace = True)
+                    print(top_n_genes_relapse_sorted)
+
+                    # for class 'no relapse'
+                    print("#### class 'no Relapse' ####")
+                    col_to_read_no_relapse = ["ID_REF"]
+                    col_to_read_no_relapse.extend(second_layer_test_no_relapse)
+                    # print(col_to_read_no_relapse)
+
+                    file_training_input_no_relapse = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_no_relapse)
+                    # print(file_training_input_no_relapse)
+                    top_n_genes_no_relapse = file_training_input_no_relapse.loc[file_training_input_no_relapse['ID_REF'].isin(top_n_genes_name)]
+                    # print(top_n_genes_no_relapse)
+
+                    top_n_genes_no_relapse['gene_id'] = top_n_genes_no_relapse['ID_REF'].apply(lambda name: top_n_genes_name.index(name))
+                    # print(top_n_genes_no_relapse)
+
+                    top_n_genes_no_relapse_sorted  = top_n_genes_no_relapse.sort_values(by = ['gene_id'])
+                    top_n_genes_no_relapse_sorted.drop(columns = 'gene_id', inplace = True)
+                    print(top_n_genes_no_relapse_sorted)
+
 
 
 if __name__ == '__main__':
