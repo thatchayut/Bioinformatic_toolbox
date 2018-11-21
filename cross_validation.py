@@ -294,9 +294,10 @@ def main():
                     print("#### Testing data relapse & no-relapse ####")
                     second_layer_test_all = []
                     second_layer_test_all.extend(second_layer_test_relapse)
-                    second_layer_test_all.extend(second_layer_test_no_relapse)     
+                    second_layer_test_all.extend(second_layer_test_no_relapse)   
+                    # print(second_layer_test_all)  
                     # output for testing data
-                    # second_layer_test_output = training_output.loc[training_output['GEO asscession number'].isin(second_layer_test_all)]
+                    # second_layer_test_output = trainipseng_output.loc[training_output['GEO asscession number'].isin(second_layer_test_all)]
                     # print(second_layer_test_output)
                     # sort gene order of testing data
                     col_to_read_second_layer_test_gene = ["ID_REF"]
@@ -309,7 +310,7 @@ def main():
 
                     top_n_test_sorted = second_layer_top_n_test_sorted
                     top_n_test_sorted.drop(columns = 'ID_REF', inplace = True)
-                    print(top_n_test_sorted)
+                    # print(top_n_test_sorted)
 
                     # use top-rank feature as the first feature in lda classifier
                     # prepare list for input 
@@ -323,7 +324,20 @@ def main():
                             # print(list_each_sample)
                         list_second_layer_top_n_test_sorted.append(list_each_sample)
                     list_second_layer_top_n_test_sorted = list(np.transpose(list_second_layer_top_n_test_sorted))
-                    # print(len(list_second_layer_top_n_test_sorted))
+                    print(top_n_test_sorted)
+
+                    # output for testing data
+                    second_layer_test_output = training_output.loc[training_output['GEO asscession number'].isin(second_layer_test_all)]
+                    # sorting data according to its order in testing data
+                    list_sample_to_read = list(second_layer_top_n_test_sorted.columns.values)
+                    # print(list_sample_to_read)
+                    second_layer_test_output['sample_id'] = second_layer_test_output['GEO asscession number'].apply(lambda name: list_sample_to_read.index(name))
+                    second_layer_test_output = second_layer_test_output.sort_values(by = ['sample_id'])
+                    second_layer_test_output.drop(columns = 'sample_id', inplace = True)
+                    # create list of output
+                    list_desired_output = []
+                    for element in second_layer_test_output.loc[:, 'relapse (1=True)']:
+                        list_desired_output.append(element)
 
                     # list of gene expression and sample of class 'relapse'
                     list_top_n_gene_relapse_sorted = []
@@ -373,9 +387,12 @@ def main():
                                 list_each_sample.append(list_second_layer_top_n_test_sorted[sample_index][element_id])
                         input_testing_data.append(list_each_sample)
                     # print(input_testing_data)
-                    actual = calculate.lda(input_testing_data, input_relapse, input_no_relapse)
-                    print(actual)
-
+                    list_actual_output = calculate.lda(input_testing_data, input_relapse, input_no_relapse)
+                    print("actual output : " + str(list_actual_output))
+                    print(len(list_actual_output))
+                    # print("desired output : " + str(second_layer_test_output))
+                    print("desired output : " + str(list_desired_output))
+                    print(len(list_desired_output))
 
 if __name__ == '__main__':
     main()
