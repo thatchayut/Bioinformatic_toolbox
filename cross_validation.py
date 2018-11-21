@@ -354,9 +354,27 @@ def main():
                             if (element_id in gene_order):
                                 list_each_sample.append(list_top_n_gene_relapse_sorted[sample_index][element_id])
                         input_relapse.append(list_each_sample)
-                    print(input_relapse)
-                    # actual = calculate.lda(input_test, input_relapse, input_no_relapse)
-                    # print(actual)
+                    # print(input_relapse)
+
+                    input_no_relapse = []
+                    for sample_index in range(0, len(list_top_n_gene_no_relapse_sorted)):
+                        list_each_sample = []
+                        for element_id in range(0, len(list_top_n_gene_no_relapse_sorted[sample_index])):
+                            if (element_id in gene_order):
+                                list_each_sample.append(list_top_n_gene_no_relapse_sorted[sample_index][element_id])
+                        input_no_relapse.append(list_each_sample)
+                    # print(input_no_relapse)
+
+                    input_testing_data = []
+                    for sample_index in range(0, len(list_second_layer_top_n_test_sorted)):
+                        list_each_sample = []
+                        for element_id in range(0, len(list_second_layer_top_n_test_sorted[sample_index])):
+                            if (element_id in gene_order):
+                                list_each_sample.append(list_second_layer_top_n_test_sorted[sample_index][element_id])
+                        input_testing_data.append(list_each_sample)
+                    # print(input_testing_data)
+                    actual = calculate.lda(input_testing_data, input_relapse, input_no_relapse)
+                    print(actual)
 
 
 if __name__ == '__main__':

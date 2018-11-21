@@ -119,30 +119,30 @@ def checkEqualListSize(list_1, list_2):
     return check_valid, num_of_chunks
 
 # calculating discriminative function
-def lda(all_input, part_1, part_2):
+def lda(list_all_input, list_part_1, list_part_2):
 
     # create list with gene expression
-    list_all_input = []
-    list_part_1 = []
-    list_part_2 = []
+    # list_all_input = []
+    # list_part_1 = []
+    # list_part_2 = []
 
-    for column in all_input:
-        list_each_sample = []
-        for element in all_input[column]:
-            list_each_sample.append(element)
-        list_all_input.append(list_each_sample)
+    # for column in all_input:
+    #     list_each_sample = []
+    #     for element in all_input[column]:
+    #         list_each_sample.append(element)
+    #     list_all_input.append(list_each_sample)
     
-    for column in part_1:
-        list_each_sample = []
-        for element in part_1[column]:
-            list_each_sample.append(element)
-        list_part_1.append(list_each_sample)
+    # for column in part_1:
+    #     list_each_sample = []
+    #     for element in part_1[column]:
+    #         list_each_sample.append(element)
+    #     list_part_1.append(list_each_sample)
 
-    for column in part_2:
-        list_each_sample = []
-        for element in part_2[column]:
-            list_each_sample.append(element)
-        list_part.append(list_each_sample)
+    # for column in part_2:
+    #     list_each_sample = []
+    #     for element in part_2[column]:
+    #         list_each_sample.append(element)
+    #     list_part.append(list_each_sample)
 
     # create matrix using for calculating 
     matrix_all_input = np.matrix(list_all_input)
@@ -193,6 +193,6 @@ def lda(all_input, part_1, part_2):
     f1 = findDiscriminative(matrix_all_input, avg_part_1, inversed_pool_covariance, prior_prob[0])
     f2 = findDiscriminative(matrix_all_input, avg_part_2, inversed_pool_covariance, prior_prob[1])
 
-    actual_output = calculate.findOutput(f1, f2)
+    actual_output = findOutput(f1, f2)
 
     return actual_output
