@@ -5,6 +5,7 @@ import calculate
 import random
 from scipy import stats
 import numpy as np
+from sklearn.metrics import roc_auc_score
 
 def main():
     # prepare data
@@ -360,7 +361,7 @@ def main():
                     # print(list_top_n_gene_no_relapse_sorted)
 
                     # select gene to be used in lda
-                    gene_order = [0, 1]
+                    gene_order = [0]
                     input_relapse = []
                     for sample_index in range(0, len(list_top_n_gene_relapse_sorted)):
                         list_each_sample = []
@@ -393,6 +394,10 @@ def main():
                     # print("desired output : " + str(second_layer_test_output))
                     print("desired output : " + str(list_desired_output))
                     print(len(list_desired_output))
+
+                    # calculate AUC score
+                    auc_score = roc_auc_score(list_desired_output, list_actual_output)
+                    print("auc_score = " + str(auc_score))
 
 if __name__ == '__main__':
     main()
