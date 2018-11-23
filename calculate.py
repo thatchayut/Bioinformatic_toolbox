@@ -95,7 +95,8 @@ def findOutput(f1, f2):
         elif(list_f1[element_index] < list_f2[element_index]):
             result.append(0)
         else:
-            result.append("*")
+            # result.append("*")
+            result.append(0.5)
     # print(result)
     return result
 
@@ -117,3 +118,81 @@ def checkEqualListSize(list_1, list_2):
         print("WARNING : # chunks in 1 st set is not equal to # chunks in 2nd")
     return check_valid, num_of_chunks
 
+# calculating discriminative function
+def lda(list_all_input, list_part_1, list_part_2):
+
+    # create list with gene expression
+    # list_all_input = []
+    # list_part_1 = []
+    # list_part_2 = []
+
+    # for column in all_input:
+    #     list_each_sample = []
+    #     for element in all_input[column]:
+    #         list_each_sample.append(element)
+    #     list_all_input.append(list_each_sample)
+    
+    # for column in part_1:
+    #     list_each_sample = []
+    #     for element in part_1[column]:
+    #         list_each_sample.append(element)
+    #     list_part_1.append(list_each_sample)
+
+    # for column in part_2:
+    #     list_each_sample = []
+    #     for element in part_2[column]:
+    #         list_each_sample.append(element)
+    #     list_part.append(list_each_sample)
+
+    # create matrix using for calculating 
+    matrix_all_input = np.matrix(list_all_input)
+    matrix_part_1 = np.matrix(list_part_1)
+    matrix_part_2 = np.matrix(list_part_2)
+    # matrix_training_output = np.matrix(list_training_output).transpose()
+
+    # print(matrix_training_output.transpose(1,0))
+    # print("---------------------- Matrix for all input ---------------------")
+    # print(matrix_all_input)
+    # print("-------------------- Matrix for each feature --------------------")
+    # print("Relapse ... ")
+    # print(matrix_part_1)
+    # print("NO relapses")
+    # print(matrix_part_2)
+    # print("-------------------- Matrix for output class --------------------")
+    # print(matrix_training_output)
+    # print("-----------------------------------------------------------------")
+    # print()
+
+    # calculate average of each feature
+    avg_all_input = avgFromList(matrix_all_input)
+    avg_part_1 = avgFromList(matrix_part_1)
+    avg_part_2 = avgFromList(matrix_part_2)
+
+    # calculate mean corrected data
+    mean_corrected_part_1= meanCorrected(matrix_part_1, avg_all_input)
+    mean_corrected_part_2 = meanCorrected(matrix_part_2, avg_all_input)
+
+    # calculate covariance matrix
+    covariance_part_1 = covariance(mean_corrected_part_1)
+    covariance_part_2 = covariance(mean_corrected_part_2)
+
+    # calculate pooled covariance matrix
+    number_of_sample_part_1= matrix_part_1.shape[0]
+    number_of_sample_part_2 = matrix_part_2.shape[0]
+    number_of_sample = matrix_all_input.shape[0]
+    pool_covariance = poolCovariance(covariance_part_1, covariance_part_2, number_of_sample, number_of_sample_part_1, \
+                      number_of_sample_part_2)
+
+    # calculate inversed matrix
+    inversed_pool_covariance = inversed(pool_covariance)
+
+    #  If we do not know the prior probability, we just assume it is equal to total sample of each group divided by the total samples
+    prior_prob = findPriorProb(number_of_sample, number_of_sample_part_1, number_of_sample_part_2)
+
+    # find output 
+    f1 = findDiscriminative(matrix_all_input, avg_part_1, inversed_pool_covariance, prior_prob[0])
+    f2 = findDiscriminative(matrix_all_input, avg_part_2, inversed_pool_covariance, prior_prob[1])
+
+    actual_output = findOutput(f1, f2)
+
+    return actual_output

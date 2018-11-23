@@ -35,6 +35,7 @@ def main():
         for element in training_input[column]:
             list_each_sample.append(element)
         list_training_input.append(list_each_sample)
+        
 
     # list input for each class
     count = 0
