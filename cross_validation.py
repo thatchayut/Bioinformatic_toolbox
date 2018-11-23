@@ -11,7 +11,7 @@ from copy import deepcopy
 def main():
     # prepare data
     # row_to_read = 22283
-    row_to_read = 100
+    row_to_read = 22283
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
     
     # version 1: consider only relapse and non-relapse within 5 years
@@ -420,6 +420,7 @@ def main():
                         if (gene_index_in_list not in gene_order):
                             gene_order.extend([gene_index_in_list])
                         count_iteration += 1
+            gene_order.sort()
             print("gene_order used as feature : " + str(gene_order))
 if __name__ == '__main__':
     main()
