@@ -6,6 +6,7 @@ import random
 from scipy import stats
 import numpy as np
 from sklearn.metrics import roc_auc_score
+from copy import deepcopy
 
 def main():
     # prepare data
@@ -165,7 +166,7 @@ def main():
             # do only if number of chunks of both datasets are equal
             if (second_check_valid == True):
                 # for second_layer_test_index in range(0, second_num_of_chunks):
-                second_layer_test_index = random.randint(0, second_num_of_chunks)
+                second_layer_test_index = random.randint(0, second_num_of_chunks - 1)
                 # keep testing data from eacch class
                 second_layer_test_relapse =  second_chunk_list_relapse[second_layer_test_index]
                 second_layer_test_no_relapse = second_chunk_list_no_relapse[second_layer_test_index]
@@ -361,44 +362,65 @@ def main():
                 list_top_n_gene_no_relapse_sorted = list(np.transpose(list_top_n_gene_no_relapse_sorted))
                 # print(list_top_n_gene_no_relapse_sorted)
 
-                # select gene to be used in lda
+                # find set of genes to be used as a feature
+                check_finish = False
+                count_iteration = 1
                 gene_order = [0]
-                input_relapse = []
-                for sample_index in range(0, len(list_top_n_gene_relapse_sorted)):
-                    list_each_sample = []
-                    for element_id in range(0, len(list_top_n_gene_relapse_sorted[sample_index])):
-                        if (element_id in gene_order):
-                            list_each_sample.append(list_top_n_gene_relapse_sorted[sample_index][element_id])
-                    input_relapse.append(list_each_sample)
-                # print(input_relapse)
+                while (check_finish == False):
+                    if (count_iteration >= int(number_of_ranked_gene)):
+                        check_finish = True
+                    else:
+                        max_auc_score = 0
+                        gene_index_in_list = None
+                        for i in range(0, int(number_of_ranked_gene)):
+                            gene_order_test = deepcopy(gene_order)
+                            gene_order_test.extend([i])
+                            # select gene to be used in lda                       
+                            input_relapse = []
+                            for sample_index in range(0, len(list_top_n_gene_relapse_sorted)):
+                                list_each_sample = []
+                                for element_id in range(0, len(list_top_n_gene_relapse_sorted[sample_index])):
+                                    if (element_id in gene_order_test):
+                                        list_each_sample.append(list_top_n_gene_relapse_sorted[sample_index][element_id])
+                                input_relapse.append(list_each_sample)
+                            # print(input_relapse)
 
-                input_no_relapse = []
-                for sample_index in range(0, len(list_top_n_gene_no_relapse_sorted)):
-                    list_each_sample = []
-                    for element_id in range(0, len(list_top_n_gene_no_relapse_sorted[sample_index])):
-                        if (element_id in gene_order):
-                            list_each_sample.append(list_top_n_gene_no_relapse_sorted[sample_index][element_id])
-                    input_no_relapse.append(list_each_sample)
-                # print(input_no_relapse)
+                            input_no_relapse = []
+                            for sample_index in range(0, len(list_top_n_gene_no_relapse_sorted)):
+                                list_each_sample = []
+                                for element_id in range(0, len(list_top_n_gene_no_relapse_sorted[sample_index])):
+                                    if (element_id in gene_order_test):
+                                        list_each_sample.append(list_top_n_gene_no_relapse_sorted[sample_index][element_id])
+                                input_no_relapse.append(list_each_sample)
+                            # print(input_no_relapse)
 
-                input_testing_data = []
-                for sample_index in range(0, len(list_second_layer_top_n_test_sorted)):
-                    list_each_sample = []
-                    for element_id in range(0, len(list_second_layer_top_n_test_sorted[sample_index])):
-                        if (element_id in gene_order):
-                            list_each_sample.append(list_second_layer_top_n_test_sorted[sample_index][element_id])
-                    input_testing_data.append(list_each_sample)
-                # print(input_testing_data)
-                list_actual_output = calculate.lda(input_testing_data, input_relapse, input_no_relapse)
-                print("actual output : " + str(list_actual_output))
-                print(len(list_actual_output))
-                # print("desired output : " + str(second_layer_test_output))
-                print("desired output : " + str(list_desired_output))
-                print(len(list_desired_output))
+                            input_testing_data = []
+                            for sample_index in range(0, len(list_second_layer_top_n_test_sorted)):
+                                list_each_sample = []
+                                for element_id in range(0, len(list_second_layer_top_n_test_sorted[sample_index])):
+                                    if (element_id in gene_order_test):
+                                        list_each_sample.append(list_second_layer_top_n_test_sorted[sample_index][element_id])
+                                input_testing_data.append(list_each_sample)
+                            # print(input_testing_data)
+                            list_actual_output = calculate.lda(input_testing_data, input_relapse, input_no_relapse)
+                            # print("actual output : " + str(list_actual_output))
+                            # print(len(list_actual_output))
+                            # print("desired output : " + str(second_layer_test_output))
+                            # print("desired output : " + str(list_desired_output))
+                            # print(len(list_desired_output))
 
-                # calculate AUC score
-                auc_score = roc_auc_score(list_desired_output, list_actual_output)
-                print("auc_score = " + str(auc_score))
+                            # calculate AUC score
+                            auc_score = roc_auc_score(list_desired_output, list_actual_output)
+                            # print("auc_score = " + str(auc_score))
 
+                            if (auc_score > max_auc_score):
+                                max_auc_score = auc_score
+                                gene_index_in_list = i
+                        # do not add gene that already exists in a feature
+                        if (gene_index_in_list not in gene_order):
+                            gene_order.extend([gene_index_in_list])
+                        count_iteration += 1
+            gene_order.sort()
+            print("gene_order used as feature : " + str(gene_order))
 if __name__ == '__main__':
     main()
