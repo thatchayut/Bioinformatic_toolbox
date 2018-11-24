@@ -11,7 +11,7 @@ from copy import deepcopy
 def main():
     # prepare data
     # row_to_read = 22283
-    row_to_read = 22283
+    row_to_read = 50
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
     
     # version 1: consider only relapse and non-relapse within 5 years
@@ -112,6 +112,7 @@ def main():
     # do only if number of chunks of both datasets are equal
     if (check_valid == True):
         for first_layer_test_index in range(0, num_of_chunks):
+            feature_set = []
             # keep testing data from each class
             first_layer_test_relapse = chunk_list_relapse[first_layer_test_index]
             first_layer_test_no_relapse = chunk_list_no_relapse[first_layer_test_index]
@@ -313,7 +314,7 @@ def main():
 
                 top_n_test_sorted = second_layer_top_n_test_sorted
                 top_n_test_sorted.drop(columns = 'ID_REF', inplace = True)
-                # print(top_n_test_sorted)
+                print(top_n_test_sorted)
 
                 # use top-rank feature as the first feature in lda classifier
                 # prepare list for input 
@@ -422,5 +423,12 @@ def main():
                         count_iteration += 1
             gene_order.sort()
             print("gene_order used as feature : " + str(gene_order))
+
+            # get gene_name
+            gene_order_name = []
+            for element in gene_order:
+                gene_order_name.append(top_n_genes_name[element])
+            print("feature : " + str(gene_order_name))
+                
 if __name__ == '__main__':
     main()
