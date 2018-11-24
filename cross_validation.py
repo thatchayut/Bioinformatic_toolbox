@@ -7,8 +7,12 @@ from scipy import stats
 import numpy as np
 from sklearn.metrics import roc_auc_score
 from copy import deepcopy
+import time
 
 def main():
+    # record start time
+    start_time = time.time()
+
     # prepare data
     # row_to_read = 22283
     row_to_read = 22283
@@ -596,6 +600,13 @@ def main():
                 result_file.write("Desired Output : " + str(list_desired_output_for_eval) + "\n")
                 result_file.write("AUC ROC Score : " + str(auc_score_for_eval) +  "\n")
                 result_file.write("\n")
+    # record end time
+    end_time = time.time()
+    time_elapse_second = end_time - start_time
+    time_elapse_minute = time_elapse / 60
+    time_elapse_hour = time_elapse_minute / 60
+    print("Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)")
+    result_file.write("Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)\n")
 
     result_file.close()
                          
