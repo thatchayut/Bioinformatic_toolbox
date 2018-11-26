@@ -7,8 +7,12 @@ from scipy import stats
 import numpy as np
 from sklearn.metrics import roc_auc_score
 from copy import deepcopy
+import time
 
 def main():
+    # record start time
+    start_time = time.time()
+
     # prepare data
     # row_to_read = 22283
     row_to_read = 22283
@@ -101,8 +105,9 @@ def main():
     result_file = open(str(file_name) + ".txt", "w+")
 
     for epoch_count in range(0, int(epoch)):
+        start_epoch_time = time.time()
         result_file.write("#################################### Epoch : " + str(epoch_count + 1) + " ####################################\n")
-        print("#################################### Epoch : " + str(epoch_count + 1) + (" ####################################"))
+        print("#################################### Epoch : " + str(epoch_count + 1) + " ####################################")
         # split data into k parts
         chunk_relapse_size = math.ceil(len(list_sample_relapse) / num_of_folds)
         chunk_no_relapse_size = math.ceil(len(list_sample_no_relapse) / num_of_folds)
@@ -135,7 +140,7 @@ def main():
                 # keep testing data from each class
                 first_layer_test_relapse = chunk_list_relapse[first_layer_test_index]
                 first_layer_test_no_relapse = chunk_list_no_relapse[first_layer_test_index]
-                print("\n------------------------------------------ K : " + str(first_layer_test_index + 1) + " --------------------------------")
+                print("\n------------------------------------------ K : " + str(first_layer_test_index + 1) + " of Epoch " + str(epoch_count + 1) + " --------------------------------")
                 print("test relapse =" + str(first_layer_test_relapse))
                 print("test no relapse = " + str(first_layer_test_no_relapse))
                 print()
@@ -589,6 +594,12 @@ def main():
                 print("Desired Output : " + str(list_desired_output_for_eval))
                 print("AUC ROC score = " + str(auc_score_for_eval))
 
+                # record ending time of this iteration
+                end_epoch_time = time.time()
+                time_elapse_epoch_second = end_epoch_time - start_epoch_time
+                time_elapse_epoch_minute = time_elapse_epoch_second / 60
+                time_elapse_epoch_hour = time_elapse_epoch_minute / 60
+
                 # write output to an output file
                 result_file.write("Fold : " + str(first_layer_test_index + 1) + "\n")
                 result_file.write("Feature Set : " + str(feature_set_name) + "\n")
@@ -596,6 +607,16 @@ def main():
                 result_file.write("Desired Output : " + str(list_desired_output_for_eval) + "\n")
                 result_file.write("AUC ROC Score : " + str(auc_score_for_eval) +  "\n")
                 result_file.write("\n")
+        result_file.write("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
+        print("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
+
+    # record end time
+    end_time = time.time()
+    time_elapse_second = end_time - start_time
+    time_elapse_minute = time_elapse_second / 60
+    time_elapse_hour = time_elapse_minute / 60
+    print("Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)")
+    result_file.write("Total Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)\n")
 
     result_file.close()
                          
