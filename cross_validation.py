@@ -140,7 +140,7 @@ def main():
                 # keep testing data from each class
                 first_layer_test_relapse = chunk_list_relapse[first_layer_test_index]
                 first_layer_test_no_relapse = chunk_list_no_relapse[first_layer_test_index]
-                print("\n------------------------------------------ K : " + str(first_layer_test_index + 1) + " of Epoch " + str(epoch_count + 1) " --------------------------------")
+                print("\n------------------------------------------ K : " + str(first_layer_test_index + 1) + " of Epoch " + str(epoch_count + 1) + " --------------------------------")
                 print("test relapse =" + str(first_layer_test_relapse))
                 print("test no relapse = " + str(first_layer_test_no_relapse))
                 print()
@@ -606,8 +606,10 @@ def main():
                 result_file.write("Actual Output : " + str(list_actual_output_for_eval) + "\n")
                 result_file.write("Desired Output : " + str(list_desired_output_for_eval) + "\n")
                 result_file.write("AUC ROC Score : " + str(auc_score_for_eval) +  "\n")
-                result_file.write("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
                 result_file.write("\n")
+        result_file.write("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
+        print("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
+
     # record end time
     end_time = time.time()
     time_elapse_second = end_time - start_time
