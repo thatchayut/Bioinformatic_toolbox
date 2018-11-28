@@ -119,17 +119,10 @@ def main():
         chunk_list_no_relapse = list(calculate.chunks(list_sample_no_relapse, chunk_no_relapse_size))
         print("# chunks in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse)))
 
-        # check_valid = False
-        # num_of_chunks = None
-        # if (len(chunk_list_relapse) == len(chunk_list_no_relapse)):
-        #     check_valid = True
-        #     num_of_chunks = len(chunk_list_relapse)
-        # else:
-        #     print("WARNING : # chunks in 1 st set is not equal to # chunks in 2nd")
         check_valid, num_of_chunks = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
 
-        # print(chunk_list_relapse)
-        # print(len(file_training_input.columns))
+        # list to collect maximun AUC in each fold
+        list_max_auc = []
 
         # do only if number of chunks of both datasets are equal
         if (check_valid == True):
@@ -391,6 +384,7 @@ def main():
                     check_finish = False
                     count_iteration = 1
                     gene_order = [0]
+                    list_auc = []
                     while (check_finish == False):
                         if (count_iteration >= int(number_of_ranked_gene)):
                             check_finish = True
@@ -441,10 +435,15 @@ def main():
                                 if (auc_score > max_auc_score):
                                     max_auc_score = auc_score
                                     gene_index_in_list = i
+                                    print(max_auc_score)
+                                    if max_auc_score not in list_auc:
+                                        list_auc.append(max_auc_score)
                             # do not add gene that already exists in a feature
                             if (gene_index_in_list not in gene_order):
-                                gene_order.extend([gene_index_in_list])
-                            count_iteration += 1             
+                                gene_order.extend([gene_index_in_list])                       
+                            count_iteration += 1  
+
+                    list_max_auc.append(max(list_auc))        
                     gene_order.sort()       
                     # print("gene_order used as feature : " + str(gene_order))
 
@@ -459,17 +458,18 @@ def main():
                     feature_set  = deepcopy(gene_order)
                     feature_set_name = deepcopy(gene_order_name)
 
-                # preparing data for evaluation
+                # preparing data for evaluation and creating classifier
                 # for class 'relapse'
-                print("#### class 'Relapse' for evaluation ####")
+                print("#### class 'Relapse' for creating classifier ####")
                 col_to_read_relapse_for_eval = ["ID_REF"]
-                col_to_read_relapse_for_eval.extend(first_layer_test_relapse)
+                # col_to_read_relapse_for_eval.extend(first_layer_test_relapse)
+                col_to_read_relapse_for_eval.extend(first_layer_train_relapse[0])
                 # print(col_to_read_relapse)
                 file_training_input_relapse_for_eval = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_relapse_for_eval)
                 # print(file_training_input_relapse)
-                top_n_genes_relapse_for_eval = file_training_input_relapse.loc[file_training_input_relapse['ID_REF'].isin(top_n_genes_name_for_eval)]
+                top_n_genes_relapse_for_eval = file_training_input_relapse.loc[file_training_input_relapse['ID_REF'].isin(feature_set_name)]
                 # print(top_n_genes_relapse)
-                top_n_genes_relapse_for_eval['gene_id'] = top_n_genes_relapse_for_eval['ID_REF'].apply(lambda name: top_n_genes_name_for_eval.index(name))
+                top_n_genes_relapse_for_eval['gene_id'] = top_n_genes_relapse_for_eval['ID_REF'].apply(lambda name: feature_set_name.index(name))
                 # print(top_n_genes_relapse)
                 top_n_genes_relapse_sorted_for_eval  = top_n_genes_relapse_for_eval.sort_values(by = ['gene_id'])
                 top_n_genes_relapse_sorted_for_eval.drop(columns = 'gene_id', inplace = True)
@@ -478,15 +478,16 @@ def main():
                 print(top_n_genes_relapse_sorted_for_eval)
 
                 # for class 'no relapse'
-                print("#### class 'no Relapse' for evaluation ####")
+                print("#### class 'no Relapse' for creating classifier ####")
                 col_to_read_no_relapse_for_eval = ["ID_REF"]
-                col_to_read_no_relapse_for_eval.extend(first_layer_test_no_relapse)
+                # col_to_read_no_relapse_for_eval.extend(first_layer_test_no_relapse)
+                col_to_read_no_relapse_for_eval.extend(first_layer_train_no_relapse[0])
                 # print(col_to_read_no_relapse)
                 file_training_input_no_relapse_for_eval = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_no_relapse_for_eval)
                 # print(file_training_input_no_relapse)
-                top_n_genes_no_relapse_for_eval = file_training_input_no_relapse_for_eval.loc[file_training_input_no_relapse_for_eval['ID_REF'].isin(top_n_genes_name_for_eval)]
+                top_n_genes_no_relapse_for_eval = file_training_input_no_relapse_for_eval.loc[file_training_input_no_relapse_for_eval['ID_REF'].isin(feature_set_name)]
                 # print(top_n_genes_no_relapse)
-                top_n_genes_no_relapse_for_eval['gene_id'] = top_n_genes_no_relapse_for_eval['ID_REF'].apply(lambda name: top_n_genes_name_for_eval.index(name))
+                top_n_genes_no_relapse_for_eval['gene_id'] = top_n_genes_no_relapse_for_eval['ID_REF'].apply(lambda name: feature_set_name.index(name))
                 # print(top_n_genes_no_relapse)
                 top_n_genes_no_relapse_sorted_for_eval  = top_n_genes_no_relapse_for_eval.sort_values(by = ['gene_id'])
                 top_n_genes_no_relapse_sorted_for_eval.drop(columns = 'gene_id', inplace = True)
@@ -503,8 +504,8 @@ def main():
                 col_to_read_first_layer_test_gene = ["ID_REF"]
                 col_to_read_first_layer_test_gene.extend(first_layer_test_all)
                 first_layer_test_gene = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_first_layer_test_gene)
-                first_layer_top_n_test = first_layer_test_gene.loc[first_layer_test_gene['ID_REF'].isin(top_n_genes_name_for_eval)]
-                first_layer_top_n_test['gene_id'] = first_layer_top_n_test['ID_REF'].apply(lambda name: top_n_genes_name_for_eval.index(name))   
+                first_layer_top_n_test = first_layer_test_gene.loc[first_layer_test_gene['ID_REF'].isin(feature_set_name)]
+                first_layer_top_n_test['gene_id'] = first_layer_top_n_test['ID_REF'].apply(lambda name: feature_set_name.index(name))   
                 first_layer_top_n_test_sorted = first_layer_top_n_test.sort_values(by = ['gene_id'])
                 first_layer_top_n_test_sorted.drop(columns = 'gene_id', inplace = True)
 
@@ -607,9 +608,10 @@ def main():
                 result_file.write("Desired Output : " + str(list_desired_output_for_eval) + "\n")
                 result_file.write("AUC ROC Score : " + str(auc_score_for_eval) +  "\n")
                 result_file.write("\n")
+        result_file.write("Maximum AUC ROC score of feature in each fold = " + str(list_max_auc) + "\n")
         result_file.write("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
         print("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
-
+        print("Maximum AUC ROC score of feature in each fold  = " + str(list_max_auc))
     # record end time
     end_time = time.time()
     time_elapse_second = end_time - start_time
