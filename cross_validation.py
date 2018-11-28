@@ -435,7 +435,7 @@ def main():
                                 if (auc_score > max_auc_score):
                                     max_auc_score = auc_score
                                     gene_index_in_list = i
-                                    print(max_auc_score)
+                                    # print(max_auc_score)
                                     if max_auc_score not in list_auc:
                                         list_auc.append(max_auc_score)
                             # do not add gene that already exists in a feature
