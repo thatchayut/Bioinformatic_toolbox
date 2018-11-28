@@ -15,7 +15,7 @@ def main():
 
     # prepare data
     # row_to_read = 22283
-    row_to_read = 50
+    row_to_read = 22283
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
     
     # version 1: consider only relapse and non-relapse within 5 years
