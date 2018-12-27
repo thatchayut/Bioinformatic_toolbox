@@ -14,7 +14,7 @@ def main():
     # prepare files to be used
     cols_to_read = ["ID_REF"]
     file_ref = pd.read_csv("accession_number_to_entrez_id.csv")
-    file_to_convert = pd.read_csv("GSE2034-22071 (edited_1).csv", usecols = cols_to_read)
+    file_to_convert = pd.read_csv("GSE2034-22071 (edited).csv", usecols = cols_to_read)
 
     # list all probe id
     list_probe_id = []
