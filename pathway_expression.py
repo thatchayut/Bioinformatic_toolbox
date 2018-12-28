@@ -41,15 +41,17 @@ def main():
         list_gene_expression = []
         for element in file_pathway.iloc[i, 2:-1]:
             if (str(element).isnumeric()):
+                print(element)
                 # check if genes in each pathway have their expression value
                 list_gene_same_entrez = []
-                for i in range(0, len(list_entrez_id)):
-                    if (element == list_entrez_id[i]):
+                for list_entrez_id_index in range(0, len(list_entrez_id)):
+                    if (element == list_entrez_id[list_entrez_id_index]):
                         # WARNING : NEED to adjust column in file_to_convert.iloc[i, 1] for use further
-                        list_gene_same_entrez.append(file_to_convert.iloc[i, 1])
-                    else:
-                        list_gene_same_entrez.append(0.0)
-
+                        list_gene_same_entrez.append(file_to_convert.iloc[list_entrez_id_index, 1])
+                # if gene expression is not found, assume it as 'zero'
+                if not list_gene_same_entrez:
+                    list_gene_same_entrez.append(0.0)
+                print(list_gene_same_entrez)
                 # calculate genes expression of the same entrez id by using their average
                 num_of_same_entrez = len(list_gene_same_entrez)
                 avg_gene_expression = (sum(list_gene_same_entrez) / num_of_same_entrez)
@@ -61,6 +63,7 @@ def main():
         pathway.append(list_gene_expression)
         
         pathways[key] = pathway
+    print(pathways[0])
                     
 
 
