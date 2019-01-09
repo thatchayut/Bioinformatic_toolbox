@@ -10,6 +10,12 @@ def main():
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
     file_training_output= pd.read_csv("mapping_sample_to_class_full.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
 
+    # files to be used to get pathways and their gene expression
+    file_ref_name = "accession_number_to_entrez_id.csv"
+    file_to_convert_name = "GSE2034-22071 (edited).csv"
+    file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
+    rows_to_read_file_pathway = 1329
+
     # get gene order id with its name
     list_gene_name = []
     for i in range(0, row_to_read):
@@ -76,7 +82,39 @@ def main():
             print("\n------------------------------------------ K : " + str(chunk_test_index + 1) + " --------------------------------")
             print("test relapse =" + str(chunk_test_relapse))
             print("test no relapse = " + str(chunk_test_no_relapse))
+
+            chunk_train_relapse = []
+            for chunk_train_relapse_index in range(0, num_of_chunks):
+                if (chunk_list_relapse[chunk_train_relapse_index] is not chunk_test_relapse):
+                    chunk_train_relapse.append(chunk_list_relapse[chunk_train_relapse_index])
+            print("chunk train relapse size = " + str(len(chunk_train_relapse)))
+            print("chunk train relapse = " + str(chunk_train_relapse))
             
+            chunk_train_no_relapse = []
+            for chunk_train_no_relapse_index in range(0, num_of_chunks):
+                if (chunk_list_no_relapse[chunk_train_no_relapse_index] is not chunk_test_no_relapse):
+                    chunk_train_no_relapse.append(chunk_list_no_relapse[chunk_train_no_relapse_index])
+            print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
+            print("chunk train no relapse = " + str(chunk_train_no_relapse))
+            
+            check_train_valid, num_of_chunks_train = calculate.checkEqualListSize(chunk_train_relapse, chunk_train_no_relapse)
+
+            # get pathway activity of each sample
+            # get column name to be read
+            if (check_train_valid is True):
+                for chunk_train_index in range(0, len(chunk_train_relapse)):
+                    # collection of samples containing pathways of each sample
+                    samples = {}
+
+                    # identify columns to be read in each chunk in training data
+                    for element_index in range(0, len(chunk_train_relapse[chunk_train_index])):
+                        sample = []
+                        sample_name = chunk_train_relapse[chunk_train_index][element_index]
+                        pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+                        sample.append(sample_name)
+                        sample.append(pathways)
+                        samples[element_index] = sample
 
 if __name__ == '__main__':
     main()
