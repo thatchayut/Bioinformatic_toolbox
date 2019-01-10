@@ -1,6 +1,7 @@
 import copy
 import numpy as np
 import pandas as pd
+import math
 
 def avgFromList(list):
     #transpose matrix to calculate average of each column
@@ -198,15 +199,14 @@ def lda(list_all_input, list_part_1, list_part_2):
 
     return actual_output
 
-def getPathway(file_ref, file_to_convert, file_pathway, sample_id, rows_to_read):
+def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway):
     # prepare files to be used
     cols_to_read_file_to_convert = ["ID_REF", sample_id]
-    rows_to_read_file_pathway = 1329
-    file_ref = pd.read_csv("accession_number_to_entrez_id.csv")
-    file_to_convert = pd.read_csv("GSE2034-22071 (edited).csv", usecols = cols_to_read_file_to_convert)
-    file_pathway = pd.read_csv("c2.cp.v6.2.entrez.gmt.csv", nrows = rows_to_read_file_pathway)
-
-    cols_to_read_file_to_convert = ["ID_REF"]
+    # rows_to_read_file_pathway = 1329
+    file_ref = pd.read_csv(file_ref_name)
+    # For the last version, 'nrows' in file_to_convert has to be removed
+    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert, nrows = 100)
+    file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # list all probe id
     list_probe_id = []
@@ -229,7 +229,7 @@ def getPathway(file_ref, file_to_convert, file_pathway, sample_id, rows_to_read)
             list_entrez_id.append(entrez_id.iloc[0][1])  
     num_of_available_data = num_of_probe_id - count_not_found
 
-    print(file_pathway)
+    # print(file_pathway)
 
     # create dictionary to collect each pathway
     pathways = {}
@@ -271,3 +271,25 @@ def getPathway(file_ref, file_to_convert, file_pathway, sample_id, rows_to_read)
     return pathways
     # print(pathways[1])
     # print(len(pathways))
+
+def mean(list_input):
+    size_of_list = len(list_input)
+    sum_of_element = sum(list_input)
+    mean_of_list = (sum_of_element / size_of_list)
+    mean_of_list = round(mean_of_list, 6)
+    return mean_of_list
+
+def sd(list_input):
+    # prepare required data to calculate sd
+    size_of_list = len(list_input)
+    mean_of_list = mean(list_input)
+
+    # calculate sd
+    sum_of_element = 0
+
+    for element in list_input:
+        sum_of_element += math.pow((element - mean_of_list), 2)
+    
+    sd_of_list = math.sqrt(sum_of_element / (size_of_list - 1))
+    sd_of_list = round(sd_of_list, 6)
+    return sd_of_list

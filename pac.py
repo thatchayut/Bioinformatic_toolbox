@@ -14,7 +14,9 @@ def main():
     file_ref_name = "accession_number_to_entrez_id.csv"
     file_to_convert_name = "GSE2034-22071 (edited).csv"
     file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
-    rows_to_read_file_pathway = 1329
+
+    #default rows_to_read_file_pathway = 1329
+    rows_to_read_file_pathway = 5
 
     # get gene order id with its name
     list_gene_name = []
@@ -104,17 +106,89 @@ def main():
             if (check_train_valid is True):
                 for chunk_train_index in range(0, len(chunk_train_relapse)):
                     # collection of samples containing pathways of each sample
-                    samples = {}
+                    samples_relapse = {}
+                    samples_no_relapse = {}
 
                     # identify columns to be read in each chunk in training data
+                    # for training data with relapse
                     for element_index in range(0, len(chunk_train_relapse[chunk_train_index])):
+                        print()
+                        print("Creating pathways for sample " + str(element_index + 1) + " relapse is in progress ...")
+                        print(str(len(chunk_train_relapse[chunk_train_index]) - (element_index + 1)) + " samples left")
+                        print()
+
                         sample = []
                         sample_name = chunk_train_relapse[chunk_train_index][element_index]
                         pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
 
                         sample.append(sample_name)
                         sample.append(pathways)
-                        samples[element_index] = sample
+                        samples_relapse[element_index] = sample
+                        
+                        print("Sample " + str(element_index + 1) + " name : " + str(samples_relapse[element_index][0]))
+                        print("Total Pathways : " + str(len(samples_relapse[element_index][1])))
+                        print("1st Pathway : " + str(samples_relapse[element_index][1][0]))
+                        print("1st Pathway name : " + str(samples_relapse[element_index][1][0][0]))
+                        print("Gene expression of 1st Pathway : " + str(samples_relapse[element_index][1][0][1]))
+                    
+                    print()
+                    print("Total number of samples relapse : " + str(len(samples_relapse)))
+                    print()
+
+                    for element_index in range(0, len(chunk_train_no_relapse[chunk_train_index])):
+                        print()
+                        print("Creating pathways for sample " + str(element_index + 1) + " relapse is in progress ...")
+                        print(str(len(chunk_train_no_relapse[chunk_train_index]) - (element_index + 1)) + " samples left")
+                        print()
+
+                        sample = []
+                        sample_name = chunk_train_no_relapse[chunk_train_index][element_index]
+                        pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+                        sample.append(sample_name)
+                        sample.append(pathways)
+                        samples_no_relapse[element_index] = sample
+                        
+                        print("Sample " + str(element_index + 1) + " name : " + str(samples_no_relapse[element_index][0]))
+                        print("Total Pathways : " + str(len(samples_no_relapse[element_index][1])))
+                        print("1st Pathway : " + str(samples_no_relapse[element_index][1][0]))
+                        print("1st Pathway name : " + str(samples_no_relapse[element_index][1][0][0]))
+                        print("Gene expression of 1st Pathway : " + str(samples_no_relapse[element_index][1][0][1]))
+                    
+                    print()
+                    print("Total number of samples non-relapse : " + str(len(samples_no_relapse)))
+                    print()
+
+
+                    # calculate z-score for each gene expression in each pathway
+                    # prepare data to calculate mean and sd
+                    list_gene_expression_in_pathway = []
+
+                    # get gene expression from samples with relapse
+                    for samples_index in range(0, len(samples_relapse)):
+                        # assume using only 1st pahtway
+                        for gene_index in range(0, len(samples_relapse[samples_index][1][0][1])):
+                            # print(samples_relapse[samples_index][1][0][1][gene_index][1])
+                            # get gene expression in 1st pathway of this sample and add to a list 
+                            list_gene_expression_in_pathway.append(samples_relapse[samples_index][1][0][1][gene_index][1])
+
+                    for samples_index in range(0, len(samples_no_relapse)):
+                        # assume using only 1st pahtway
+                        for gene_index in range(0, len(samples_no_relapse[samples_index][1][0][1])):
+                            # print(samples_relapse[samples_index][1][0][1][gene_index][1])
+                            # get gene expression in 1st pathway of this sample and add to a list 
+                            list_gene_expression_in_pathway.append(samples_no_relapse[samples_index][1][0][1][gene_index][1])
+                    print("Total number of genes : " + str(len(list_gene_expression_in_pathway)))
+
+                    mean_list_gene_expression_in_pathway = calculate.mean(list_gene_expression_in_pathway)
+                    sd_list_gene_expression_in_pathway = calculate.sd(list_gene_expression_in_pathway)
+                    print("mean : " + str(mean_list_gene_expression_in_pathway))
+                    print("sd : " + str(sd_list_gene_expression_in_pathway))
+
+                    # # calculate z-score
+                    # for samples_index in ran
+
+
 
 if __name__ == '__main__':
     main()
