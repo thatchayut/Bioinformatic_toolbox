@@ -160,34 +160,90 @@ def main():
                     print()
 
 
+                    # version 1: this will use in finding CORGs
+                    # for samples_index in range(0, len(samples_no_relapse)):
                     # calculate z-score for each gene expression in each pathway
                     # prepare data to calculate mean and sd
-                    list_gene_expression_in_pathway = []
+                    # list_gene_expression_in_pathway = []
 
                     # get gene expression from samples with relapse
+                    # for samples_index in range(0, len(samples_relapse)):
+                    #     # assume using only 1st pahtway
+                    #     for gene_index in range(0, len(samples_relapse[samples_index][1][0][1])):
+                    #         # print(samples_relapse[samples_index][1][0][1][gene_index][1])
+                    #         # get gene expression in 1st pathway of this sample and add to a list 
+                    #         list_gene_expression_in_pathway.append(samples_relapse[samples_index][1][0][1][gene_index][1])
+                    
+                    #     # assume using only 1st pahtway
+                    #     for gene_index in range(0, len(samples_no_relapse[samples_index][1][0][1])):
+                    #         # print(samples_relapse[samples_index][1][0][1][gene_index][1])
+                    #         # get gene expression in 1st pathway of this sample and add to a list 
+                    #         list_gene_expression_in_pathway.append(samples_no_relapse[samples_index][1][0][1][gene_index][1])
+                    # print("Total number of genes : " + str(len(list_gene_expression_in_pathway)))
+
+                    # mean_list_gene_expression_in_pathway = calculate.mean(list_gene_expression_in_pathway)
+                    # sd_list_gene_expression_in_pathway = calculate.sd(list_gene_expression_in_pathway)
+                    
+                    # print("mean : " + str(mean_list_gene_expression_in_pathway))
+                    # print("sd : " + str(sd_list_gene_expression_in_pathway))
+
+                    # NEXT : calculate z-score
+
+                    # version 2: use 'Mean' of each pathway in each sample as a pathway activity
+                    samples_relapse_pathway_activity = {}
+                    # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
                     for samples_index in range(0, len(samples_relapse)):
-                        # assume using only 1st pahtway
-                        for gene_index in range(0, len(samples_relapse[samples_index][1][0][1])):
-                            # print(samples_relapse[samples_index][1][0][1][gene_index][1])
-                            # get gene expression in 1st pathway of this sample and add to a list 
-                            list_gene_expression_in_pathway.append(samples_relapse[samples_index][1][0][1][gene_index][1])
+                        sample = []
+                        pathway = []
+                        for pathway_index in range(0, len(samples_relapse[samples_index][1])):
+                            list_gene_expression_in_pathway = []
+                            for gene_index in range(0, len(samples_relapse[samples_index][1][pathway_index][1])):
+                                # print(sample_relapse[samples_index][1][pathway_index][gene_index][1])
+                                # print(gene_index)
+                                gene_expression = samples_relapse[samples_index][1][pathway_index][1][gene_index][1]
+                                list_gene_expression_in_pathway.append(gene_expression)
 
+                            # data to collect as pathway activity
+                            pathway_name = samples_relapse[samples_index][1][pathway_index][0]
+                            pathway_activity = calculate.mean(list_gene_expression_in_pathway)
+                        
+                        sample_name = samples_relapse[samples_index][0]
+                        pathway.append(pathway_name)
+                        pathway.append(pathway_activity)
+
+                        sample.append(sample_name)
+                        sample.append(pathway)
+                        samples_relapse_pathway_activity[samples_index] = sample
+                    
+                    samples_no_relapse_pathway_activity = {}
+                    # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
                     for samples_index in range(0, len(samples_no_relapse)):
-                        # assume using only 1st pahtway
-                        for gene_index in range(0, len(samples_no_relapse[samples_index][1][0][1])):
-                            # print(samples_relapse[samples_index][1][0][1][gene_index][1])
-                            # get gene expression in 1st pathway of this sample and add to a list 
-                            list_gene_expression_in_pathway.append(samples_no_relapse[samples_index][1][0][1][gene_index][1])
-                    print("Total number of genes : " + str(len(list_gene_expression_in_pathway)))
+                        sample = []
+                        pathway = []
+                        for pathway_index in range(0, len(samples_no_relapse[samples_index][1])):
+                            list_gene_expression_in_pathway = []
+                            for gene_index in range(0, len(samples_no_relapse[samples_index][1][pathway_index][1])):
+                                # print(sample_relapse[samples_index][1][pathway_index][gene_index][1])
+                                # print(gene_index)
+                                gene_expression = samples_no_relapse[samples_index][1][pathway_index][1][gene_index][1]
+                                list_gene_expression_in_pathway.append(gene_expression)
 
-                    mean_list_gene_expression_in_pathway = calculate.mean(list_gene_expression_in_pathway)
-                    sd_list_gene_expression_in_pathway = calculate.sd(list_gene_expression_in_pathway)
-                    print("mean : " + str(mean_list_gene_expression_in_pathway))
-                    print("sd : " + str(sd_list_gene_expression_in_pathway))
+                            # data to collect as pathway activity
+                            pathway_name = samples_no_relapse[samples_index][1][pathway_index][0]
+                            pathway_activity = calculate.mean(list_gene_expression_in_pathway)
+                        
+                        sample_name = samples_no_relapse[samples_index][0]
+                        pathway.append(pathway_name)
+                        pathway.append(pathway_activity)
 
-                    # # calculate z-score
-                    # for samples_index in ran
+                        sample.append(sample_name)
+                        sample.append(pathway)
+                        samples_no_relapse_pathway_activity[samples_index] = sample
+                    
 
+
+
+                        
 
 
 if __name__ == '__main__':
