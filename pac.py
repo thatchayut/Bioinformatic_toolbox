@@ -194,9 +194,10 @@ def main():
                     # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
                     for samples_index in range(0, len(samples_relapse)):
                         sample = []
-                        pathway = []
+                        list_pathway = []
                         for pathway_index in range(0, len(samples_relapse[samples_index][1])):
                             list_gene_expression_in_pathway = []
+                            pathway = []
                             for gene_index in range(0, len(samples_relapse[samples_index][1][pathway_index][1])):
                                 # print(sample_relapse[samples_index][1][pathway_index][gene_index][1])
                                 # print(gene_index)
@@ -206,22 +207,24 @@ def main():
                             # data to collect as pathway activity
                             pathway_name = samples_relapse[samples_index][1][pathway_index][0]
                             pathway_activity = calculate.mean(list_gene_expression_in_pathway)
+
+                            pathway.append(pathway_name)
+                            pathway.append(pathway_activity)
+                            list_pathway.append(pathway)
                         
                         sample_name = samples_relapse[samples_index][0]
-                        pathway.append(pathway_name)
-                        pathway.append(pathway_activity)
-
                         sample.append(sample_name)
-                        sample.append(pathway)
+                        sample.append(list_pathway)
                         samples_relapse_pathway_activity[samples_index] = sample
                     
                     samples_no_relapse_pathway_activity = {}
                     # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
                     for samples_index in range(0, len(samples_no_relapse)):
                         sample = []
-                        pathway = []
+                        list_pathway = []
                         for pathway_index in range(0, len(samples_no_relapse[samples_index][1])):
                             list_gene_expression_in_pathway = []
+                            pathway = []
                             for gene_index in range(0, len(samples_no_relapse[samples_index][1][pathway_index][1])):
                                 # print(sample_relapse[samples_index][1][pathway_index][gene_index][1])
                                 # print(gene_index)
@@ -231,19 +234,37 @@ def main():
                             # data to collect as pathway activity
                             pathway_name = samples_no_relapse[samples_index][1][pathway_index][0]
                             pathway_activity = calculate.mean(list_gene_expression_in_pathway)
+
+                            pathway.append(pathway_name)
+                            pathway.append(pathway_activity)
+                            list_pathway.append(pathway)
                         
                         sample_name = samples_no_relapse[samples_index][0]
-                        pathway.append(pathway_name)
-                        pathway.append(pathway_activity)
-
                         sample.append(sample_name)
-                        sample.append(pathway)
+                        sample.append(list_pathway)
                         samples_no_relapse_pathway_activity[samples_index] = sample
-                    
+                    print(samples_relapse_pathway_activity)
+                    print()
+                    print(samples_no_relapse_pathway_activity)
 
+                    # calculate t-test score for each pathway
+                    num_of_all_pathways = rows_to_read_file_pathway
 
-
+                    print("testtttttttttttttttt")
+                    for pathway_index in range(0, num_of_all_pathways):
+                        list_pathway_activity_relapse = []
+                        for samples_index in range(0, len(samples_relapse)):
+                            # print(samples_relapse[samples_index][1][pathway_index][1])
+                            list_pathway_activity_relapse.append(samples_relapse[samples_index][1][pathway_index][1])
                         
+                        list_pathway_activity_no_relapse = []
+                         for samples_index in range(0, len(samples_no_relapse)):
+                            # print(samples_relapse[samples_index][1][pathway_index][1])
+                            list_pathway_activity_no_relapse.append(samples_no_relapse[samples_index][1][pathway_index][1])
+                        
+                        # calculate t-test score of this pathway
+                        
+              
 
 
 if __name__ == '__main__':
