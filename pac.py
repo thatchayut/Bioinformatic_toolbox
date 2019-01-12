@@ -1,3 +1,4 @@
+from scipy import stats
 import pandas as pd
 import random
 import math
@@ -11,12 +12,12 @@ def main():
     file_training_output= pd.read_csv("mapping_sample_to_class_full.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # files to be used to get pathways and their gene expression
+    # default rows_to_read_file_pathway = 1329
+    rows_to_read_file_pathway = 1329
     file_ref_name = "accession_number_to_entrez_id.csv"
     file_to_convert_name = "GSE2034-22071 (edited).csv"
     file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
-
-    #default rows_to_read_file_pathway = 1329
-    rows_to_read_file_pathway = 5
+    file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # get gene order id with its name
     list_gene_name = []
@@ -26,6 +27,14 @@ def main():
         gene_name.append(i)
         gene_name.append(file_training_input.loc[i, "ID_REF"])
         list_gene_name.append(gene_name)
+    
+    # get list of pathway name
+    list_pathway_name = []
+    for i in range(0, rows_to_read_file_pathway):
+        pathway_name = []
+        pathway_name.append(i)
+        pathway_name.append(file_pathway.loc[i, "PATHWAY_NAME"])
+        list_pathway_name.append(pathway_name)
 
     # consider non-relapse and relapse (not in specific period of time)
     sample_relapse = file_training_output.loc[file_training_output['relapse (1=True)'].isin(['1'])]
@@ -125,11 +134,11 @@ def main():
                         sample.append(pathways)
                         samples_relapse[element_index] = sample
                         
-                        print("Sample " + str(element_index + 1) + " name : " + str(samples_relapse[element_index][0]))
-                        print("Total Pathways : " + str(len(samples_relapse[element_index][1])))
-                        print("1st Pathway : " + str(samples_relapse[element_index][1][0]))
-                        print("1st Pathway name : " + str(samples_relapse[element_index][1][0][0]))
-                        print("Gene expression of 1st Pathway : " + str(samples_relapse[element_index][1][0][1]))
+                        # print("Sample " + str(element_index + 1) + " name : " + str(samples_relapse[element_index][0]))
+                        # print("Total Pathways : " + str(len(samples_relapse[element_index][1])))
+                        # print("1st Pathway : " + str(samples_relapse[element_index][1][0]))
+                        # print("1st Pathway name : " + str(samples_relapse[element_index][1][0][0]))
+                        # print("Gene expression of 1st Pathway : " + str(samples_relapse[element_index][1][0][1]))
                     
                     print()
                     print("Total number of samples relapse : " + str(len(samples_relapse)))
@@ -137,7 +146,7 @@ def main():
 
                     for element_index in range(0, len(chunk_train_no_relapse[chunk_train_index])):
                         print()
-                        print("Creating pathways for sample " + str(element_index + 1) + " relapse is in progress ...")
+                        print("Creating pathways for sample " + str(element_index + 1) + " non-relapse is in progress ...")
                         print(str(len(chunk_train_no_relapse[chunk_train_index]) - (element_index + 1)) + " samples left")
                         print()
 
@@ -149,11 +158,11 @@ def main():
                         sample.append(pathways)
                         samples_no_relapse[element_index] = sample
                         
-                        print("Sample " + str(element_index + 1) + " name : " + str(samples_no_relapse[element_index][0]))
-                        print("Total Pathways : " + str(len(samples_no_relapse[element_index][1])))
-                        print("1st Pathway : " + str(samples_no_relapse[element_index][1][0]))
-                        print("1st Pathway name : " + str(samples_no_relapse[element_index][1][0][0]))
-                        print("Gene expression of 1st Pathway : " + str(samples_no_relapse[element_index][1][0][1]))
+                        # print("Sample " + str(element_index + 1) + " name : " + str(samples_no_relapse[element_index][0]))
+                        # print("Total Pathways : " + str(len(samples_no_relapse[element_index][1])))
+                        # print("1st Pathway : " + str(samples_no_relapse[element_index][1][0]))
+                        # print("1st Pathway name : " + str(samples_no_relapse[element_index][1][0][0]))
+                        # print("Gene expression of 1st Pathway : " + str(samples_no_relapse[element_index][1][0][1]))
                     
                     print()
                     print("Total number of samples non-relapse : " + str(len(samples_no_relapse)))
@@ -243,27 +252,38 @@ def main():
                         sample.append(sample_name)
                         sample.append(list_pathway)
                         samples_no_relapse_pathway_activity[samples_index] = sample
-                    print(samples_relapse_pathway_activity)
-                    print()
-                    print(samples_no_relapse_pathway_activity)
+                    # print(samples_relapse_pathway_activity)
+                    # print()
+                    # print(samples_no_relapse_pathway_activity)
 
                     # calculate t-test score for each pathway
                     num_of_all_pathways = rows_to_read_file_pathway
 
                     print("testtttttttttttttttt")
+                    list_ttest_score = []
                     for pathway_index in range(0, num_of_all_pathways):
+                        ttest_pathway = []
                         list_pathway_activity_relapse = []
-                        for samples_index in range(0, len(samples_relapse)):
+                        for samples_index in range(0, len(samples_relapse_pathway_activity)):
                             # print(samples_relapse[samples_index][1][pathway_index][1])
-                            list_pathway_activity_relapse.append(samples_relapse[samples_index][1][pathway_index][1])
-                        
+                            list_pathway_activity_relapse.append(samples_relapse_pathway_activity[samples_index][1][pathway_index][1])
                         list_pathway_activity_no_relapse = []
-                         for samples_index in range(0, len(samples_no_relapse)):
+                        for samples_index in range(0, len(samples_no_relapse_pathway_activity)):
                             # print(samples_relapse[samples_index][1][pathway_index][1])
-                            list_pathway_activity_no_relapse.append(samples_no_relapse[samples_index][1][pathway_index][1])
+                            list_pathway_activity_no_relapse.append(samples_no_relapse_pathway_activity[samples_index][1][pathway_index][1])
                         
                         # calculate t-test score of this pathway
-                        
+                        abs_ttest_value = math.fabs(stats.ttest_ind(list_pathway_activity_relapse, list_pathway_activity_no_relapse, equal_var = False)[0])
+                        # print(stats.ttest_ind(list_pathway_activity_relapse, list_pathway_activity_no_relapse, equal_var = False))
+
+                        # collect data as [pathway_name, abs_ttest_value]
+                        pathway_name = list_pathway_name[pathway_index]
+                        ttest_pathway.append(pathway_name)
+                        ttest_pathway.append(abs_ttest_value)
+
+                        list_ttest_score.append(ttest_pathway)
+                    print(list_ttest_score)
+
               
 
 
