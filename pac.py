@@ -13,7 +13,7 @@ def main():
 
     # files to be used to get pathways and their gene expression
     # default rows_to_read_file_pathway = 1329
-    rows_to_read_file_pathway = 1329
+    rows_to_read_file_pathway = 100
     file_ref_name = "accession_number_to_entrez_id.csv"
     file_to_convert_name = "GSE2034-22071 (edited).csv"
     file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
@@ -85,10 +85,10 @@ def main():
     num_of_pathways_percentage = int(num_of_pathways_percentage)
 
     # get output file's name
-    file_name = input("Name of Output File : ")
+    # file_name = input("Name of Output File : ")
 
     # prepare text file for results to be written in
-    result_file = open(str(file_name) + ".txt", "w+")
+    # result_file = open(str(file_name) + ".txt", "w+")
 
     # calculate number of pathways to be used
     num_of_ranked_pathways = (rows_to_read_file_pathway * (num_of_pathways_percentage / 100))
@@ -109,7 +109,7 @@ def main():
     # do only if number of chunks of both datasets are equal
     if (check_valid == True):
         for chunk_test_index in range(0, num_of_chunks):
-            result_file.write(" #### Fold " + str(chunk_test_index + 1) + " ####\n")
+            # result_file.write(" #### Fold " + str(chunk_test_index + 1) + " ####\n")
             # separating data into testing and training dataset
             chunk_test_relapse = chunk_list_relapse[chunk_test_index]
             chunk_test_no_relapse = chunk_list_no_relapse[chunk_test_index]
@@ -132,8 +132,6 @@ def main():
             print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
             print("chunk train no relapse = " + str(chunk_train_no_relapse))
             
-            check_train_valid, num_of_chunks_train = calculate.checkEqualListSize(chunk_train_relapse, chunk_train_no_relapse)
-
             # merge training data of leach class
             list_train_relapse = []
             for i in range(0, len(chunk_train_relapse)):
@@ -147,7 +145,13 @@ def main():
             print("size of list_train_no_relapse : " + str(len(list_train_no_relapse)))
 
             # this is used to collect feature set
-            list_top_ranked_pathway = []
+            list_top_ranked_pathways = []
+
+            # this is used to collect data used in calculating lda
+            list_testing_relapse_pathway_expression = []
+            list_testing_no_relapse_pathway_expression = []
+
+            check_train_valid, num_of_chunks_train = calculate.checkEqualListSize(chunk_train_relapse, chunk_train_no_relapse)
 
             # get pathway activity of each sample
             # get column name to be read
@@ -238,7 +242,7 @@ def main():
                 # NEXT : calculate z-score
 
                 # version 2: use 'Mean' of each pathway in each sample as a pathway activity
-                samples_relapse_pathway_activity = {}
+                samples_training_relapse_pathway_activity = {}
                 # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
                 for samples_index in range(0, len(samples_relapse)):
                     sample = []
@@ -263,12 +267,12 @@ def main():
                     sample_name = samples_relapse[samples_index][0]
                     sample.append(sample_name)
                     sample.append(list_pathway)
-                    samples_relapse_pathway_activity[samples_index] = sample
-                result_file.write("samples_relapse_pathway_activity : \n")
-                result_file.write(" " + str(samples_relapse_pathway_activity) + "\n")
-                result_file.write("\n")
+                    samples_training_relapse_pathway_activity[samples_index] = sample
+                # result_file.write("samples_training_relapse_pathway_activity : \n")
+                # result_file.write(" " + str(samples_training_relapse_pathway_activity) + "\n")
+                # result_file.write("\n")
                 
-                samples_no_relapse_pathway_activity = {}
+                samples_training_no_relapse_pathway_activity = {}
                 # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
                 for samples_index in range(0, len(samples_no_relapse)):
                     sample = []
@@ -293,13 +297,13 @@ def main():
                     sample_name = samples_no_relapse[samples_index][0]
                     sample.append(sample_name)
                     sample.append(list_pathway)
-                    samples_no_relapse_pathway_activity[samples_index] = sample
-                result_file.write(" samples_no_relapse_pathway_activity : \n")
-                result_file.write(" " + str(samples_no_relapse_pathway_activity) + "\n")
-                result_file.write("\n")
-                # print(samples_relapse_pathway_activity)
+                    samples_training_no_relapse_pathway_activity[samples_index] = sample
+                # result_file.write(" samples_training_no_relapse_pathway_activity : \n")
+                # result_file.write(" " + str(samples_training_no_relapse_pathway_activity) + "\n")
+                # result_file.write("\n")
+                # print(samples_training_relapse_pathway_activity)
                 # print()
-                # print(samples_no_relapse_pathway_activity)
+                # print(samples_training_no_relapse_pathway_activity)
 
                 # calculate t-test score for each pathway
                 num_of_all_pathways = rows_to_read_file_pathway
@@ -308,13 +312,13 @@ def main():
                 for pathway_index in range(0, num_of_all_pathways):
                     ttest_pathway = []
                     list_pathway_activity_relapse = []
-                    for samples_index in range(0, len(samples_relapse_pathway_activity)):
+                    for samples_index in range(0, len(samples_training_relapse_pathway_activity)):
                         # print(samples_relapse[samples_index][1][pathway_index][1])
-                        list_pathway_activity_relapse.append(samples_relapse_pathway_activity[samples_index][1][pathway_index][1])
+                        list_pathway_activity_relapse.append(samples_training_relapse_pathway_activity[samples_index][1][pathway_index][1])
                     list_pathway_activity_no_relapse = []
-                    for samples_index in range(0, len(samples_no_relapse_pathway_activity)):
+                    for samples_index in range(0, len(samples_training_no_relapse_pathway_activity)):
                         # print(samples_relapse[samples_index][1][pathway_index][1])
-                        list_pathway_activity_no_relapse.append(samples_no_relapse_pathway_activity[samples_index][1][pathway_index][1])
+                        list_pathway_activity_no_relapse.append(samples_training_no_relapse_pathway_activity[samples_index][1][pathway_index][1])
                     
                     # calculate t-test score of this pathway
                     abs_ttest_value = math.fabs(stats.ttest_ind(list_pathway_activity_relapse, list_pathway_activity_no_relapse, equal_var = False)[0])
@@ -331,17 +335,219 @@ def main():
                 list_ttest_score.sort(key = lambda x : x[1], reverse = True)
                 
                 # use number of pathways equals to user's input
-                list_top_ranked_pathway = []
+                # list_top_ranked_pathway = []
                 for i in range(0, num_of_ranked_pathways):
-                    list_top_ranked_pathway.append(list_ttest_score[i])
+                    list_top_ranked_pathways.append(list_ttest_score[i][0][1])
                 
                 print("Number of ranked pathways : " + str(num_of_ranked_pathways))
-                print("list_top_ranked_pathways : " + str(list_top_ranked_pathway))
-                result_file.write(" Number of ranked pathways : " + str(num_of_ranked_pathways) +"\n")
-                result_file.write(" list_top_ranked_pathways : " + str(list_top_ranked_pathway) + "\n")
-                result_file.write("\n")
+                print("list_top_ranked_pathways : " + str(list_top_ranked_pathways))
+                # result_file.write(" Number of ranked pathways : " + str(num_of_ranked_pathways) +"\n")
+                # result_file.write(" list_top_ranked_pathways : " + str(list_top_ranked_pathway) + "\n")
+                # result_file.write("\n")
+                
+                # prepare data for testing
+                for sample_index in range(0, len(samples_training_relapse_pathway_activity)):
+                    list_pathway_activity = []
+                    for pathway_index in range(0, len(samples_training_relapse_pathway_activity[sample_index][1])):
+                        pathway_name = samples_training_relapse_pathway_activity[sample_index][1][pathway_index][0]
+                        # print(pathway_name)
+                        pathway_activity = samples_training_relapse_pathway_activity[sample_index][1][pathway_index][1]
+                        if (pathway_name in list_top_ranked_pathways):
+                            # print("HEYYYYYYYYYYYYYYYYY")
+                            list_pathway_activity.append(pathway_activity)
+                    list_testing_relapse_pathway_expression.append(list_pathway_activity)
+                
+                for sample_index in range(0, len(samples_training_no_relapse_pathway_activity)):
+                    list_pathway_activity = []
+                    for pathway_index in range(0, len(samples_training_no_relapse_pathway_activity[sample_index][1])):
+                        pathway_name = samples_training_no_relapse_pathway_activity[sample_index][1][pathway_index][0]
+                        # print(pathway_name)
+                        pathway_activity = samples_training_no_relapse_pathway_activity[sample_index][1][pathway_index][1]
+                        if (pathway_name in list_top_ranked_pathways):
+                            # print("HEYYYYYYYYYYYYYYYYY")
+                            list_pathway_activity.append(pathway_activity)
+                    list_testing_no_relapse_pathway_expression.append(list_pathway_activity)
+            
+            print("######### Testing #########")
+            # use feature set in testing procedure
 
-    result_file.close()         
+            # merge samples of 2 classes together
+            list_samples_name_testing_all = []
+            list_samples_name_testing_all.extend(chunk_test_relapse)
+            list_samples_name_testing_all.extend(chunk_test_no_relapse)
+            
+            # get gene expression of each pathway of each sample in testing set
+            samples_testing_all = {}
+            for element_index in range(0, len(list_samples_name_testing_all)):
+                print()
+                print("Creating pathways for samples_testing_all #" + str(element_index + 1) + "  is in progress ...")
+                print(str(len(list_samples_name_testing_all) - (element_index + 1)) + " samples left")
+                print()
+
+                sample = []
+                sample_name = list_samples_name_testing_all[element_index]
+                pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+                sample.append(sample_name)
+                sample.append(pathways)
+                samples_testing_all[element_index] = sample 
+        
+            # calculate pathway activity of each pathway using 'Mean'
+            samples_testing_all_pathway_activity = {}
+            # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
+            for samples_index in range(0, len(samples_testing_all)):
+                sample = []
+                list_pathway = []
+                for pathway_index in range(0, len(samples_testing_all[samples_index][1])):
+                    list_gene_expression_in_pathway = []
+                    pathway = []
+                    for gene_index in range(0, len(samples_testing_all[samples_index][1][pathway_index][1])):
+                        # print(sample_relapse[samples_index][1][pathway_index][gene_index][1])
+                        # print(gene_index)
+                        gene_expression = samples_testing_all[samples_index][1][pathway_index][1][gene_index][1]
+                        list_gene_expression_in_pathway.append(gene_expression)
+
+                    # data to collect as pathway activity
+                    pathway_name = samples_testing_all[samples_index][1][pathway_index][0]
+                    pathway_activity = calculate.mean(list_gene_expression_in_pathway)
+
+                    pathway.append(pathway_name)
+                    pathway.append(pathway_activity)
+
+                    # add to list only if it is in feature set
+                    if (pathway_name in list_top_ranked_pathways):
+                        list_pathway.append(pathway)
+                
+                sample_name = samples_testing_all[samples_index][0]
+                sample.append(sample_name)
+                sample.append(list_pathway)
+                samples_testing_all_pathway_activity[samples_index] = sample
+
+            # get gene expression of each pathway of each sample in testing set
+            # samples_testing_relapse = {}
+            # for element_index in range(0, len(chunk_test_relapse)):
+            #     print()
+            #     print("Creating pathways for sample testing " + str(element_index + 1) + " relapse is in progress ...")
+            #     print(str(len(chunk_test_relapse) - (element_index + 1)) + " samples left")
+            #     print()
+
+            #     sample = []
+            #     sample_name = chunk_test_relapse[element_index]
+            #     pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+            #     sample.append(sample_name)
+            #     sample.append(pathways)
+            #     samples_testing_relapse[element_index] = sample
+                    
+            # samples_testing_no_relapse = {}
+            # for element_index in range(0, len(chunk_test_no_relapse)):
+            #     print()
+            #     print("Creating pathways for sample testing " + str(element_index + 1) + " relapse is in progress ...")
+            #     print(str(len(chunk_test_no_relapse) - (element_index + 1)) + " samples left")
+            #     print()
+
+            #     sample = []
+            #     sample_name = chunk_test_no_relapse[element_index]
+            #     pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+            #     sample.append(sample_name)
+            #     sample.append(pathways)
+            #     samples_testing_no_relapse[element_index] = sample
+            # print("samples_testing_relapse : ")
+            # print(samples_testing_relapse)
+            # print("samples_testing_no_relapse : ")
+            # print(samples_testing_no_relapse)
+
+            # calculate pathway activity of each pathway using 'Mean'
+            # samples_testing_relapse_pathway_activity = {}
+            # # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
+            # for samples_index in range(0, len(samples_testing_relapse)):
+            #     sample = []
+            #     list_pathway = []
+            #     for pathway_index in range(0, len(samples_testing_relapse[samples_index][1])):
+            #         list_gene_expression_in_pathway = []
+            #         pathway = []
+            #         for gene_index in range(0, len(samples_testing_relapse[samples_index][1][pathway_index][1])):
+            #             # print(sample_relapse[samples_index][1][pathway_index][gene_index][1])
+            #             # print(gene_index)
+            #             gene_expression = samples_testing_relapse[samples_index][1][pathway_index][1][gene_index][1]
+            #             list_gene_expression_in_pathway.append(gene_expression)
+
+            #         # data to collect as pathway activity
+            #         pathway_name = samples_testing_relapse[samples_index][1][pathway_index][0]
+            #         pathway_activity = calculate.mean(list_gene_expression_in_pathway)
+
+            #         pathway.append(pathway_name)
+
+            #         # add to list only if it is in feature set
+            #         if (pathway_name in list_top_ranked_pathways):
+            #             list_pathway.append(pathway)
+                
+            #     sample_name = samples_testing_relapse[samples_index][0]
+            #     sample.append(sample_name)
+            #     sample.append(list_pathway)
+            #     samples_testing_relapse_pathway_activity[samples_index] = sample
+
+            # samples_testing_no_relapse_pathway_activity = {}
+            # # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
+            # for samples_index in range(0, len(samples_testing_no_relapse)):
+            #     sample = []
+            #     list_pathway = []
+            #     for pathway_index in range(0, len(samples_testing_no_relapse[samples_index][1])):
+            #         list_gene_expression_in_pathway = []
+            #         pathway = []
+            #         for gene_index in range(0, len(samples_testing_no_relapse[samples_index][1][pathway_index][1])):
+            #             # print(sample_relapse[samples_index][1][pathway_index][gene_index][1])
+            #             # print(gene_index)
+            #             gene_expression = samples_testing_no_relapse[samples_index][1][pathway_index][1][gene_index][1]
+            #             list_gene_expression_in_pathway.append(gene_expression)
+
+            #         # data to collect as pathway activity
+            #         pathway_name = samples_testing_no_relapse[samples_index][1][pathway_index][0]
+            #         pathway_activity = calculate.mean(list_gene_expression_in_pathway)
+
+            #         pathway.append(pathway_name)
+            #         pathway.append(pathway_activity)
+
+            #         # add to list only if it is in feature set
+            #         if (pathway_name in list_top_ranked_pathways):
+            #             list_pathway.append(pathway)
+                
+            #     sample_name = samples_testing_no_relapse[samples_index][0]
+            #     sample.append(sample_name)
+            #     sample.append(list_pathway)
+            #     samples_testing_no_relapse_pathway_activity[samples_index] = sample
+            
+            print("samples_testing_all_pathway_activity : ")
+            print(samples_testing_all_pathway_activity)
+            print("size of samples_testing_all_pathway_activity : " + str(len(samples_testing_all_pathway_activity)))
+
+
+
+            # create list of testing dataset to be used in lda calculation
+            list_testing_all_pathway_expression = []
+            for sample_index in range(0, len(samples_testing_all_pathway_activity)):
+                list_pathway_activity = []
+                for pathway_index in range(0, len(samples_testing_all_pathway_activity[sample_index][1])):
+                    pathway_name = samples_testing_all_pathway_activity[sample_index][1][pathway_index][0]
+                    # print(pathway_name)
+                    pathway_activity = samples_testing_all_pathway_activity[sample_index][1][pathway_index][1]
+                    if (pathway_name in list_top_ranked_pathways):
+                        # print("HEYYYYYYYYYYYYYYYYY")
+                        list_pathway_activity.append(pathway_activity)
+                list_testing_all_pathway_expression.append(list_pathway_activity)
+            print()
+            print("list_testing_all_pathway_expression : ")
+            print(list_testing_all_pathway_expression)
+            print()
+            print("list_testing_relapse_pathway_expression : ")
+            print(list_testing_relapse_pathway_expression)
+            print()
+            print("list_testing_no_relapse_pathway_expression : ")
+            print(list_testing_no_relapse_pathway_expression)
+
+
+    # result_file.close()         
 
 if __name__ == '__main__':
     main()
