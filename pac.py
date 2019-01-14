@@ -428,9 +428,12 @@ def main():
                 sample.append(sample_name)
                 sample.append(list_pathway)
                 samples_testing_all_pathway_activity[samples_index] = sample
-            result_file.write("samples_testing_all_pathway_activity : \n")
-            result_file.write(str(samples_testing_all_pathway_activity))
-            result_file.write("\n")
+
+            # write to file
+            result_file.write("Mean of each pathway in each samples : \n")
+            for sample_index in range(0, len(samples_testing_all_pathway_activity)):
+                result_file.write(str(samples_testing_all_pathway_activity[sample_index]))
+                result_file.write("\n")
 
             # get gene expression of each pathway of each sample in testing set
             # samples_testing_relapse = {}
