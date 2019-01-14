@@ -185,6 +185,18 @@ def lda(list_all_input, list_part_1, list_part_2):
     pool_covariance = poolCovariance(covariance_part_1, covariance_part_2, number_of_sample, number_of_sample_part_1, \
                       number_of_sample_part_2)
 
+    # if det is 0, the inverse matrix cannot be created. So, add a little noise to data if its det is 0.
+    det_pool_covariance = np.linalg.det(pool_covariance)
+    if (det_pool_covariance == 0):
+        pool_covariance_row_size = pool_covariance.shape[0]
+        pool_covariance_col_size pool_covariance[1]
+        # noise = (0.00001 * (np.random.rand(pool_covariance_row_size, pool_covariance_col_size)))
+        noise = np.random.rand(pool_covariance_row_size, pool_covariance_col_size))
+        matrix_noise = np.matrix(noise)
+
+        # add noise to pool_covariance
+        pool_covariance += matix_noise
+
     # calculate inversed matrix
     inversed_pool_covariance = inversed(pool_covariance)
 
@@ -205,7 +217,7 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
     # rows_to_read_file_pathway = 1329
     file_ref = pd.read_csv(file_ref_name)
     # For the last version, 'nrows' in file_to_convert has to be removed
-    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert, nrows = 50)
+    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert)
     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # list all probe id

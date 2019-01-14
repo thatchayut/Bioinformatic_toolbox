@@ -3,8 +3,12 @@ import pandas as pd
 import random
 import math
 import calculate
+import time
 
 def main():
+    # record start time
+    start_time = time.time()
+
     # prepare data
     # row_to_read = 22283
     row_to_read = 22283
@@ -13,7 +17,7 @@ def main():
 
     # files to be used to get pathways and their gene expression
     # default rows_to_read_file_pathway = 1329
-    rows_to_read_file_pathway = 100
+    rows_to_read_file_pathway = 1329
     file_ref_name = "accession_number_to_entrez_id.csv"
     file_to_convert_name = "GSE2034-22071 (edited).csv"
     file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
@@ -85,10 +89,10 @@ def main():
     num_of_pathways_percentage = int(num_of_pathways_percentage)
 
     # get output file's name
-    # file_name = input("Name of Output File : ")
+    file_name = input("Name of Output File : ")
 
     # prepare text file for results to be written in
-    # result_file = open(str(file_name) + ".txt", "w+")
+    result_file = open(str(file_name) + ".txt", "w+")
 
     # calculate number of pathways to be used
     num_of_ranked_pathways = (rows_to_read_file_pathway * (num_of_pathways_percentage / 100))
@@ -109,7 +113,9 @@ def main():
     # do only if number of chunks of both datasets are equal
     if (check_valid == True):
         for chunk_test_index in range(0, num_of_chunks):
-            # result_file.write(" #### Fold " + str(chunk_test_index + 1) + " ####\n")
+
+            strat_fold_time = time.time()
+            result_file.write(" #### Fold " + str(chunk_test_index + 1) + " ####\n")
             # separating data into testing and training dataset
             chunk_test_relapse = chunk_list_relapse[chunk_test_index]
             chunk_test_no_relapse = chunk_list_no_relapse[chunk_test_index]
@@ -422,6 +428,9 @@ def main():
                 sample.append(sample_name)
                 sample.append(list_pathway)
                 samples_testing_all_pathway_activity[samples_index] = sample
+            result_file.write("samples_testing_all_pathway_activity : \n")
+            result_file.write(str(samples_testing_all_pathway_activity))
+            result_file.write("\n")
 
             # get gene expression of each pathway of each sample in testing set
             # samples_testing_relapse = {}
@@ -522,8 +531,6 @@ def main():
             print(samples_testing_all_pathway_activity)
             print("size of samples_testing_all_pathway_activity : " + str(len(samples_testing_all_pathway_activity)))
 
-
-
             # create list of testing dataset to be used in lda calculation
             list_testing_all_pathway_expression = []
             for sample_index in range(0, len(samples_testing_all_pathway_activity)):
@@ -536,18 +543,70 @@ def main():
                         # print("HEYYYYYYYYYYYYYYYYY")
                         list_pathway_activity.append(pathway_activity)
                 list_testing_all_pathway_expression.append(list_pathway_activity)
-            print()
-            print("list_testing_all_pathway_expression : ")
-            print(list_testing_all_pathway_expression)
-            print()
-            print("list_testing_relapse_pathway_expression : ")
-            print(list_testing_relapse_pathway_expression)
-            print()
-            print("list_testing_no_relapse_pathway_expression : ")
-            print(list_testing_no_relapse_pathway_expression)
+            # print()
+            # print("list_testing_all_pathway_expression : ")
+            # print(list_testing_all_pathway_expression)
+            # print()
+            # print("list_testing_relapse_pathway_expression : ")
+            # print(list_testing_relapse_pathway_expression)
+            # print()
+            # print("list_testing_no_relapse_pathway_expression : ")
+            # print(list_testing_no_relapse_pathway_expression)
 
+            # create list of desired outputs
+            file_desired_outputs = file_training_output.loc[file_training_output['GEO asscession number'].isin(list_samples_name_testing_all)]
+            
+            list_desired_outputs = []
+            for element in file_desired_outputs.loc[:, 'relapse (1=True)']:
+                list_desired_outputs.append(element)
+            
+            # calculate lda 
+            list_actual_outputs = calculate.lda(list_testing_all_pathway_expression, list_testing_relapse_pathway_expression, list_testing_no_relapse_pathway_expression)
+           
+            # calculate AUC score
+            auc_score = roc_auc_score(list_desired_outputs, list_actual_outputs)
 
-    # result_file.close()         
+            print()
+            print("Feature set : " + str(list_top_ranked_pathways))
+            print("size of list_actual_outputs : " + str(len(list_actual_outputs)))
+            print("list_actual_outputs : ")
+            print(list_actual_outputs)
+            print()
+            print("size of list_desired_outputs : " + str(len(list_desired_outputs)))
+            print("list_desired_outputs : ")
+            print(list_desired_outputs)
+            print("AUC score : " + str(auc_score))
+
+            result_file.write("Feature set : " + str(list_top_ranked_pathways) + "\n")
+            result_file.write("size of list_actual_outputs : " + str(len(list_actual_outputs)) + "\n")
+            result_file.write(str(list_actual_outputs) + "\n")
+            result_file.write("\n")
+            result_file.write("size of list_desired_outputs : " + str(len(list_desired_outputs)))
+            result_file.write(str(list_desired_outputs) + "\n")
+            result_file.write("AUC score : " + str(auc_score) + "\n")
+            result_file.write("\n")
+            
+
+            end_fold_time = time.time()
+            fold_elapse_time_second = end_fold_time - strat_fold_time
+            fold_elapse_time_minute = fold_elapse_time_second / 60
+            fold_elapse_time_minute = round(fold_elapse_time_minute, 2)
+            print("fold_elapse_time : " + str(fold_elapse_time_minute) + " minutes")
+            result_file.write("fold elapse time : " + str(fold_elapse_time_minute) + " minutes \n")
+            result_file.write("\n")
+
+    end_time = time.time()
+    total_elapse_time_second = end_time - start_time
+    total_elapse_time_minute = total_elapse_time_second / 60
+    total_elapse_time_minute = round(total_elapse_time_minute, 2)
+    total_elapse_time_hour = total_elapse_time_minute / 60  
+    total_elapse_time_hour = round(total_elapse_time_minute / 60)
+    print("#### Elapse time ####")
+    print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+
+    result_file.write("#### Elapse time ####\n")
+    result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+    result_file.close()         
 
 if __name__ == '__main__':
     main()
