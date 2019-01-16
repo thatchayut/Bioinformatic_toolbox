@@ -4,6 +4,7 @@ import random
 import math
 import calculate
 import time
+from sklearn.metrics import roc_auc_score
 
 def main():
     # record start time
@@ -546,15 +547,17 @@ def main():
                         # print("HEYYYYYYYYYYYYYYYYY")
                         list_pathway_activity.append(pathway_activity)
                 list_testing_all_pathway_expression.append(list_pathway_activity)
-            # print()
+            print()
+            print("list_testing_all_pathway_expression : " + str(list_testing_all_pathway_expression))
+            print()
             # print("list_testing_all_pathway_expression : ")
             # print(list_testing_all_pathway_expression)
             # print()
-            # print("list_testing_relapse_pathway_expression : ")
-            # print(list_testing_relapse_pathway_expression)
-            # print()
-            # print("list_testing_no_relapse_pathway_expression : ")
-            # print(list_testing_no_relapse_pathway_expression)
+            print("list_testing_relapse_pathway_expression : ")
+            print(list_testing_relapse_pathway_expression)
+            print()
+            print("list_testing_no_relapse_pathway_expression : ")
+            print(list_testing_no_relapse_pathway_expression)
 
             # create list of desired outputs
             file_desired_outputs = file_training_output.loc[file_training_output['GEO asscession number'].isin(list_samples_name_testing_all)]
@@ -584,7 +587,7 @@ def main():
             result_file.write("size of list_actual_outputs : " + str(len(list_actual_outputs)) + "\n")
             result_file.write(str(list_actual_outputs) + "\n")
             result_file.write("\n")
-            result_file.write("size of list_desired_outputs : " + str(len(list_desired_outputs)))
+            result_file.write("size of list_desired_outputs : " + str(len(list_desired_outputs)) + "\n")
             result_file.write(str(list_desired_outputs) + "\n")
             result_file.write("AUC score : " + str(auc_score) + "\n")
             result_file.write("\n")

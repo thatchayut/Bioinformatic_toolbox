@@ -73,13 +73,14 @@ def findDiscriminative(matrix, avg_matrix, inversed_pool_covariance, prior_prob)
     return list_result
 
 def findOutput(f1, f2):
+    print("FIND OUTPUT ...")
     list_f1 = []
     for element_index  in range(0, len(f1)):
         for row_index in range(0, (f1[element_index].shape[0])):
             for col_index in range(0, (f1[element_index].shape[1])):
                 # print(f1[element_index][row_index, col_index])
                 list_f1.append(f1[element_index][row_index, col_index])
-    # print(list_f1)
+    print("list_f1 : " + str(list_f1))
 
     list_f2 = []
     for element_index  in range(0, len(f2)):
@@ -87,7 +88,7 @@ def findOutput(f1, f2):
             for col_index in range(0, (f1[element_index].shape[1])):
                 # print(f2[element_index][row_index, col_index])
                 list_f2.append(f2[element_index][row_index, col_index])
-    # print(list_f2)
+    print("list_f2 : " + str(list_f2))
 
     # check which class is selected
     result =[]
@@ -189,13 +190,13 @@ def lda(list_all_input, list_part_1, list_part_2):
     det_pool_covariance = np.linalg.det(pool_covariance)
     if (det_pool_covariance == 0):
         pool_covariance_row_size = pool_covariance.shape[0]
-        pool_covariance_col_size pool_covariance[1]
+        pool_covariance_col_size = pool_covariance.shape[1]
         # noise = (0.00001 * (np.random.rand(pool_covariance_row_size, pool_covariance_col_size)))
-        noise = np.random.rand(pool_covariance_row_size, pool_covariance_col_size))
+        noise = np.random.rand(pool_covariance_row_size, pool_covariance_col_size)
         matrix_noise = np.matrix(noise)
 
         # add noise to pool_covariance
-        pool_covariance += matix_noise
+        pool_covariance += matrix_noise
 
     # calculate inversed matrix
     inversed_pool_covariance = inversed(pool_covariance)
@@ -206,6 +207,15 @@ def lda(list_all_input, list_part_1, list_part_2):
     # find output 
     f1 = findDiscriminative(matrix_all_input, avg_part_1, inversed_pool_covariance, prior_prob[0])
     f2 = findDiscriminative(matrix_all_input, avg_part_2, inversed_pool_covariance, prior_prob[1])
+
+    print(" #### lda result .....")
+    print()
+    print(" f1: ")
+    print(str(f1))
+    print()
+    print(" f2: ")
+    print(str(f2))
+    print()
 
     actual_output = findOutput(f1, f2)
 
