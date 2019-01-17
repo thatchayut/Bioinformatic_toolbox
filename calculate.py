@@ -221,7 +221,12 @@ def lda(list_all_input, list_part_1, list_part_2):
 
     return actual_output
 
-def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway):
+def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, mean_of_data = 0, sd_of_data= 0, \
+                max_of_data = 0, min_of_data = 0, method = "z_score"):
+    print("Mean of all data: " + str(mean_of_data))
+    print("SD of all data : " + str(sd_of_data))
+    print("Max of all data : " + str(max_of_data))
+    print("Min of all data : " + str(min_of_data))
     # prepare files to be used
     cols_to_read_file_to_convert = ["ID_REF", sample_id]
     # rows_to_read_file_pathway = 1329
@@ -272,7 +277,30 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
                 # if gene expression is not found, assume it as 'zero'
                 if not list_gene_same_entrez:
                     list_gene_same_entrez.append(0.0)
-                
+
+                print(" BEFORE : " + str(list_gene_same_entrez))
+                if (method == "z_score"):
+                    # convert to z-score before normalize further
+                    for i in range(0 , len(list_gene_same_entrez)):
+                        z_score = zscore(list_gene_same_entrez[i], mean_of_data, sd_of_data)
+                        z_score = round(z_score, 6)
+                        list_gene_same_entrez[i] = z_score
+                elif (method == "narrow_scaling"):
+                    for i in range(0 , len(list_gene_same_entrez)):
+                        # If currnt value is 0, it can lead to negative result
+                        if (list_gene_same_entrez[i] != 0):
+                            score = ((list_gene_same_entrez[i] - min_of_data) / (max_of_data - min_of_data))
+                            score = round(score, 6)
+                            list_gene_same_entrez[i] = score
+                elif (method == "wide_scaling"):
+                    for i in range(0, len(list_gene_same_entrez)):
+                        score = (((list_gene_same_entrez[i] - min_of_data) / (max_of_data - min_of_data)) * 2) - 1
+                        score = round(score, 6)
+                        if (score < -1):
+                            score = -1
+                        list_gene_same_entrez[i] = score
+                print(" AFTER : " + str(list_gene_same_entrez))
+
                 # calculate genes expression of the same entrez id by using their average
                 num_of_same_entrez = len(list_gene_same_entrez)
                 avg_gene_expression = (sum(list_gene_same_entrez) / num_of_same_entrez)
@@ -293,6 +321,10 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
     return pathways
     # print(pathways[1])
     # print(len(pathways))
+
+def zscore(value, mean_value, sd_value):
+    result = ((value - mean_value) / sd_value)
+    return result
 
 def mean(list_input):
     size_of_list = len(list_input)
