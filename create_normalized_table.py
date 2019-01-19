@@ -1,10 +1,21 @@
 import xlwt
+import xlsxwriter
 import pandas as pd
 import calculate
 
 def main():
+
+    # ask for scaling method
+    print("\n Scaling methods: [1] z-score // [2] narrow scaling (range [0,1]) // [3] wide scaling (range [-1,1])") 
+    method_id = None
+    while True:
+        method_id = input(" Enter method id : ")
+        if (method_id not in ["1", "2", "3"]):
+            print(" WARNING : Invalid method id")
+        else:
+            break
     # ask for output file name
-    file_name = input("Enter file name : ")
+    file_name = input(" Enter file name : ")
 
     # prepare data
     # row_to_read = 22283
@@ -80,7 +91,7 @@ def main():
 
     # get gene expression of each pathway of each sample in testing set
     samples_with_gene_expression = {}
-    for element_index in range(0, 3):
+    for element_index in range(0, len(list_sample_all)):
         print()
         print("Creating pathways for samples_with_gene_expression #" + str(element_index + 1) + "  is in progress ...")
         print(str(len(list_sample_all) - (element_index + 1)) + " samples left")
@@ -88,8 +99,16 @@ def main():
 
         sample = []
         sample_name = list_sample_all[element_index]
-        pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, mean_of_data = mean_all_gene_expression, sd_of_data = sd_all_gene_expression, \
-                    method = "z_score")
+
+        if (method_id is "1"):
+            pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, mean_of_data = mean_all_gene_expression, sd_of_data = sd_all_gene_expression, \
+                        method = "z_score")
+        elif (method_id is "2"):
+            pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression, min_of_data = min_all_gene_expression, \
+                        method = "narrow_scaling")            
+        elif (method_id is "3"):
+            pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression, min_of_data = min_all_gene_expression, \
+                        method = "wide_scaling")       
 
         sample.append(sample_name)
         sample.append(pathways)
@@ -133,9 +152,11 @@ def main():
 
     # write to file
     #initiate worksheet
-    workbook = xlwt.Workbook()
-    worksheet = workbook.add_sheet(file_name)
-    style = xlwt.easyxf("align : horiz right")
+    # workbook = xlwt.Workbook()
+    # worksheet = workbook.add_sheet(file_name)
+    # style = xlwt.easyxf("align : horiz right")
+    workbook = xlsxwriter.Workbook(file_name + ".xlsx")
+    worksheet = workbook.add_worksheet()
 
     print("Writing in progress ...")
     print()
@@ -156,8 +177,9 @@ def main():
             else:
                 pathway_activity = str(samples_with_pathway_activity[sample_index][1][line_index - 1][1])
                 worksheet.write(line_index, sample_index + 1, pathway_activity)
-    print(samples_with_pathway_activity[0])
-    workbook.save(file_name + ".csv")
+    # print(samples_with_pathway_activity[0])
+    # workbook.save(file_name + ".csv")
+    workbook.close()
     print(" Creating file is done ...")
 
 if __name__ == '__main__':

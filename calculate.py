@@ -278,7 +278,7 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
                 if not list_gene_same_entrez:
                     list_gene_same_entrez.append(0.0)
 
-                print(" BEFORE : " + str(list_gene_same_entrez))
+                # print(" BEFORE : " + str(list_gene_same_entrez))
                 if (method == "z_score"):
                     # convert to z-score before normalize further
                     for i in range(0 , len(list_gene_same_entrez)):
@@ -299,7 +299,7 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
                         if (score < -1):
                             score = -1
                         list_gene_same_entrez[i] = score
-                print(" AFTER : " + str(list_gene_same_entrez))
+                # print(" AFTER : " + str(list_gene_same_entrez))
 
                 # calculate genes expression of the same entrez id by using their average
                 num_of_same_entrez = len(list_gene_same_entrez)
