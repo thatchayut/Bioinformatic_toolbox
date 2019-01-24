@@ -4,6 +4,7 @@ import random
 import math
 import calculate
 import time
+import copy
 from sklearn.metrics import roc_auc_score
 
 def main():
@@ -89,6 +90,16 @@ def main():
             break
     num_of_pathways_percentage = int(num_of_pathways_percentage)
 
+    # ask for scaling method
+    print("\n Scaling methods: [1] z-score // [2] narrow scaling (range [0,1]) // [3] wide scaling (range [-1,1])") 
+    method_id = None
+    while True:
+        method_id = input(" Enter method id : ")
+        if (method_id not in ["1", "2", "3"]):
+            print(" WARNING : Invalid method id")
+        else:
+            break
+
     # get output file's name
     file_name = input("Name of Output File : ")
 
@@ -110,6 +121,11 @@ def main():
     print("# chunks in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse)))
 
     check_valid, num_of_chunks = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
+
+    # list to track feature set that has the best auc score
+    auc_score_max = 0
+    list_feature_set_max_auc = []
+    list_auc_score = []
 
     # do only if number of chunks of both datasets are equal
     if (check_valid == True):
@@ -139,7 +155,7 @@ def main():
             print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
             print("chunk train no relapse = " + str(chunk_train_no_relapse))
             
-            # merge training data of leach class
+            # merge training data of each class
             list_train_relapse = []
             for i in range(0, len(chunk_train_relapse)):
                 list_train_relapse.extend(chunk_train_relapse[i])
@@ -150,6 +166,29 @@ def main():
             for i in range(0, len(chunk_train_no_relapse)):
                 list_train_no_relapse.extend(chunk_train_no_relapse[i])
             print("size of list_train_no_relapse : " + str(len(list_train_no_relapse)))
+
+            # create list of all samples in trainig data in this fold
+            list_train_all_samples = []
+            list_train_all_samples.extend(list_train_relapse)
+            list_train_all_samples.extend(list_train_no_relapse)
+
+            # list all gene expression to calculate mean and sd
+            print("\n Gathering gene expressions are in progress ... ")
+            list_train_all_gene_expression = []
+            for line_index in range(0, row_to_read):
+                for column in file_training_input.loc[line_index, list_train_all_samples]:
+                    list_train_all_gene_expression.append(column)
+
+            mean_all_gene_expression_train = calculate.mean(list_train_all_gene_expression)
+            sd_all_gene_expression_train = calculate.sd(list_train_all_gene_expression)
+            max_all_gene_expression_train = max(list_train_all_gene_expression)
+            min_all_gene_expression_train = min(list_train_all_gene_expression)
+
+            print()
+            print(" Mean of all gene expression : " + str(mean_all_gene_expression_train))
+            print(" SD of all gene expression : " + str(sd_all_gene_expression_train))
+            print(" Max of all gene expression : " + str(max_all_gene_expression_train))
+            print(" Min of all gene expression : " + str(min_all_gene_expression_train))
 
             # this is used to collect feature set
             list_top_ranked_pathways = []
@@ -178,7 +217,17 @@ def main():
 
                     sample = []
                     sample_name = list_train_relapse[element_index]
-                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+                    # pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+                    if (method_id is "1"):
+                        pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, mean_of_data = mean_all_gene_expression_train, sd_of_data = sd_all_gene_expression_train, \
+                                    method = "z_score")
+                    elif (method_id is "2"):
+                        pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                    method = "narrow_scaling")            
+                    elif (method_id is "3"):
+                        pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                    method = "wide_scaling")    
 
                     sample.append(sample_name)
                     sample.append(pathways)
@@ -202,7 +251,17 @@ def main():
 
                     sample = []
                     sample_name = list_train_no_relapse[element_index]
-                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+                    # pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+                    if (method_id is "1"):
+                        pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, mean_of_data = mean_all_gene_expression_train, sd_of_data = sd_all_gene_expression_train, \
+                                    method = "z_score")
+                    elif (method_id is "2"):
+                        pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                    method = "narrow_scaling")            
+                    elif (method_id is "3"):
+                        pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                    method = "wide_scaling")    
 
                     sample.append(sample_name)
                     sample.append(pathways)
@@ -328,7 +387,8 @@ def main():
                         list_pathway_activity_no_relapse.append(samples_training_no_relapse_pathway_activity[samples_index][1][pathway_index][1])
                     
                     # calculate t-test score of this pathway
-                    abs_ttest_value = math.fabs(stats.ttest_ind(list_pathway_activity_relapse, list_pathway_activity_no_relapse, equal_var = False)[0])
+                    # original : abs_ttest_value = math.fabs(stats.ttest_ind(list_pathway_activity_relapse, list_pathway_activity_no_relapse, equal_var = False)[0])
+                    abs_ttest_value = stats.ttest_ind(list_pathway_activity_relapse, list_pathway_activity_no_relapse, equal_var = False)[0]
                     # print(stats.ttest_ind(list_pathway_activity_relapse, list_pathway_activity_no_relapse, equal_var = False))
 
                     # collect data as [pathway_name, abs_ttest_value]
@@ -341,6 +401,11 @@ def main():
                 # sort t-test score in descending order
                 list_ttest_score.sort(key = lambda x : x[1], reverse = True)
                 
+                print()
+                print("list_ttest_score : ")
+                print(list_ttest_score)
+                print()
+
                 # use number of pathways equals to user's input
                 # list_top_ranked_pathway = []
                 for i in range(0, num_of_ranked_pathways):
@@ -393,7 +458,18 @@ def main():
 
                 sample = []
                 sample_name = list_samples_name_testing_all[element_index]
-                pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+                # pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+                # Testing set uses the same mean and sd as training set since it's treated as unknown data
+                if (method_id is "1"):
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, mean_of_data = mean_all_gene_expression_train, sd_of_data = sd_all_gene_expression_train, \
+                                method = "z_score")
+                elif (method_id is "2"):
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                method = "narrow_scaling")            
+                elif (method_id is "3"):
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                method = "wide_scaling")    
 
                 sample.append(sample_name)
                 sample.append(pathways)
@@ -565,12 +641,15 @@ def main():
             list_desired_outputs = []
             for element in file_desired_outputs.loc[:, 'relapse (1=True)']:
                 list_desired_outputs.append(element)
-            
+
+            print()
+
             # calculate lda 
             list_actual_outputs = calculate.lda(list_testing_all_pathway_expression, list_testing_relapse_pathway_expression, list_testing_no_relapse_pathway_expression)
            
             # calculate AUC score
             auc_score = roc_auc_score(list_desired_outputs, list_actual_outputs)
+            list_auc_score.append(auc_score)
 
             print()
             print("Feature set : " + str(list_top_ranked_pathways))
@@ -582,6 +661,11 @@ def main():
             print("list_desired_outputs : ")
             print(list_desired_outputs)
             print("AUC score : " + str(auc_score))
+
+            # track feature set which gives maximum auc score
+            if (auc_score > auc_score_max):
+                list_feature_set_max_auc = copy.deepcopy(list_top_ranked_pathways)
+                auc_score_max = auc_score
 
             result_file.write("Feature set : " + str(list_top_ranked_pathways) + "\n")
             result_file.write("size of list_actual_outputs : " + str(len(list_actual_outputs)) + "\n")
@@ -607,10 +691,20 @@ def main():
     total_elapse_time_minute = round(total_elapse_time_minute, 2)
     total_elapse_time_hour = total_elapse_time_minute / 60  
     total_elapse_time_hour = round(total_elapse_time_minute / 60)
-    print("#### Elapse time ####")
+    print("#### Summary ####")
+    print(" Average AUC score : " + str(calculate.mean(list_auc_score)))
+    print(" Maximum AUC score : " + str(auc_score_max))
+    print(" Feature set which gives highest AUC score : ")
+    print(list_feature_set_max_auc)
+    print()
     print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
 
-    result_file.write("#### Elapse time ####\n")
+    result_file.write("#### Summary ####\n")
+    result_file.write(" Average AUC score : " + str(calculate.mean(list_auc_score)) + "\n")
+    result_file.write(" Maximum AUC score : " + str(auc_score_max) + "\n")
+    result_file.write(" Feature set which gives highest AUC score : " + "\n")
+    result_file.write(str(list_feature_set_max_auc))
+    result_file.write("\n")
     result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
     result_file.close()         
 
