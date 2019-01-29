@@ -431,7 +431,7 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
         for i in range(0, len(list_pathway_selected)):
             pathway = list_pathway_selected[i]
             list_pathway_selected_name.append(list_pathway_name[pathway])
-        print(list_pathway_selected_name)
+        # print(list_pathway_selected_name)
 
         # print("list_pathway_selected : " + str(list_pathway_selected))
         # print("max_auc_score_over_all_features : " + str(max_auc_score_over_all_features))

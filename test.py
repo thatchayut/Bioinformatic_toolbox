@@ -20,5 +20,9 @@ def main():
     print(type(matrix_noise))
 
     print(result + noise)
+     
+    # test_array = np.array([0:10])
+    # print(test_array)
+
 if __name__ == '__main__':
     main()

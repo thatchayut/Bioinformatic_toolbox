@@ -13,13 +13,13 @@ def main():
 
     # prepare data
     # row_to_read = 22283
-    row_to_read = 100
+    row_to_read = 22283
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
     file_training_output= pd.read_csv("mapping_sample_to_class_full.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # files to be used to get pathways and their gene expression
     # default rows_to_read_file_pathway = 1329
-    rows_to_read_file_pathway = 100
+    rows_to_read_file_pathway = 1329
     file_ref_name = "accession_number_to_entrez_id.csv"
     file_to_convert_name = "GSE2034-22071 (edited).csv"
     file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
@@ -166,12 +166,16 @@ def main():
             for i in range(0, len(chunk_train_relapse)):
                 list_train_relapse.extend(chunk_train_relapse[i])
             print("size of list_train_relapse : " + str(len(list_train_relapse)))
+            print("list_train_relapse : ")
             print(list_train_relapse)
 
             list_train_no_relapse = []
             for i in range(0, len(chunk_train_no_relapse)):
                 list_train_no_relapse.extend(chunk_train_no_relapse[i])
             print("size of list_train_no_relapse : " + str(len(list_train_no_relapse)))
+            print("list_train_no_relapse : ")
+            print(list_train_no_relapse)
+            print()
 
             # create list of all samples in trainig data in this fold
             list_train_all_samples = []
@@ -591,8 +595,8 @@ def main():
                             list_sample_no_relapse_pathway_expression_feature_selection, list_sample_test_pathway_expression_feature_selection)               
 
             # preparing data for evaluation and creating classifier
-            # for class 'relapse'
             # prepare data for testing
+            # for class 'relapse'           
             list_second_layer_testing_relapse_pathway_expression = []
             for sample_index in range(0, len(samples_training_relapse_pathway_activity)):
                 list_pathway_activity = []
@@ -618,8 +622,154 @@ def main():
                         list_pathway_activity.append(pathway_activity)
                 list_second_layer_testing_no_relapse_pathway_expression.append(list_pathway_activity)
             
+            
             print("######### Testing #########")
             # use feature set in testing procedure
+            
+            # second_list_sample_relapse, second_list_sample_no_relapse
+            samples_testing_relapse = {}
+            samples_testing_no_relapse = {}
+
+
+            # get gene expression of each pathway of each sample in testing set
+            for element_index in range(0, len(second_list_sample_relapse)):
+                print()
+                print("Creating pathways for samples_testing_relapse #" + str(element_index + 1) + "  is in progress ...")
+                print(str(len(second_list_sample_relapse) - (element_index + 1)) + " samples left")
+                print()
+
+                sample = []
+                sample_name = second_list_sample_relapse[element_index]
+                # pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+                # Testing set uses the same mean and sd as training set since it's treated as unknown data
+                if (method_id is "1"):
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, mean_of_data = mean_all_gene_expression_train, sd_of_data = sd_all_gene_expression_train, \
+                                method = "z_score")
+                elif (method_id is "2"):
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                method = "narrow_scaling")            
+                elif (method_id is "3"):
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                method = "wide_scaling")    
+
+                sample.append(sample_name)
+                sample.append(pathways)
+                samples_testing_relapse[element_index] = sample 
+
+            for element_index in range(0, len(second_list_sample_no_relapse)):
+                print()
+                print("Creating pathways for samples_testing_no_relapse #" + str(element_index + 1) + "  is in progress ...")
+                print(str(len(second_list_sample_no_relapse) - (element_index + 1)) + " samples left")
+                print()
+
+                sample = []
+                sample_name = second_list_sample_no_relapse[element_index]
+                # pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway)
+
+                # Testing set uses the same mean and sd as training set since it's treated as unknown data
+                if (method_id is "1"):
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, mean_of_data = mean_all_gene_expression_train, sd_of_data = sd_all_gene_expression_train, \
+                                method = "z_score")
+                elif (method_id is "2"):
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                method = "narrow_scaling")            
+                elif (method_id is "3"):
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, max_of_data = max_all_gene_expression_train, min_of_data = min_all_gene_expression_train, \
+                                method = "wide_scaling")    
+
+                sample.append(sample_name)
+                sample.append(pathways)
+                samples_testing_no_relapse[element_index] = sample 
+
+            # calculate activity score of each pahtway
+
+            samples_testing_relapse_pathway_activity = {}
+            # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
+            for samples_index in range(0, len(samples_testing_relapse)):
+                sample = []
+                list_pathway = []
+                for pathway_index in range(0, len(samples_testing_relapse[samples_index][1])):
+                    list_gene_expression_in_pathway = []
+                    pathway = []
+                    for gene_index in range(0, len(samples_testing_relapse[samples_index][1][pathway_index][1])):
+                        # print(sample_relapse[samples_index][1][pathway_index][gene_index][1])
+                        # print(gene_index)
+                        gene_expression = samples_testing_relapse[samples_index][1][pathway_index][1][gene_index][1]
+                        list_gene_expression_in_pathway.append(gene_expression)
+
+                    # data to collect as pathway activity
+                    pathway_name = samples_testing_relapse[samples_index][1][pathway_index][0]
+                    pathway_activity = calculate.mean(list_gene_expression_in_pathway)
+
+                    pathway.append(pathway_name)
+                    pathway.append(pathway_activity)
+
+                    # add to list only if it is in feature set
+                    # if (pathway_name in feature_set_name):
+                    #     list_pathway.append(pathway)
+                    list_pathway.append(pathway)
+                
+                sample_name = samples_testing_relapse[samples_index][0]
+                sample.append(sample_name)
+                sample.append(list_pathway)
+                samples_testing_relapse_pathway_activity[samples_index] = sample
+
+            samples_testing_no_relapse_pathway_activity = {}
+            # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
+            for samples_index in range(0, len(samples_testing_no_relapse)):
+                sample = []
+                list_pathway = []
+                for pathway_index in range(0, len(samples_testing_no_relapse[samples_index][1])):
+                    list_gene_expression_in_pathway = []
+                    pathway = []
+                    for gene_index in range(0, len(samples_testing_no_relapse[samples_index][1][pathway_index][1])):
+                        # print(sample_relapse[samples_index][1][pathway_index][gene_index][1])
+                        # print(gene_index)
+                        gene_expression = samples_testing_no_relapse[samples_index][1][pathway_index][1][gene_index][1]
+                        list_gene_expression_in_pathway.append(gene_expression)
+
+                    # data to collect as pathway activity
+                    pathway_name = samples_testing_no_relapse[samples_index][1][pathway_index][0]
+                    pathway_activity = calculate.mean(list_gene_expression_in_pathway)
+
+                    pathway.append(pathway_name)
+                    pathway.append(pathway_activity)
+
+                    # add to list only if it is in feature set
+                    # if (pathway_name in feature_set_name):
+                    #     list_pathway.append(pathway)
+                    list_pathway.append(pathway)
+                
+                sample_name = samples_testing_no_relapse[samples_index][0]
+                sample.append(sample_name)
+                sample.append(list_pathway)
+                samples_testing_no_relapse_pathway_activity[samples_index] = sample
+
+            # create list of pathway activation used in lda
+            list_testing_relapse_pathway_expression = []
+            for sample_index in range(0, len(samples_testing_relapse_pathway_activity)):
+                list_pathway_activity = []
+                for pathway_index in range(0, len(samples_testing_relapse_pathway_activity[sample_index][1])):
+                    pathway_name = samples_testing_relapse_pathway_activity[sample_index][1][pathway_index][0]
+                    # print(pathway_name)
+                    pathway_activity = samples_testing_relapse_pathway_activity[sample_index][1][pathway_index][1]
+                    if (pathway_name in feature_set_name):
+                        # print("HEYYYYYYYYYYYYYYYYY")
+                        list_pathway_activity.append(pathway_activity)
+                list_testing_relapse_pathway_expression.append(list_pathway_activity)         
+
+            list_testing_no_relapse_pathway_expression = []
+            for sample_index in range(0, len(samples_testing_no_relapse_pathway_activity)):
+                list_pathway_activity = []
+                for pathway_index in range(0, len(samples_testing_no_relapse_pathway_activity[sample_index][1])):
+                    pathway_name = samples_testing_no_relapse_pathway_activity[sample_index][1][pathway_index][0]
+                    # print(pathway_name)
+                    pathway_activity = samples_testing_no_relapse_pathway_activity[sample_index][1][pathway_index][1]
+                    if (pathway_name in feature_set_name):
+                        # print("HEYYYYYYYYYYYYYYYYY")
+                        list_pathway_activity.append(pathway_activity)
+                list_testing_no_relapse_pathway_expression.append(list_pathway_activity)            
 
             # merge samples of 2 classes together
             list_samples_name_testing_all = []
@@ -676,8 +826,9 @@ def main():
                     pathway.append(pathway_activity)
 
                     # add to list only if it is in feature set
-                    if (pathway_name in feature_set_name):
-                        list_pathway.append(pathway)
+                    # if (pathway_name in feature_set_name):
+                    #     list_pathway.append(pathway)
+                    list_pathway.append(pathway)
                 
                 sample_name = samples_testing_all[samples_index][0]
                 sample.append(sample_name)
@@ -685,11 +836,16 @@ def main():
                 samples_testing_all_pathway_activity[samples_index] = sample
 
             # write to file
-            result_file.write("Mean of each pathway in each samples : \n")
-            for sample_index in range(0, len(samples_testing_all_pathway_activity)):
-                result_file.write(str(samples_testing_all_pathway_activity[sample_index]))
-                result_file.write("\n")
-            
+            # result_file.write("Mean of each pathway in each samples : \n")
+            # for sample_index in range(0, len(samples_testing_all_pathway_activity)):
+            #     result_file.write(str(samples_testing_all_pathway_activity[sample_index]))
+            #     result_file.write("\n")
+            print("list_samples_name_testing_all : ")
+            print(str(list_samples_name_testing_all))
+            print()
+            print("samples_testing_all : ")
+            print(samples_testing_all)
+            print()
             print("samples_testing_all_pathway_activity : ")
             print(samples_testing_all_pathway_activity)
             print("size of samples_testing_all_pathway_activity : " + str(len(samples_testing_all_pathway_activity)))
@@ -733,8 +889,9 @@ def main():
             print()
 
             # calculate lda 
-            list_actual_outputs = calculate.lda(list_testing_all_pathway_expression, list_second_layer_testing_relapse_pathway_expression, list_second_layer_testing_no_relapse_pathway_expression)
-           
+            # list_actual_outputs = calculate.lda(list_testing_all_pathway_expression, list_second_layer_testing_relapse_pathway_expression, list_second_layer_testing_no_relapse_pathway_expression)
+            list_actual_outputs = calculate.lda(list_testing_all_pathway_expression, list_testing_relapse_pathway_expression, list_testing_no_relapse_pathway_expression)
+
             # calculate AUC score
             auc_score = roc_auc_score(list_desired_outputs, list_actual_outputs)
             list_auc_score.append(auc_score)
@@ -743,6 +900,7 @@ def main():
             print("#### Evaluation of " + str(chunk_test_index + 1) + " - fold ####")
             # print("Feature set : " + str(list_top_ranked_pathways))
             print("Feature set : " + str(feature_set_name))
+            print("Size of feature set : " + str(len(feature_set_name)))
             print("size of list_actual_outputs : " + str(len(list_actual_outputs)))
             print("list_actual_outputs : ")
             print(list_actual_outputs)
@@ -759,6 +917,7 @@ def main():
                 auc_score_max = auc_score
 
             result_file.write("Feature set : " + str(feature_set_name) + "\n")
+            result_file.write("Size of feature set : " + str(len(feature_set_name)) + "\n")
             result_file.write("size of list_actual_outputs : " + str(len(list_actual_outputs)) + "\n")
             result_file.write(str(list_actual_outputs) + "\n")
             result_file.write("\n")

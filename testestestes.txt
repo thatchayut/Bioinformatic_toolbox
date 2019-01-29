@@ -1,0 +1,137 @@
+ #### Fold 1 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS']
+Size of feature set : 10
+size of list_actual_outputs : 29
+[1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0]
+
+size of list_desired_outputs : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.6767676767676768
+
+fold elapse time : 0.02 minutes 
+
+ #### Fold 2 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS']
+Size of feature set : 10
+size of list_actual_outputs : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.02 minutes 
+
+ #### Fold 3 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS']
+Size of feature set : 10
+size of list_actual_outputs : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.02 minutes 
+
+ #### Fold 4 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS']
+Size of feature set : 10
+size of list_actual_outputs : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.02 minutes 
+
+ #### Fold 5 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS']
+Size of feature set : 10
+size of list_actual_outputs : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.02 minutes 
+
+ #### Fold 6 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM']
+Size of feature set : 6
+size of list_actual_outputs : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5635162601626016
+AUC score from testing : 0.5
+
+fold elapse time : 0.02 minutes 
+
+ #### Fold 7 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS']
+Size of feature set : 10
+size of list_actual_outputs : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.02 minutes 
+
+ #### Fold 8 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS']
+Size of feature set : 10
+size of list_actual_outputs : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.02 minutes 
+
+ #### Fold 9 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY']
+Size of feature set : 8
+size of list_actual_outputs : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5086382113821138
+AUC score from testing : 0.5
+
+fold elapse time : 0.02 minutes 
+
+ #### Fold 10 ####
+Feature set : ['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS']
+Size of feature set : 10
+size of list_actual_outputs : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.02 minutes 
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = []
+ Average AUC score : 0.517677
+ Maximum AUC score : 0.6767676767676768
+ Feature set which gives highest AUC score : 
+['KEGG_MISMATCH_REPAIR', 'KEGG_PROTEIN_EXPORT', 'KEGG_RIBOSOME', 'KEGG_DRUG_METABOLISM_CYTOCHROME_P450', 'KEGG_METABOLISM_OF_XENOBIOTICS_BY_CYTOCHROME_P450', 'KEGG_LINOLEIC_ACID_METABOLISM', 'KEGG_ARACHIDONIC_ACID_METABOLISM', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS']
+Total elapse time : 1.71 minutes (0 hours) 
