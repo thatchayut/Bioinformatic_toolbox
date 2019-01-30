@@ -305,7 +305,7 @@ def main():
             feature_set_name = []
 
             strat_fold_time = time.time()
-            result_file.write(" #### Fold " + str(chunk_test_index + 1) + " ####\n")
+            result_file.write("#### Fold " + str(chunk_test_index + 1) + " ####\n")
 
             # separating data into testing and training dataset
             # get testing set in this fold
@@ -639,6 +639,10 @@ def main():
                 # find feature set using sequential forward selection
                 feature_set_name, auc_score_feature_selection = calculate.sfs(list_pathway_name_feature_selection, list_desired_outputs_feature_selection, list_sample_relapse_pathway_expression_feature_selection, \
                             list_sample_no_relapse_pathway_expression_feature_selection, list_sample_test_pathway_expression_feature_selection)
+
+                # list to collect auc score for the feature in each fold
+                list_max_auc.append(auc_score_feature_selection)
+
                 print("feature_set_name : " + str(feature_set_name))
                 print("auc_score_feature_selection : " + str(auc_score_feature_selection))
                 print()
@@ -824,9 +828,9 @@ def main():
 
     result_file.write("Maximum AUC ROC score of feature in each fold = " + str(list_max_auc) + "\n")
 
-    result_file.write(" Average AUC score : " + str(calculate.mean(list_auc_score)) + "\n")
-    result_file.write(" Maximum AUC score : " + str(auc_score_max) + "\n")
-    result_file.write(" Feature set which gives highest AUC score : " + "\n")
+    result_file.write("Average AUC score : " + str(calculate.mean(list_auc_score)) + "\n")
+    result_file.write("Maximum AUC score : " + str(auc_score_max) + "\n")
+    result_file.write("Feature set which gives highest AUC score : " + "\n")
     result_file.write(str(list_feature_set_max_auc))
     result_file.write("\n")
     result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
