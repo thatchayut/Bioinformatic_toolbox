@@ -126,29 +126,6 @@ def checkEqualListSize(list_1, list_2):
 # calculating discriminative function
 def lda(list_all_input, list_part_1, list_part_2):
 
-    # create list with gene expression
-    # list_all_input = []
-    # list_part_1 = []
-    # list_part_2 = []
-
-    # for column in all_input:
-    #     list_each_sample = []
-    #     for element in all_input[column]:
-    #         list_each_sample.append(element)
-    #     list_all_input.append(list_each_sample)
-    
-    # for column in part_1:
-    #     list_each_sample = []
-    #     for element in part_1[column]:
-    #         list_each_sample.append(element)
-    #     list_part_1.append(list_each_sample)
-
-    # for column in part_2:
-    #     list_each_sample = []
-    #     for element in part_2[column]:
-    #         list_each_sample.append(element)
-    #     list_part.append(list_each_sample)
-
     # create matrix using for calculating 
     matrix_all_input = np.matrix(list_all_input)
     matrix_part_1 = np.matrix(list_part_1)
@@ -223,12 +200,13 @@ def lda(list_all_input, list_part_1, list_part_2):
 
     return actual_output
 
-def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, mean_of_data = 0, sd_of_data= 0, \
-                max_of_data = 0, min_of_data = 0, method = "z_score"):
-    print("Mean of all data: " + str(mean_of_data))
-    print("SD of all data : " + str(sd_of_data))
-    print("Max of all data : " + str(max_of_data))
-    print("Min of all data : " + str(min_of_data))
+# def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, mean_of_data = 0, sd_of_data= 0, \
+#                 max_of_data = 0, min_of_data = 0, method = "z_score"):
+def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, list_mean_sd_gene_expression_by_probe_id):
+    # print("Mean of all data: " + str(mean_of_data))
+    # print("SD of all data : " + str(sd_of_data))
+    # print("Max of all data : " + str(max_of_data))
+    # print("Min of all data : " + str(min_of_data))
     # prepare files to be used
     cols_to_read_file_to_convert = ["ID_REF", sample_id]
     # rows_to_read_file_pathway = 1329
@@ -255,7 +233,13 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
             list_entrez_id.append("none")
             count_not_found += 1
         else:
-            list_entrez_id.append(entrez_id.iloc[0][1])  
+            list_entrez_id.append(entrez_id.iloc[0][1]) 
+    # print(list_probe_id)
+    # print(len(list_probe_id))
+    # print("HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+    # print(list_entrez_id)
+    # print(len(list_entrez_id))
+    # print() 
     num_of_available_data = num_of_probe_id - count_not_found
 
     # print(file_pathway)
@@ -275,33 +259,51 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
                 for list_entrez_id_index in range(0, len(list_entrez_id)):
                     if (element == list_entrez_id[list_entrez_id_index]):
                         # WARNING : NEED to adjust column in file_to_convert.iloc[i, 1] for use further
-                        list_gene_same_entrez.append(file_to_convert.iloc[list_entrez_id_index, 1])
+                        # list_gene_same_entrez.append(file_to_convert.iloc[list_entrez_id_index, 1])
+
+                        gene_probe_id = file_to_convert.iloc[list_entrez_id_index, 0]
+                        gene_expression = file_to_convert.iloc[list_entrez_id_index, 1]
+                        # print("gene_probe_id : " + str(gene_probe_id))
+                        
+                        # normalize gene using z-score 
+                        for gene_index in range(0, len(list_mean_sd_gene_expression_by_probe_id)):
+                            gene_name = list_mean_sd_gene_expression_by_probe_id[gene_index][0]
+                            if (gene_name == gene_probe_id):
+                                gene_mean = list_mean_sd_gene_expression_by_probe_id[gene_index][1]
+                                gene_sd = list_mean_sd_gene_expression_by_probe_id[gene_index][2]
+                                gene_expression_zscore = zscore(gene_expression, gene_mean, gene_sd)
+
+                                list_gene_same_entrez.append(gene_expression_zscore)
+
                 # if gene expression is not found, assume it as 'zero'
                 if not list_gene_same_entrez:
                     list_gene_same_entrez.append(0.0)
 
+                # print("list_gene_same_entrez : ")
+                # print(list_gene_same_entrez)
+                # print()
                 # print(" BEFORE : " + str(list_gene_same_entrez))
-                if (method == "z_score"):
-                    # convert to z-score before normalize further
-                    for i in range(0 , len(list_gene_same_entrez)):
-                        z_score = zscore(list_gene_same_entrez[i], mean_of_data, sd_of_data)
-                        z_score = round(z_score, 6)
-                        list_gene_same_entrez[i] = z_score
-                elif (method == "narrow_scaling"):
-                    for i in range(0 , len(list_gene_same_entrez)):
-                        # If currnt value is 0, it can lead to negative result
-                        if (list_gene_same_entrez[i] != 0):
-                            score = ((list_gene_same_entrez[i] - min_of_data) / (max_of_data - min_of_data))
-                            score = round(score, 6)
-                            list_gene_same_entrez[i] = score
-                elif (method == "wide_scaling"):
-                    for i in range(0, len(list_gene_same_entrez)):
-                        score = (((list_gene_same_entrez[i] - min_of_data) / (max_of_data - min_of_data)) * 2) - 1
-                        score = round(score, 6)
-                        if (score < -1):
-                            score = -1
-                        list_gene_same_entrez[i] = score
-                # print(" AFTER : " + str(list_gene_same_entrez))
+                # if (method == "z_score"):
+                #     # convert to z-score before normalize further
+                #     for i in range(0 , len(list_gene_same_entrez)):
+                #         z_score = zscore(list_gene_same_entrez[i], mean_of_data, sd_of_data)
+                #         z_score = round(z_score, 6)
+                #         list_gene_same_entrez[i] = z_score
+                # elif (method == "narrow_scaling"):
+                #     for i in range(0 , len(list_gene_same_entrez)):
+                #         # If currnt value is 0, it can lead to negative result
+                #         if (list_gene_same_entrez[i] != 0):
+                #             score = ((list_gene_same_entrez[i] - min_of_data) / (max_of_data - min_of_data))
+                #             score = round(score, 6)
+                #             list_gene_same_entrez[i] = score
+                # elif (method == "wide_scaling"):
+                #     for i in range(0, len(list_gene_same_entrez)):
+                #         score = (((list_gene_same_entrez[i] - min_of_data) / (max_of_data - min_of_data)) * 2) - 1
+                #         score = round(score, 6)
+                #         if (score < -1):
+                #             score = -1
+                #         list_gene_same_entrez[i] = score
+                # # print(" AFTER : " + str(list_gene_same_entrez))
 
                 # calculate genes expression of the same entrez id by using their average
                 num_of_same_entrez = len(list_gene_same_entrez)
@@ -441,3 +443,128 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
         feature_set_final = deepcopy(list_pathway_selected_name)
 
     return feature_set_final, max_auc_score_over_all_features
+
+def vgetPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, list_mean_sd_gene_expression_by_probe_id):
+    # print("Mean of all data: " + str(mean_of_data))
+    # print("SD of all data : " + str(sd_of_data))
+    # print("Max of all data : " + str(max_of_data))
+    # print("Min of all data : " + str(min_of_data))
+    # prepare files to be used
+    cols_to_read_file_to_convert = ["ID_REF", sample_id]
+    # rows_to_read_file_pathway = 1329
+    file_ref = pd.read_csv(file_ref_name)
+    # For the last version, 'nrows' in file_to_convert has to be removed
+    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert, nrows = 100)
+    file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
+
+    # list all probe id
+    list_probe_id = []
+    for element in file_to_convert.loc[:, 'ID_REF']:
+        list_probe_id.append(element)
+    print("list_probe_id :")
+    print(list_probe_id)
+    print()
+
+
+    num_of_probe_id = len(list_probe_id)
+    count_not_found = 0
+    # scan probe id by its entrez id
+    list_entrez_id = []
+    print("Scanning in progress ...")
+    print()
+
+    def findEnrtezId(probe_id):
+        print("probe_id : ")
+        print(probe_id)
+        print()
+        list_something = []
+        entrez_id = file_ref.loc[file_ref['From'].isin(list(probe_id))]
+        if (entrez_id.empty):
+            list_entrez_id.append("none")
+            list_something.append("none")
+            count_not_found += 1
+        else:
+            list_entrez_id.append(entrez_id.iloc[0][1]) 
+            list_something.append(entrez_id.iloc[0][1])
+        return list_something
+    
+    vfindEntrezId = np.vectorize(findEnrtezId)
+    vlist_test = findEnrtezId(list_probe_id)
+
+    print("vlist_test : ")
+    print(vlist_test)
+
+    print("list_entrez_id : ")
+    print(list_entrez_id)
+
+    # for index in range(0, num_of_probe_id):
+    #     entrez_id = file_ref.loc[file_ref['From'].isin([list_probe_id[index]])]
+    #     # add to list if entrez_id is found
+    #     if (entrez_id.empty):
+    #         list_entrez_id.append("none")
+    #         count_not_found += 1
+    #     else:
+    #         list_entrez_id.append(entrez_id.iloc[0][1]) 
+    # print(list_probe_id)
+    # print(len(list_probe_id))
+    # print("HEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+    # print(list_entrez_id)
+    # print(len(list_entrez_id))
+    # print() 
+    num_of_available_data = num_of_probe_id - count_not_found
+
+    # print(file_pathway)
+
+    # create dictionary to collect each pathway
+    pathways = {}
+    for i in range(0, rows_to_read_file_pathway):
+        key = i
+        pathway = []
+        pathway_name = file_pathway.iloc[i, 0]
+        list_gene_expression = []
+        for element in file_pathway.iloc[i, 2:-1]:
+            if (str(element).isnumeric()):
+                list_gene_name_with_expression = []
+                # check if genes in each pathway have their expression value
+                list_gene_same_entrez = []
+                for list_entrez_id_index in range(0, len(list_entrez_id)):
+                    if (element == list_entrez_id[list_entrez_id_index]):
+                        # WARNING : NEED to adjust column in file_to_convert.iloc[i, 1] for use further
+                        # list_gene_same_entrez.append(file_to_convert.iloc[list_entrez_id_index, 1])
+
+                        gene_probe_id = file_to_convert.iloc[list_entrez_id_index, 0]
+                        gene_expression = file_to_convert.iloc[list_entrez_id_index, 1]
+                        # print("gene_probe_id : " + str(gene_probe_id))
+                        
+                        # normalize gene using z-score 
+                        for gene_index in range(0, len(list_mean_sd_gene_expression_by_probe_id)):
+                            gene_name = list_mean_sd_gene_expression_by_probe_id[gene_index][0]
+                            if (gene_name == gene_probe_id):
+                                gene_mean = list_mean_sd_gene_expression_by_probe_id[gene_index][1]
+                                gene_sd = list_mean_sd_gene_expression_by_probe_id[gene_index][2]
+                                gene_expression_zscore = zscore(gene_expression, gene_mean, gene_sd)
+
+                                list_gene_same_entrez.append(gene_expression_zscore)
+
+                # if gene expression is not found, assume it as 'zero'
+                if not list_gene_same_entrez:
+                    list_gene_same_entrez.append(0.0)
+
+                # calculate genes expression of the same entrez id by using their average
+                num_of_same_entrez = len(list_gene_same_entrez)
+                avg_gene_expression = (sum(list_gene_same_entrez) / num_of_same_entrez)
+                avg_gene_expression = round(avg_gene_expression, 7)
+                
+                # create a gene list in format [gene entrez id, gene expression]
+                list_gene_name_with_expression.append(element)
+                list_gene_name_with_expression.append(avg_gene_expression)
+                list_gene_expression.append(list_gene_name_with_expression)
+                # list_gene_expression.append(element)
+                # list_gene_expression.append(avg_gene_expression)
+
+        # combine pathway name with its gene expressions
+        pathway.append(pathway_name)
+        pathway.append(list_gene_expression)
+        
+        pathways[key] = pathway
+    return pathways
