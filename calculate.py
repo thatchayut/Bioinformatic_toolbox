@@ -187,14 +187,14 @@ def lda(list_all_input, list_part_1, list_part_2):
     f1 = findDiscriminative(matrix_all_input, avg_part_1, inversed_pool_covariance, prior_prob[0])
     f2 = findDiscriminative(matrix_all_input, avg_part_2, inversed_pool_covariance, prior_prob[1])
 
-    print(" #### lda result .....")
-    print()
-    print(" f1: ")
-    print(str(f1))
-    print()
-    print(" f2: ")
-    print(str(f2))
-    print()
+    # print(" #### lda result .....")
+    # print()
+    # print(" f1: ")
+    # print(str(f1))
+    # print()
+    # print(" f2: ")
+    # print(str(f2))
+    # print()
 
     actual_output = findOutput(f1, f2)
 

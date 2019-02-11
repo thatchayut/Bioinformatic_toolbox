@@ -13,13 +13,13 @@ def main():
 
     # prepare data
     # row_to_read = 22283
-    row_to_read = 22283
+    row_to_read = 100
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
     file_training_output= pd.read_csv("mapping_sample_to_class_full.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # files to be used to get pathways and their gene expression
     # default rows_to_read_file_pathway = 1329
-    rows_to_read_file_pathway = 1329
+    rows_to_read_file_pathway = 100
     file_ref_name = "accession_number_to_entrez_id.csv"
     file_to_convert_name = "GSE2034-22071 (edited).csv"
     file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
@@ -392,7 +392,7 @@ def main():
                 list_gene_expression_by_entrez = []
                 list_gene_name_probe_id = []
                 # row_to_read_file_to_cal_zscore = 22283
-                row_to_read_file_to_cal_zscore = 22283
+                row_to_read_file_to_cal_zscore = 100
                 col_to_read_file_to_cal_zscore = ["ID_REF"]
                 col_to_read_file_to_cal_zscore.extend(list_train_relapse_name)
                 col_to_read_file_to_cal_zscore.extend(list_train_no_relapse_name)
