@@ -249,7 +249,7 @@ def main():
                 col_to_read_file_to_cal_zscore.extend(list_train_no_relapse_name)
                 print("col_to_read_file_to_cal_zscore : ")
                 print(col_to_read_file_to_cal_zscore)
-                file_to_cal_zscore = pd.read_csv("GSE2034-22071 (edited).csv", usecols = col_to_read_file_to_cal_zscore, nrows = row_to_read)
+                file_to_cal_zscore = pd.read_csv("GSE2034-22071 (edited).csv", usecols = col_to_read_file_to_cal_zscore, nrows = row_to_read_file_to_cal_zscore)
                 num_of_all_samples  = len(col_to_read_file_to_cal_zscore)
                 print("------------------------------------------------------------------------------------------------------------")
 
@@ -519,7 +519,8 @@ def main():
                                     for sample_index in range(0, len(samples_relapse_feature_selection)):
                                         sum_gene_expression = 0
                                         for gene_index in range(0, len(list_sample_relapse_find_discrimination)):
-                                            sum_gene_expression += list_sample_relapse_find_discrimination[gene_index][sample_index]
+                                            # sum_gene_expression += list_sample_relapse_find_discrimination[gene_index][sample_index]
+                                            sum_gene_expression += list_sample_relapse_find_discrimination[sample_index][gene_index]
                                         activity_score = (sum_gene_expression / math.sqrt(len(list_sample_relapse_find_discrimination)))
                                         list_sample_relapse_activity_score.append(activity_score)
 
@@ -527,7 +528,8 @@ def main():
                                     for sample_index in range(0, len(samples_no_relapse_feature_selection)):
                                         sum_gene_expression = 0
                                         for gene_index in range(0, len(list_sample_no_relapse_find_discrimination)):
-                                            sum_gene_expression += list_sample_no_relapse_find_discrimination[gene_index][sample_index]
+                                            # sum_gene_expression += list_sample_no_relapse_find_discrimination[gene_index][sample_index]
+                                            sum_gene_expression += list_sample_no_relapse_find_discrimination[sample_index][gene_index]
                                         activity_score = (sum_gene_expression / math.sqrt(len(list_sample_no_relapse_find_discrimination)))
                                         list_sample_no_relapse_activity_score.append(activity_score)
 
@@ -812,9 +814,9 @@ def main():
 
                     # create list of desired output
                     file_desired_outputs_feature_selection = file_training_output.loc[file_training_output['GEO asscession number'].isin(second_layer_test_all)]
-                    file_desired_outputs_feature_selection['pathway_id'] = file_desired_outputs_feature_selection['GEO asscession number'].apply(lambda name: second_layer_test_all.index(name)) 
-                    file_desired_outputs_feature_selection = file_desired_outputs_feature_selection.sort_values(by = ['pathway_id'])
-                    file_desired_outputs_feature_selection.drop(columns = 'pathway_id', inplace = True)
+                    file_desired_outputs_feature_selection['sample_id'] = file_desired_outputs_feature_selection['GEO asscession number'].apply(lambda name: second_layer_test_all.index(name)) 
+                    file_desired_outputs_feature_selection = file_desired_outputs_feature_selection.sort_values(by = ['sample_id'])
+                    file_desired_outputs_feature_selection.drop(columns = 'sample_id', inplace = True)
 
                     list_desired_outputs_feature_selection = []
                     for element in file_desired_outputs_feature_selection.loc[:, 'relapse (1=True)']:

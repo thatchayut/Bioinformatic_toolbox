@@ -1,0 +1,376 @@
+######################################### epoch : 1#########################################
+#### Fold 1 ####
+chunk_test_relapse : 
+[68, 38, 13, 50, 24, 66, 102, 92, 83, 88, 57]
+chunk_test_no_relapse : 
+[140, 116, 120, 68, 154, 61, 96, 108, 28, 46, 121, 147, 5, 122, 34, 23, 137, 168]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 2 ####
+chunk_test_relapse : 
+[106, 95, 0, 60, 15, 35, 1, 100, 97, 103, 58]
+chunk_test_no_relapse : 
+[0, 76, 118, 139, 163, 72, 22, 95, 158, 119, 27, 60, 174, 123, 107, 117, 171, 160]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 3 ####
+chunk_test_relapse : 
+[28, 79, 18, 19, 17, 11, 54, 32, 31, 65, 22]
+chunk_test_no_relapse : 
+[57, 109, 149, 129, 102, 146, 124, 115, 59, 98, 82, 51, 64, 42, 166, 33, 71, 110]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME']
+Size of feature set : 9
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 4 ####
+chunk_test_relapse : 
+[7, 84, 98, 9, 76, 62, 44, 89, 53, 34, 94]
+chunk_test_no_relapse : 
+[75, 128, 104, 49, 69, 50, 62, 130, 125, 135, 52, 35, 36, 73, 127, 54, 134, 175]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 5 ####
+chunk_test_relapse : 
+[75, 29, 99, 46, 5, 40, 37, 87, 51, 16, 23]
+chunk_test_no_relapse : 
+[3, 19, 93, 32, 161, 77, 148, 80, 101, 86, 152, 142, 144, 12, 56, 176, 159, 53]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 6 ####
+chunk_test_relapse : 
+[55, 20, 26, 45, 52, 56, 2, 78, 67, 27, 39]
+chunk_test_no_relapse : 
+[111, 65, 14, 9, 114, 156, 138, 10, 17, 38, 126, 99, 112, 169, 31, 173, 63, 20]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME']
+Size of feature set : 9
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 7 ####
+chunk_test_relapse : 
+[70, 77, 4, 10, 59, 105, 12, 69, 90, 82, 73]
+chunk_test_no_relapse : 
+[133, 105, 172, 113, 84, 97, 178, 74, 106, 40, 4, 90, 43, 13, 83, 1, 89, 143]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 8 ####
+chunk_test_relapse : 
+[14, 41, 43, 47, 49, 86, 33, 74, 104, 72, 64]
+chunk_test_no_relapse : 
+[87, 85, 177, 79, 66, 41, 94, 165, 6, 29, 24, 164, 55, 25, 7, 81, 2, 103]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 9 ####
+chunk_test_relapse : 
+[71, 93, 8, 85, 96, 80, 63, 61, 25, 91, 42]
+chunk_test_no_relapse : 
+[92, 26, 141, 18, 162, 157, 145, 47, 30, 58, 45, 16, 151, 70, 48, 167, 91, 44]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 10 ####
+chunk_test_relapse : 
+[81, 21, 101, 6, 30, 48, 36, 3]
+chunk_test_no_relapse : 
+[136, 150, 170, 132, 67, 11, 131, 155, 100, 37, 39, 153, 21, 78, 15, 88, 8]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Total elapse time : 1.72 minutes (0 hours) 
+######################################### epoch : 2#########################################
+#### Fold 1 ####
+chunk_test_relapse : 
+[49, 17, 41, 57, 16, 64, 89, 10, 51, 101, 22]
+chunk_test_no_relapse : 
+[37, 28, 53, 172, 104, 21, 31, 75, 132, 106, 18, 38, 99, 95, 141, 82, 92, 171]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME']
+Size of feature set : 9
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 2 ####
+chunk_test_relapse : 
+[43, 84, 69, 55, 85, 67, 18, 73, 31, 37, 59]
+chunk_test_no_relapse : 
+[174, 32, 165, 47, 16, 123, 148, 153, 177, 10, 157, 74, 166, 84, 100, 57, 129, 147]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 3 ####
+chunk_test_relapse : 
+[11, 13, 56, 24, 91, 65, 61, 106, 32, 3, 12]
+chunk_test_no_relapse : 
+[24, 140, 173, 15, 122, 42, 58, 126, 54, 158, 80, 163, 71, 145, 149, 78, 39, 118]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 4 ####
+chunk_test_relapse : 
+[95, 19, 26, 2, 90, 8, 7, 15, 30, 68, 83]
+chunk_test_no_relapse : 
+[17, 154, 76, 67, 65, 159, 131, 137, 55, 89, 105, 138, 19, 96, 150, 111, 160, 110]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 5 ####
+chunk_test_relapse : 
+[14, 86, 98, 99, 23, 28, 52, 27, 104, 35, 1]
+chunk_test_no_relapse : 
+[97, 115, 121, 156, 79, 86, 1, 9, 101, 73, 51, 94, 6, 50, 90, 33, 168, 93]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 6 ####
+chunk_test_relapse : 
+[54, 87, 71, 92, 0, 93, 88, 94, 50, 44, 46]
+chunk_test_no_relapse : 
+[36, 40, 59, 142, 130, 85, 14, 107, 13, 102, 164, 128, 155, 144, 70, 64, 7, 20]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 7 ####
+chunk_test_relapse : 
+[74, 53, 29, 60, 9, 66, 102, 80, 96, 21, 82]
+chunk_test_no_relapse : 
+[61, 151, 8, 44, 43, 120, 11, 66, 27, 0, 125, 103, 72, 68, 87, 22, 143, 5]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 8 ####
+chunk_test_relapse : 
+[75, 36, 47, 34, 38, 77, 103, 81, 70, 79, 72]
+chunk_test_no_relapse : 
+[178, 146, 2, 136, 46, 124, 91, 41, 114, 62, 108, 170, 162, 134, 127, 117, 56, 169]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 9 ####
+chunk_test_relapse : 
+[58, 45, 100, 39, 62, 105, 97, 5, 33, 78, 4]
+chunk_test_no_relapse : 
+[176, 12, 139, 49, 83, 60, 63, 35, 29, 116, 34, 109, 152, 69, 52, 167, 88, 175]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME', 'KEGG_PROTEIN_EXPORT']
+Size of feature set : 10
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Fold 10 ####
+chunk_test_relapse : 
+[48, 20, 6, 42, 76, 40, 63, 25]
+chunk_test_no_relapse : 
+[48, 161, 45, 113, 135, 98, 26, 119, 133, 25, 23, 30, 4, 3, 81, 112, 77]
+Feature set : ['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME']
+Size of feature set : 9
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5
+AUC score from testing : 0.5
+
+fold elapse time : 0.01 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['KEGG_FATTY_ACID_METABOLISM', 'KEGG_ASCORBATE_AND_ALDARATE_METABOLISM', 'KEGG_GALACTOSE_METABOLISM', 'KEGG_FRUCTOSE_AND_MANNOSE_METABOLISM', 'KEGG_PENTOSE_AND_GLUCURONATE_INTERCONVERSIONS', 'KEGG_PENTOSE_PHOSPHATE_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'KEGG_GLYCOLYSIS_GLUCONEOGENESIS', 'KEGG_RIBOSOME']
+Total elapse time : 1.86 minutes (0 hours) 

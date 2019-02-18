@@ -90,7 +90,7 @@ def main():
 
     # get number of pathways
     while True:
-        num_of_pathways_percentage = input("number of pathways to be used as feature set (%) : ")
+        num_of_pathways_percentage = input("Number of pathways to be used as feature set (%) : ")
         if (num_of_pathways_percentage.isnumeric() == False):
             print("WARNING : Input must be numeric")
         elif (int(num_of_pathways_percentage) <= 0):
@@ -102,7 +102,7 @@ def main():
     num_of_pathways_percentage = int(num_of_pathways_percentage)
 
     # # get output file's name
-    file_name = input("Name of Output File : ")
+    file_name = input("Name of output file : ")
 
     # # prepare text file for results to be written in
     result_file = open(str(file_name) + ".txt", "w+")
@@ -285,6 +285,7 @@ def main():
         pathway.append(list_gene_expression)
         
         pathways[key] = pathway
+
 
     print("Process : Calculating pathway activity by averaging t-score of member genes")
 
@@ -498,8 +499,8 @@ def main():
                 print("chunks in second_chunk_list_no_relapse size = " + str(len(second_chunk_list_no_relapse)))
 
                 # this is used to collect data used in calculating lda
-                list_testing_relapse_pathway_expression = []
-                list_testing_no_relapse_pathway_expression = []
+                # list_testing_relapse_pathway_expression = []
+                # list_testing_no_relapse_pathway_expression = []
 
                 second_check_valid, second_num_of_chunks = calculate.checkEqualListSize(second_chunk_list_relapse, second_chunk_list_no_relapse)
 
@@ -609,7 +610,7 @@ def main():
                     list_sample_all_pathway_activity_feature_selection_set.extend(list_sample_no_relapse_pathway_activity_feature_selection_set)
 
                     # get sample name of samples feature selection set
-                    list_sample_relapse_name_feature_selection= []
+                    list_sample_relapse_name_feature_selection = []
                     for index in range(0, len(list_feature_selection_relapse)):
                         sample_index_in_list = list_feature_selection_relapse[index]
                         list_sample_relapse_name_feature_selection.append(samples_relapse[sample_index_in_list][0])
@@ -617,7 +618,7 @@ def main():
                     # print(list_sample_relapse_name_feature_selection)
                     # print()
 
-                    list_sample_no_relapse_name_feature_selection= []
+                    list_sample_no_relapse_name_feature_selection = []
                     for index in range(0, len(list_feature_selection_no_relapse)):
                         sample_index_in_list = list_feature_selection_no_relapse[index]
                         list_sample_no_relapse_name_feature_selection.append(samples_no_relapse[sample_index_in_list][0])
@@ -639,10 +640,20 @@ def main():
                     list_desired_outputs_feature_selection = []
                     for element in file_desired_outputs_feature_selection.loc[:, 'relapse (1=True)']:
                         list_desired_outputs_feature_selection.append(element)
-
+                    print("---------------------------------------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                    print("list_sample_relapse_pathway_activity_marker_evaluation_set :")
+                    print(list_sample_relapse_pathway_activity_marker_evaluation_set)
+                    print()
+                    print("list_sample_no_relapse_pathway_activity_marker_evaluation_set :")
+                    print(list_sample_no_relapse_pathway_activity_marker_evaluation_set)
+                    print()
+                    print("list_sample_all_pathway_activity_feature_selection_set : ")
+                    print(list_sample_all_pathway_activity_feature_selection_set)
+                    print()
+                    print()
                     # find feature set using sequential forward selection
                     feature_set_name, auc_score_feature_selection = calculate.sfs(list_top_rank_pathway_name, list_desired_outputs_feature_selection, list_sample_relapse_pathway_activity_marker_evaluation_set, \
-                                list_sample_relapse_pathway_activity_marker_evaluation_set, list_sample_all_pathway_activity_feature_selection_set)
+                                list_sample_no_relapse_pathway_activity_marker_evaluation_set, list_sample_all_pathway_activity_feature_selection_set)
                     
                     # list to collect auc score for the feature in each fold
                     list_max_auc.append(auc_score_feature_selection)
@@ -660,15 +671,16 @@ def main():
                     sample_index_in_list = list_train_relapse[sample_index]
                     for feature in feature_set_name:
                         for pathway_index in range(0, len(samples_relapse_pathway_activity[sample_index_in_list][1])):
-                            pathway = []
+                            # pathway = []
                             pathway_name = samples_relapse_pathway_activity[sample_index_in_list][1][pathway_index][0]
 
                             if (pathway_name == feature):
                                 pathway_activity = samples_relapse_pathway_activity[sample_index_in_list][1][pathway_index][1]
-                                pathway.append(pathway_name)
-                                pathway.append(pathway_activity)
+                                list_pathway_activity.append(pathway_activity)
+                                # pathway.append(pathway_name)
+                                # pathway.append(pathway_activity)
 
-                                list_pathway_activity.append(pathway)
+                                # list_pathway_activity.append(pathway)
                     list_sample_classifier_relapse_pathway.append(list_pathway_activity)
                 
                 # for classifier class 'non-relapse'
@@ -678,15 +690,15 @@ def main():
                     sample_index_in_list = list_train_no_relapse[sample_index]
                     for feature in feature_set_name:
                         for pathway_index in range(0, len(samples_no_relapse_pathway_activity[sample_index_in_list][1])):
-                            pathway = []
+                            # pathway = []
                             pathway_name = samples_no_relapse_pathway_activity[sample_index_in_list][1][pathway_index][0]
 
                             if (pathway_name == feature):
                                 pathway_activity = samples_no_relapse_pathway_activity[sample_index_in_list][1][pathway_index][1]
-                                pathway.append(pathway_name)
-                                pathway.append(pathway_activity)
+                                # pathway.append(pathway_name)
+                                # pathway.append(pathway_activity)
 
-                                list_pathway_activity.append(pathway)
+                                list_pathway_activity.append(pathway_activity)
                     list_sample_classifier_no_relapse_pathway.append(list_pathway_activity)
                 
                 # for testing set class 'relapse'
@@ -696,15 +708,15 @@ def main():
                     sample_index_in_list = chunk_test_relapse[sample_index]
                     for feature in feature_set_name:
                         for pathway_index in range(0, len(samples_relapse_pathway_activity[sample_index_in_list][1])):
-                            pathway = []
+                            # pathway = []
                             pathway_name = samples_relapse_pathway_activity[sample_index_in_list][1][pathway_index][0]
 
                             if (pathway_name == feature):
                                 pathway_activity = samples_relapse_pathway_activity[sample_index_in_list][1][pathway_index][1]
-                                pathway.append(pathway_name)
-                                pathway.append(pathway_activity)
+                                # pathway.append(pathway_name)
+                                # pathway.append(pathway_activity)
 
-                                list_pathway_activity.append(pathway)
+                                list_pathway_activity.append(pathway_activity)
                     list_sample_testing_relapse_pathway.append(list_pathway_activity)
                 
                 # for testing set class 'non-relapse'
@@ -714,21 +726,21 @@ def main():
                     sample_index_in_list = chunk_test_no_relapse[sample_index]
                     for feature in feature_set_name:
                         for pathway_index in range(0, len(samples_no_relapse_pathway_activity[sample_index_in_list][1])):
-                            pathway = []
+                            # pathway = []
                             pathway_name = samples_no_relapse_pathway_activity[sample_index_in_list][1][pathway_index][0]
 
                             if (pathway_name == feature):
                                 pathway_activity = samples_no_relapse_pathway_activity[sample_index_in_list][1][pathway_index][1]
-                                pathway.append(pathway_name)
-                                pathway.append(pathway_activity)
+                                # pathway.append(pathway_name)
+                                # pathway.append(pathway_activity)
 
-                                list_pathway_activity.append(pathway)
+                                list_pathway_activity.append(pathway_activity)
                     list_sample_testing_no_relapse_pathway.append(list_pathway_activity)
                 
                 # create list to contain all pathway activity of all sample in testing set
                 list_testing_all_pathway_expression = []
-                list_testing_all_pathway_expression.extend(list_testing_relapse_pathway_expression)
-                list_testing_all_pathway_expression.extend(list_testing_no_relapse_pathway_expression)
+                list_testing_all_pathway_expression.extend(list_sample_testing_relapse_pathway)
+                list_testing_all_pathway_expression.extend(list_sample_testing_no_relapse_pathway)
 
                 # create list to contain all samples' name of testing set
                 list_chunk_test_relapse_name = []
@@ -740,7 +752,7 @@ def main():
                 for index in range(0, len(chunk_test_no_relapse)):
                         sample_index_in_list = chunk_test_no_relapse[index]
                         list_chunk_test_no_relapse_name.append(samples_no_relapse[sample_index_in_list][0])
-                
+
                 list_samples_name_testing_all = []
                 list_samples_name_testing_all.extend(list_chunk_test_relapse_name)
                 list_samples_name_testing_all.extend(list_chunk_test_no_relapse_name)
@@ -755,25 +767,35 @@ def main():
                 for element in file_desired_outputs_testing.loc[:, 'relapse (1=True)']:
                     list_desired_outputs_testing.append(element)
                 
+                # result_file.write("list_sample_classifier_relapse_pathway :\n")
+                # result_file.write(str(list_sample_classifier_relapse_pathway))
+                # result_file.write("\n")
+                # result_file.write("list_sample_classifier_no_relapse_pathway :\n")
+                # result_file.write(str(list_sample_classifier_no_relapse_pathway))
+                # result_file.write("\n")
+                # result_file.write("list_testing_all_pathway_expression : \n")
+                # result_file.write(str(list_testing_all_pathway_expression))
+                # result_file.write("\n")
+
                 # calculate outputs using lda
                 # calculate lda 
                 list_actual_outputs_testing = calculate.lda(list_testing_all_pathway_expression, list_sample_classifier_relapse_pathway, list_sample_classifier_no_relapse_pathway)
 
                 # calculate AUC score
-                auc_score = roc_auc_score(list_desired_outputs, list_actual_outputs)
+                auc_score = roc_auc_score(list_desired_outputs_testing, list_actual_outputs_testing)
                 list_auc_score.append(auc_score)
 
                 print()
                 print("#### Evaluation of " + str(chunk_test_index + 1) + " - fold ####")
                 print("Feature set : " + str(feature_set_name))
                 print("Size of feature set : " + str(len(feature_set_name)))
-                print("size of list_actual_outputs : " + str(len(list_actual_outputs)))
-                print("list_actual_outputs : ")
-                print(list_actual_outputs)
+                print("size of list_actual_outputs_testing : " + str(len(list_actual_outputs_testing)))
+                print("list_actual_outputs_testing : ")
+                print(list_actual_outputs_testing)
                 print()
-                print("size of list_desired_outputs : " + str(len(list_desired_outputs)))
-                print("list_desired_outputs : ")
-                print(list_desired_outputs)
+                print("size of list_desired_outputs_testing : " + str(len(list_desired_outputs_testing)))
+                print("list_desired_outputs_testing : ")
+                print(list_desired_outputs_testing)
                 print("AUC score from feature selection : " + str(auc_score_feature_selection))
                 print("AUC score from testing : " + str(auc_score))
 
@@ -784,11 +806,11 @@ def main():
                 
                 result_file.write("Feature set : " + str(feature_set_name) + "\n")
                 result_file.write("Size of feature set : " + str(len(feature_set_name)) + "\n")
-                result_file.write("size of list_actual_outputs : " + str(len(list_actual_outputs)) + "\n")
-                result_file.write(str(list_actual_outputs) + "\n")
+                result_file.write("size of list_actual_outputs_testing : " + str(len(list_actual_outputs_testing)) + "\n")
+                result_file.write(str(list_actual_outputs_testing) + "\n")
                 result_file.write("\n")
-                result_file.write("size of list_desired_outputs : " + str(len(list_desired_outputs)) + "\n")
-                result_file.write(str(list_desired_outputs) + "\n")
+                result_file.write("size of list_desired_outputs_testing : " + str(len(list_desired_outputs_testing)) + "\n")
+                result_file.write(str(list_desired_outputs_testing) + "\n")
                 result_file.write("AUC score from feature selection : " + str(auc_score_feature_selection) + "\n")
                 result_file.write("AUC score from testing : " + str(auc_score) + "\n")
                 result_file.write("\n")
@@ -829,6 +851,8 @@ def main():
         result_file.write("Maximum AUC score : " + str(auc_score_max) + "\n")
         result_file.write("Feature set which gives highest AUC score : " + "\n")
         result_file.write(str(list_feature_set_max_auc))
+        result_file.write("Size of feature set : \n")
+        result_file.write(str(len(list_feature_set_max_auc)))
         result_file.write("\n")
         result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
         result_file.write("\n")

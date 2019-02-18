@@ -243,8 +243,8 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
                                     gene_expression_zscore = zscore(gene_expression, gene_mean, gene_sd)
 
                                     list_gene_same_entrez.append(gene_expression_zscore)
-                                else:
-                                    list_gene_same_entrez.append(gene_expression)
+                        else:
+                            list_gene_same_entrez.append(gene_expression)
 
                 # if gene expression is not found, assume it as 'zero'
                 if not list_gene_same_entrez:
