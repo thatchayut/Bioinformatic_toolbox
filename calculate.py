@@ -293,8 +293,6 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
         
         pathways[key] = pathway
     return pathways
-    # print(pathways[1])
-    # print(len(pathways))
 
 def zscore(value, mean_value, sd_value):
     result = ((value - mean_value) / sd_value)
@@ -323,13 +321,34 @@ def sd(list_input):
     return sd_of_list
 
 def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_relapse, samples_test):
+    print("list_pathway_name size : " + str(len(list_pathway_name)))
+    print("list_desired_output : " + str(len(list_desired_output)))
+    print("samples_relapse size : " + str(len(samples_relapse)))
+    print("samples_no_relapse size : " + str(len(samples_no_relapse)))
+    print("samples_test size : " + str(len(samples_test)))
+    print("\n")
+
     check_finish = False
     check_improve_auc = True
 
     max_auc_score_over_all_features = 0
 
     feature_set_final = []
-    list_pathway_selected = []
+    
+    # original 
+    # list_pathway_selected = []
+
+    # version 1
+    # fix top pathway as the first index
+    list_pathway_selected = [0]
+
+    # version 2 
+    # select 5% of top pathways
+    # percent = 5
+    # num_of_top_n_percent_pathway = math.ceil((len(list_pathway_name) * percent) / 100)
+    # list_pathway_selected = []
+    # for index in range(0, num_of_top_n_percent_pathway):
+    #     list_pathway_selected.append(index)
 
     num_of_pathways = len(list_pathway_name)
 
@@ -340,40 +359,83 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
             list_pathway = []
             for pathway_index in range(0, num_of_pathways):
                 list_pathway_to_consider = deepcopy(list_pathway_selected)
-
+                
+                # original 
                 if (pathway_index not in list_pathway_selected):
+                # last_index_in_list_pathway_to_consider = len(list_pathway_selected) - 1
+                # if (pathway_index not in list_pathway_selected) and (pathway_index > list_pathway_selected[last_index_in_list_pathway_to_consider]):
                     list_pathway_to_consider.extend([pathway_index])
 
                     # collect pathway activity of each class to be used in lda 
+                    # Original 
+                    # input_relapse_to_test = []
+                    # for sample_index in range(0, len(samples_relapse)):
+                    #     list_pathway_each_sample_to_test = []
+                    #     for pathway_index in range(0, len(samples_relapse[sample_index])):
+                    #         if (pathway_index in list_pathway_to_consider):
+                    #             pathway_activity_to_test = samples_relapse[sample_index][pathway_index]
+                    #             list_pathway_each_sample_to_test.append(pathway_activity_to_test)
+                    #     input_relapse_to_test.append(list_pathway_each_sample_to_test)
+
                     input_relapse_to_test = []
                     for sample_index in range(0, len(samples_relapse)):
                         list_pathway_each_sample_to_test = []
-                        for pathway_index in range(0, len(samples_relapse[sample_index])):
-                            if (pathway_index in list_pathway_to_consider):
-                                pathway_activity_to_test = samples_relapse[sample_index][pathway_index]
+                        for pathway_index_relapse in range(0, len(samples_relapse[sample_index])):
+                            if (pathway_index_relapse in list_pathway_to_consider):
+                                pathway_activity_to_test = samples_relapse[sample_index][pathway_index_relapse]
                                 list_pathway_each_sample_to_test.append(pathway_activity_to_test)
                         input_relapse_to_test.append(list_pathway_each_sample_to_test)
+
+                    # Original
+                    # input_no_relapse_to_test = []
+                    # for sample_index in range(0, len(samples_no_relapse)):
+                    #     list_pathway_each_sample_to_test = []
+                    #     for pathway_index in range(0, len(samples_no_relapse[sample_index])):
+                    #         if (pathway_index in list_pathway_to_consider):
+                    #             pathway_activity_to_test = samples_no_relapse[sample_index][pathway_index]
+                    #             list_pathway_each_sample_to_test.append(pathway_activity_to_test)
+                    #     input_no_relapse_to_test.append(list_pathway_each_sample_to_test)
 
                     input_no_relapse_to_test = []
                     for sample_index in range(0, len(samples_no_relapse)):
                         list_pathway_each_sample_to_test = []
-                        for pathway_index in range(0, len(samples_no_relapse[sample_index])):
-                            if (pathway_index in list_pathway_to_consider):
-                                pathway_activity_to_test = samples_no_relapse[sample_index][pathway_index]
+                        for pathway_index_no_relapse in range(0, len(samples_no_relapse[sample_index])):
+                            if (pathway_index_no_relapse in list_pathway_to_consider):
+                                pathway_activity_to_test = samples_no_relapse[sample_index][pathway_index_no_relapse]
                                 list_pathway_each_sample_to_test.append(pathway_activity_to_test)
                         input_no_relapse_to_test.append(list_pathway_each_sample_to_test)
                     
+                    # Original
+                    # input_test_to_test = []
+                    # for sample_index in range(0, len(samples_test)):
+                    #     list_pathway_each_sample_to_test = []
+                    #     for pathway_index in range(0, len(samples_test[sample_index])):
+                    #         if (pathway_index in list_pathway_to_consider):
+                    #             pathway_activity_to_test = samples_test[sample_index][pathway_index]
+                    #             list_pathway_each_sample_to_test.append(pathway_activity_to_test)
+                    #     input_test_to_test.append(list_pathway_each_sample_to_test)
+
                     input_test_to_test = []
                     for sample_index in range(0, len(samples_test)):
                         list_pathway_each_sample_to_test = []
-                        for pathway_index in range(0, len(samples_test[sample_index])):
-                            if (pathway_index in list_pathway_to_consider):
-                                pathway_activity_to_test = samples_test[sample_index][pathway_index]
+                        for pathway_index_test in range(0, len(samples_test[sample_index])):
+                            if (pathway_index_test in list_pathway_to_consider):
+                                pathway_activity_to_test = samples_test[sample_index][pathway_index_test]
                                 list_pathway_each_sample_to_test.append(pathway_activity_to_test)
                         input_test_to_test.append(list_pathway_each_sample_to_test)
+
                     list_actual_output = lda(input_test_to_test, input_relapse_to_test, input_no_relapse_to_test)
                     auc_score = roc_auc_score(list_desired_output, list_actual_output)
 
+                    print("input_relapse_to_test size : " + str(len(input_relapse_to_test)))
+                    print("input_no_relapse_to_test size : " + str(len(input_no_relapse_to_test)))
+                    print("input_test_to_test : " + str(len(input_test_to_test)))
+                    
+                    list_actual_output = lda(input_test_to_test, input_relapse_to_test, input_no_relapse_to_test)
+                    print("list_actual_output size : " +str(len(list_actual_output)))
+                    print("list_desired_output size : " + str(len(list_desired_output)))
+                    auc_score = roc_auc_score(list_desired_output, list_actual_output)
+                    
                     print(" list_actual_output : " + str(list_actual_output))
                     print(" list_desired_output : " + str(list_desired_output))
                     print(" AUC score : " + str(auc_score))
@@ -403,4 +465,164 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
         feature_set_final = deepcopy(list_pathway_selected_name)
 
     return feature_set_final, max_auc_score_over_all_features
+
+def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, samples_no_relapse_input, samples_test_input):
+    print("list_pathway_name size : " + str(len(list_pathway_name)))
+    print("list_desired_output : " + str(len(list_desired_output)))
+    print("samples_relapse_input size : " + str(len(samples_relapse_input)))
+    print("samples_no_relapse_input size : " + str(len(samples_no_relapse_input)))
+    print("samples_test_input size : " + str(len(samples_test_input)))
+    print("\n")
+
+    # sort pathways in each sample based on list_pathway_name
+    # for class 'relapse'
+    samples_relapse = []
+    for sample_index in range(0, len(samples_relapse_input)):
+        sample = []
+        for top_pathway_name in list_pathway_name:
+            for pathway_index in range(0, len(samples_relapse_input[sample_index])):
+                pathway_name = samples_relapse_input[sample_index][pathway_index][0]
+                if (pathway_name == top_pathway_name):
+                    pathway_activity = samples_relapse_input[sample_index][pathway_index][1]
+
+                    sample.append(pathway_activity)
+        samples_relapse.append(sample)
+
+    # for class 'non-relapse'
+    samples_no_relapse = []
+    for sample_index in range(0, len(samples_no_relapse_input)):
+        sample = []
+        for top_pathway_name in list_pathway_name:
+            for pathway_index in range(0, len(samples_no_relapse_input[sample_index])):
+                pathway_name = samples_no_relapse_input[sample_index][pathway_index][0]
+                if (pathway_name == top_pathway_name):
+                    pathway_activity = samples_no_relapse_input[sample_index][pathway_index][1]
+
+                    sample.append(pathway_activity)
+        samples_no_relapse.append(sample)
+    
+    # for testing data
+    samples_test= []
+    for sample_index in range(0, len(samples_test_input)):
+        sample = []
+        for top_pathway_name in list_pathway_name:
+            for pathway_index in range(0, len(samples_test_input[sample_index])):
+                pathway_name = samples_test_input[sample_index][pathway_index][0]
+                if (pathway_name == top_pathway_name):
+                    pathway_activity = samples_test_input[sample_index][pathway_index][1]
+
+                    sample.append(pathway_activity)
+        samples_test.append(sample)
+
+    print()
+    print("list_pathway_name size : " + str(len(list_pathway_name)))
+    print("Number of pathway in samples_relapse[0] : " + str(samples_relapse[0]))
+    print("Number of pathway in samples_no_relapse[0] : " + str(samples_no_relapse[0]))
+    print("Number of pathway in samples_test[0] : " + str(samples_test[0]))
+    print()
+
+    # preparing for feature selection
+    check_finish = False
+    check_improve_auc = True
+
+    max_auc_score_over_all_features = 0
+
+    feature_set_final = []
+    
+    # original 
+    # list_pathway_selected = []
+
+    # fix top pathway as the first index
+    # list_pathway_selected = [0]
+
+    # version 2 
+    # select 5% of top pathways
+    percent = 10
+    num_of_top_n_percent_pathway = math.ceil((len(list_pathway_name) * percent) / 100)
+    list_pathway_selected = []
+    for index in range(0, num_of_top_n_percent_pathway):
+        list_pathway_selected.append(index)
+
+
+    num_of_pathways = len(list_pathway_name)
+
+    while (check_finish == False):
+
+        if (check_improve_auc == True):
+            max_auc_in_consider = 0
+            list_pathway = []
+            for pathway_index in range(0, num_of_pathways):
+                list_pathway_to_consider = deepcopy(list_pathway_selected)
+                
+                # original 
+                if (pathway_index not in list_pathway_selected):
+                # last_index_in_list_pathway_to_consider = len(list_pathway_selected) - 1
+                # if (pathway_index not in list_pathway_selected) and (pathway_index > list_pathway_selected[last_index_in_list_pathway_to_consider]):
+                    list_pathway_to_consider.extend([pathway_index])
+
+                    input_relapse_to_test = []
+                    for sample_index in range(0, len(samples_relapse)):
+                        list_pathway_each_sample_to_test = []
+                        for pathway_index_relapse in range(0, len(samples_relapse[sample_index])):
+                            if (pathway_index_relapse in list_pathway_to_consider):
+                                pathway_activity_to_test = samples_relapse[sample_index][pathway_index_relapse]
+                                list_pathway_each_sample_to_test.append(pathway_activity_to_test)
+                        input_relapse_to_test.append(list_pathway_each_sample_to_test)
+
+                    input_no_relapse_to_test = []
+                    for sample_index in range(0, len(samples_no_relapse)):
+                        list_pathway_each_sample_to_test = []
+                        for pathway_index_no_relapse in range(0, len(samples_no_relapse[sample_index])):
+                            if (pathway_index_no_relapse in list_pathway_to_consider):
+                                pathway_activity_to_test = samples_no_relapse[sample_index][pathway_index_no_relapse]
+                                list_pathway_each_sample_to_test.append(pathway_activity_to_test)
+                        input_no_relapse_to_test.append(list_pathway_each_sample_to_test)
+
+                    input_test_to_test = []
+                    for sample_index in range(0, len(samples_test)):
+                        list_pathway_each_sample_to_test = []
+                        for pathway_index_test in range(0, len(samples_test[sample_index])):
+                            if (pathway_index_test in list_pathway_to_consider):
+                                pathway_activity_to_test = samples_test[sample_index][pathway_index_test]
+                                list_pathway_each_sample_to_test.append(pathway_activity_to_test)
+                        input_test_to_test.append(list_pathway_each_sample_to_test)
+
+                    list_actual_output = lda(input_test_to_test, input_relapse_to_test, input_no_relapse_to_test)
+                    auc_score = roc_auc_score(list_desired_output, list_actual_output)
+                    
+                    list_actual_output = lda(input_test_to_test, input_relapse_to_test, input_no_relapse_to_test)
+
+                    auc_score = roc_auc_score(list_desired_output, list_actual_output)
+                    
+                    print(" list_actual_output : " + str(list_actual_output))
+                    print(" list_desired_output : " + str(list_desired_output))
+                    print(" AUC score : " + str(auc_score))
+
+                    if (auc_score >= max_auc_in_consider):
+                        max_auc_in_consider = auc_score
+                        list_pathway = deepcopy(list_pathway_to_consider)
+
+            if (max_auc_in_consider >= max_auc_score_over_all_features):
+                max_auc_score_over_all_features = max_auc_in_consider
+                list_pathway_selected = deepcopy(list_pathway)
+            else:
+                check_improve_auc = False
+        else:
+            check_finish = True
+
+        list_pathway_selected_name = []
+        for i in range(0, len(list_pathway_selected)):
+            pathway = list_pathway_selected[i]
+            list_pathway_selected_name.append(list_pathway_name[pathway])
+
+        print(" Feature set : " + str(list_pathway_selected_name))
+        print(" AUC score from this feature set : " + str(max_auc_score_over_all_features))
+
+        feature_set_final = deepcopy(list_pathway_selected_name)
+
+    return feature_set_final, max_auc_score_over_all_features
+
+
+
+
 

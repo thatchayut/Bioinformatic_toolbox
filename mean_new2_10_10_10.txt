@@ -1,0 +1,1500 @@
+######################################### epoch : 1#########################################
+#### Fold 1 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'PID_TCPTP_PATHWAY', 'NABA_COLLAGENS', 'BIOCARTA_G1_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6001157407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.36 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_DNA_STRAND_ELONGATION', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'BIOCARTA_CDC42RAC_PATHWAY', 'REACTOME_PROCESSING_OF_INTRONLESS_PRE_MRNAS', 'REACTOME_GLUCONEOGENESIS']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.640625
+AUC score from testing : 0.5
+
+fold elapse time : 1.38 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['PID_AURORA_B_PATHWAY', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'REACTOME_POL_SWITCHING', 'REACTOME_CYCLIN_E_ASSOCIATED_EVENTS_DURING_G1_S_TRANSITION_', 'PID_TCPTP_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6157407407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.44 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['KEGG_DNA_REPLICATION', 'REACTOME_P38MAPK_EVENTS', 'REACTOME_POST_TRANSLATIONAL_MODIFICATION_SYNTHESIS_OF_GPI_ANCHORED_PROTEINS']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.578125
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['REACTOME_COPI_MEDIATED_TRANSPORT', 'REACTOME_APC_CDC20_MEDIATED_DEGRADATION_OF_NEK2A', 'REACTOME_GLUCOSE_METABOLISM', 'NABA_COLLAGENS', 'REACTOME_RECRUITMENT_OF_MITOTIC_CENTROSOME_PROTEINS_AND_COMPLEXES', 'REACTOME_RESOLUTION_OF_AP_SITES_VIA_THE_SINGLE_NUCLEOTIDE_REPLACEMENT_PATHWAY']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6279481132075472
+AUC score from testing : 0.5
+
+fold elapse time : 1.4 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'BIOCARTA_EPHA4_PATHWAY', 'REACTOME_PRE_NOTCH_TRANSCRIPTION_AND_TRANSLATION']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.609375
+AUC score from testing : 0.5
+
+fold elapse time : 1.41 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['KEGG_DNA_REPLICATION', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'NABA_COLLAGENS', 'REACTOME_TELOMERE_MAINTENANCE', 'REACTOME_P38MAPK_EVENTS']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6689814814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.42 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'KEGG_REGULATION_OF_ACTIN_CYTOSKELETON', 'REACTOME_MRNA_SPLICING_MINOR_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.59375
+AUC score from testing : 0.5
+
+fold elapse time : 1.41 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_NCAM1_INTERACTIONS', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'REACTOME_PI_3K_CASCADE', 'BIOCARTA_TNFR2_PATHWAY', 'REACTOME_N_GLYCAN_ANTENNAE_ELONGATION_IN_THE_MEDIAL_TRANS_GOLGI', 'BIOCARTA_PTDINS_PATHWAY']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6626157407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.43 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_NEUROTROPHIN_SIGNALING_PATHWAY', 'KEGG_VALINE_LEUCINE_AND_ISOLEUCINE_BIOSYNTHESIS', 'PID_INTEGRIN_A4B1_PATHWAY', 'REACTOME_SHC_MEDIATED_SIGNALLING']
+Size of feature set : 5
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6422558922558923
+AUC score from testing : 0.5
+
+fold elapse time : 1.4 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.6001157407407407, 0.640625, 0.6157407407407407, 0.578125, 0.6279481132075472, 0.609375, 0.6689814814814815, 0.59375, 0.6626157407407407, 0.6422558922558923]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'PID_TCPTP_PATHWAY', 'NABA_COLLAGENS', 'BIOCARTA_G1_PATHWAY']
+Size of feature set : 
+5
+Total elapse time : 195.94 minutes (3 hours) 
+######################################### epoch : 2#########################################
+#### Fold 1 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'BIOCARTA_STRESS_PATHWAY', 'REACTOME_ACTIVATION_OF_THE_PRE_REPLICATIVE_COMPLEX']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.609375
+AUC score from testing : 0.5
+
+fold elapse time : 1.4 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'NABA_COLLAGENS', 'PID_ENDOTHELIN_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.59375
+AUC score from testing : 0.5
+
+fold elapse time : 1.38 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'PID_MAPK_TRK_PATHWAY']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.578125
+AUC score from testing : 0.5
+
+fold elapse time : 1.35 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['REACTOME_CELL_CYCLE_CHECKPOINTS', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_RAF_MAP_KINASE_CASCADE', 'REACTOME_M_G1_TRANSITION', 'REACTOME_TRAF6_MEDIATED_INDUCTION_OF_NFKB_AND_MAP_KINASES_UPON_TLR7_8_OR_9_ACTIVATION']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.609375
+AUC score from testing : 0.5
+
+fold elapse time : 1.36 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_ERK5_PATHWAY', 'BIOCARTA_INTRINSIC_PATHWAY', 'REACTOME_SYNTHESIS_OF_PIPS_AT_THE_EARLY_ENDOSOME_MEMBRANE']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5787037037037037
+AUC score from testing : 0.5
+
+fold elapse time : 1.35 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'PID_AURORA_B_PATHWAY', 'BIOCARTA_ERK5_PATHWAY', 'BIOCARTA_INTRINSIC_PATHWAY', 'REACTOME_SIGNALING_BY_FGFR_MUTANTS', 'PID_ARF6_DOWNSTREAM_PATHWAY']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6255787037037037
+AUC score from testing : 0.5
+
+fold elapse time : 1.41 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'NABA_COLLAGENS', 'REACTOME_RNA_POL_II_PRE_TRANSCRIPTION_EVENTS', 'REACTOME_SIGNALING_BY_ERBB2']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6686320754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.37 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_DEADENYLATION_DEPENDENT_MRNA_DECAY', 'BIOCARTA_CELLCYCLE_PATHWAY', 'REACTOME_SIGNALING_BY_THE_B_CELL_RECEPTOR_BCR']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5908564814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.47 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_RORA_ACTIVATES_CIRCADIAN_EXPRESSION', 'BIOCARTA_G1_PATHWAY', 'REACTOME_XENOBIOTICS']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5752314814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.35 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'NABA_COLLAGENS', 'REACTOME_ACTIVATION_OF_ATR_IN_RESPONSE_TO_REPLICATION_STRESS', 'REACTOME_RESOLUTION_OF_AP_SITES_VIA_THE_SINGLE_NUCLEOTIDE_REPLACEMENT_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6691919191919192
+AUC score from testing : 0.5
+
+fold elapse time : 1.39 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.609375, 0.59375, 0.578125, 0.609375, 0.5787037037037037, 0.6255787037037037, 0.6686320754716981, 0.5908564814814815, 0.5752314814814815, 0.6691919191919192]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'BIOCARTA_STRESS_PATHWAY', 'REACTOME_ACTIVATION_OF_THE_PRE_REPLICATIVE_COMPLEX']
+Size of feature set : 
+4
+Total elapse time : 209.78 minutes (3 hours) 
+######################################### epoch : 3#########################################
+#### Fold 1 ####
+Feature set : ['PID_HIF1_TFPATHWAY', 'PID_LYMPH_ANGIOGENESIS_PATHWAY', 'REACTOME_SIGNALING_BY_ERBB4', 'REACTOME_MRNA_DECAY_BY_5_TO_3_EXORIBONUCLEASE', 'REACTOME_MEMBRANE_BINDING_AND_TARGETTING_OF_GAG_PROTEINS', 'PID_ARF6_DOWNSTREAM_PATHWAY']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6311910377358491
+AUC score from testing : 0.5
+
+fold elapse time : 1.46 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_COPI_MEDIATED_TRANSPORT', 'REACTOME_SIGNALLING_TO_P38_VIA_RIT_AND_RIN', 'PID_WNT_NONCANONICAL_PATHWAY', 'REACTOME_TRAF3_DEPENDENT_IRF_ACTIVATION_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5686910377358491
+AUC score from testing : 0.5
+
+fold elapse time : 1.38 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['REACTOME_NCAM1_INTERACTIONS', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'REACTOME_SYNTHESIS_OF_DNA', 'REACTOME_GLYCOGEN_BREAKDOWN_GLYCOGENOLYSIS']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6530070754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.38 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'PID_ARF6_DOWNSTREAM_PATHWAY', 'PID_AVB3_INTEGRIN_PATHWAY', 'PID_TAP63_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6313657407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.41 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_SYNTHESIS_OF_DNA', 'REACTOME_GLUCOSE_METABOLISM', 'PID_INTEGRIN_A4B1_PATHWAY', 'REACTOME_HYALURONAN_METABOLISM', 'KEGG_GLYCOSAMINOGLYCAN_BIOSYNTHESIS_HEPARAN_SULFATE']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6530070754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.39 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['PID_AURORA_B_PATHWAY', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'PID_HIF1A_PATHWAY', 'REACTOME_PROLONGED_ERK_ACTIVATION_EVENTS', 'KEGG_THYROID_CANCER', 'REACTOME_FACTORS_INVOLVED_IN_MEGAKARYOCYTE_DEVELOPMENT_AND_PLATELET_PRODUCTION']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6157407407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.41 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['PID_AURORA_B_PATHWAY', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'PID_TAP63_PATHWAY', 'BIOCARTA_CDC42RAC_PATHWAY', 'REACTOME_SIGNALING_BY_ERBB4', 'REACTOME_GLUCOSE_METABOLISM']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6221064814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.42 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_NCAM1_INTERACTIONS', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'PID_P38_ALPHA_BETA_DOWNSTREAM_PATHWAY', 'PID_S1P_S1P4_PATHWAY', 'REACTOME_OTHER_SEMAPHORIN_INTERACTIONS']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.634837962962963
+AUC score from testing : 0.5
+
+fold elapse time : 1.37 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_NCAM1_INTERACTIONS', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'BIOCARTA_ERK5_PATHWAY', 'PID_INTEGRIN_A9B1_PATHWAY', 'KEGG_REGULATION_OF_ACTIN_CYTOSKELETON']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6373820754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.38 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['PID_HIF1_TFPATHWAY', 'PID_INTEGRIN1_PATHWAY', 'REACTOME_SIGNALING_BY_ERBB4', 'REACTOME_CDK_MEDIATED_PHOSPHORYLATION_AND_REMOVAL_OF_CDC6']
+Size of feature set : 4
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6388888888888888
+AUC score from testing : 0.5
+
+fold elapse time : 1.45 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.6311910377358491, 0.5686910377358491, 0.6530070754716981, 0.6313657407407407, 0.6530070754716981, 0.6157407407407407, 0.6221064814814815, 0.634837962962963, 0.6373820754716981, 0.6388888888888888]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['PID_HIF1_TFPATHWAY', 'PID_LYMPH_ANGIOGENESIS_PATHWAY', 'REACTOME_SIGNALING_BY_ERBB4', 'REACTOME_MRNA_DECAY_BY_5_TO_3_EXORIBONUCLEASE', 'REACTOME_MEMBRANE_BINDING_AND_TARGETTING_OF_GAG_PROTEINS', 'PID_ARF6_DOWNSTREAM_PATHWAY']
+Size of feature set : 
+6
+Total elapse time : 223.82 minutes (4 hours) 
+######################################### epoch : 4#########################################
+#### Fold 1 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'BIOCARTA_CDC42RAC_PATHWAY', 'REACTOME_S_PHASE', 'REACTOME_ORC1_REMOVAL_FROM_CHROMATIN']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6001157407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.4 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'BIOCARTA_CDC42RAC_PATHWAY', 'REACTOME_S_PHASE']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.640625
+AUC score from testing : 0.5
+
+fold elapse time : 1.37 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'BIOCARTA_CDC42RAC_PATHWAY', 'REACTOME_ORC1_REMOVAL_FROM_CHROMATIN']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6157407407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'BIOCARTA_VITCB_PATHWAY']
+Size of feature set : 2
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5596064814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.28 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'REACTOME_GRB2_SOS_PROVIDES_LINKAGE_TO_MAPK_SIGNALING_FOR_INTERGRINS_', 'PID_ILK_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6061320754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['REACTOME_NCAM1_INTERACTIONS', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_SYNTHESIS_OF_DNA', 'BIOCARTA_ERK5_PATHWAY', 'PID_INTEGRIN2_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6782407407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['REACTOME_COPI_MEDIATED_TRANSPORT', 'KEGG_COMPLEMENT_AND_COAGULATION_CASCADES', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'REACTOME_RAF_MAP_KINASE_CASCADE', 'BIOCARTA_RACCYCD_PATHWAY', 'PID_ALK2_PATHWAY']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5905070754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_COPI_MEDIATED_TRANSPORT', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_ECM_RECEPTOR_INTERACTION', 'BIOCARTA_GLYCOLYSIS_PATHWAY', 'BIOCARTA_P53_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5966981132075472
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'KEGG_NEUROTROPHIN_SIGNALING_PATHWAY', 'KEGG_GLYCEROLIPID_METABOLISM', 'REACTOME_MITOCHONDRIAL_PROTEIN_IMPORT']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.59375
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_G1_S_TRANSITION', 'REACTOME_BASE_FREE_SUGAR_PHOSPHATE_REMOVAL_VIA_THE_SINGLE_NUCLEOTIDE_REPLACEMENT_PATHWAY', 'BIOCARTA_CELLCYCLE_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5606060606060606
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.6001157407407407, 0.640625, 0.6157407407407407, 0.5596064814814815, 0.6061320754716981, 0.6782407407407407, 0.5905070754716981, 0.5966981132075472, 0.59375, 0.5606060606060606]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'BIOCARTA_CDC42RAC_PATHWAY', 'REACTOME_S_PHASE', 'REACTOME_ORC1_REMOVAL_FROM_CHROMATIN']
+Size of feature set : 
+5
+Total elapse time : 236.98 minutes (4 hours) 
+######################################### epoch : 5#########################################
+#### Fold 1 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_SIGNALING_BY_ERBB4', 'REACTOME_COPI_MEDIATED_TRANSPORT', 'REACTOME_LOSS_OF_NLP_FROM_MITOTIC_CENTROSOMES']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5341981132075472
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'BIOCARTA_CDC42RAC_PATHWAY', 'KEGG_CITRATE_CYCLE_TCA_CYCLE', 'REACTOME_DEADENYLATION_DEPENDENT_MRNA_DECAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6533564814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['REACTOME_DNA_STRAND_ELONGATION', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'KEGG_NUCLEOTIDE_EXCISION_REPAIR', 'REACTOME_CYTOCHROME_P450_ARRANGED_BY_SUBSTRATE_TYPE', 'REACTOME_MITOTIC_G2_G2_M_PHASES']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5810731132075472
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'BIOCARTA_HIF_PATHWAY', 'REACTOME_FACTORS_INVOLVED_IN_MEGAKARYOCYTE_DEVELOPMENT_AND_PLATELET_PRODUCTION']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.578125
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['REACTOME_PROCESSING_OF_INTRONLESS_PRE_MRNAS', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_RNA_DEGRADATION', 'KEGG_GLYCOSAMINOGLYCAN_BIOSYNTHESIS_CHONDROITIN_SULFATE', 'REACTOME_NFKB_ACTIVATION_THROUGH_FADD_RIP1_PATHWAY_MEDIATED_BY_CASPASE_8_AND10', 'REACTOME_GRB2_SOS_PROVIDES_LINKAGE_TO_MAPK_SIGNALING_FOR_INTERGRINS_', 'REACTOME_CELL_CYCLE_MITOTIC']
+Size of feature set : 7
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6221064814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'BIOCARTA_PLATELETAPP_PATHWAY', 'BIOCARTA_GLYCOLYSIS_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5688657407407408
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'BIOCARTA_VITCB_PATHWAY', 'BIOCARTA_PTDINS_PATHWAY', 'BIOCARTA_EXTRINSIC_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5844907407407408
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'BIOCARTA_VITCB_PATHWAY', 'REACTOME_MRNA_CAPPING', 'REACTOME_SHC_MEDIATED_SIGNALLING']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5844907407407408
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_RESPIRATORY_ELECTRON_TRANSPORT', 'PID_LYMPH_ANGIOGENESIS_PATHWAY', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'BIOCARTA_SALMONELLA_PATHWAY', 'REACTOME_MEMBRANE_TRAFFICKING']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6938657407407408
+AUC score from testing : 0.5
+
+fold elapse time : 1.35 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'PID_HIF2PATHWAY', 'NABA_MATRISOME']
+Size of feature set : 3
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5664983164983165
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.5341981132075472, 0.6533564814814815, 0.5810731132075472, 0.578125, 0.6221064814814815, 0.5688657407407408, 0.5844907407407408, 0.5844907407407408, 0.6938657407407408, 0.5664983164983165]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_SIGNALING_BY_ERBB4', 'REACTOME_COPI_MEDIATED_TRANSPORT', 'REACTOME_LOSS_OF_NLP_FROM_MITOTIC_CENTROSOMES']
+Size of feature set : 
+4
+Total elapse time : 250.05 minutes (4 hours) 
+######################################### epoch : 6#########################################
+#### Fold 1 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_REGULATION_OF_ACTIN_CYTOSKELETON', 'REACTOME_MRNA_DECAY_BY_5_TO_3_EXORIBONUCLEASE', 'REACTOME_CYTOCHROME_P450_ARRANGED_BY_SUBSTRATE_TYPE']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.65625
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_RESPIRATORY_ELECTRON_TRANSPORT', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_NEUROTROPHIN_SIGNALING_PATHWAY', 'REACTOME_RESOLUTION_OF_AP_SITES_VIA_THE_SINGLE_NUCLEOTIDE_REPLACEMENT_PATHWAY', 'REACTOME_IRON_UPTAKE_AND_TRANSPORT']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6001157407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_EPHA4_PATHWAY', 'KEGG_CELL_CYCLE', 'REACTOME_SIGNALING_BY_FGFR_MUTANTS']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6440972222222222
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_NUCLEOTIDE_EXCISION_REPAIR', 'KEGG_VALINE_LEUCINE_AND_ISOLEUCINE_BIOSYNTHESIS', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'REACTOME_CDK_MEDIATED_PHOSPHORYLATION_AND_REMOVAL_OF_CDC6']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6313657407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.35 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_PERK_REGULATED_GENE_EXPRESSION', 'REACTOME_MITOTIC_PROMETAPHASE']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5844907407407408
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'REACTOME_PROCESSING_OF_CAPPED_INTRONLESS_PRE_MRNA', 'REACTOME_FORMATION_OF_TRANSCRIPTION_COUPLED_NER_TC_NER_REPAIR_COMPLEX']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5844907407407408
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['REACTOME_NCAM1_INTERACTIONS', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_SYNTHESIS_OF_DNA', 'KEGG_NEUROTROPHIN_SIGNALING_PATHWAY', 'NABA_ECM_GLYCOPROTEINS']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6468160377358491
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_DNA_STRAND_ELONGATION', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'KEGG_RNA_DEGRADATION', 'KEGG_AMINOACYL_TRNA_BIOSYNTHESIS', 'REACTOME_APOPTOSIS_INDUCED_DNA_FRAGMENTATION']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6128472222222222
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_DNA_STRAND_ELONGATION', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'REACTOME_POST_CHAPERONIN_TUBULIN_FOLDING_PATHWAY', 'KEGG_HUNTINGTONS_DISEASE']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5752314814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['REACTOME_NCAM1_INTERACTIONS', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_SCFSKP2_MEDIATED_DEGRADATION_OF_P27_P21']
+Size of feature set : 3
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5968013468013469
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.65625, 0.6001157407407407, 0.6440972222222222, 0.6313657407407407, 0.5844907407407408, 0.5844907407407408, 0.6468160377358491, 0.6128472222222222, 0.5752314814814815, 0.5968013468013469]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_REGULATION_OF_ACTIN_CYTOSKELETON', 'REACTOME_MRNA_DECAY_BY_5_TO_3_EXORIBONUCLEASE', 'REACTOME_CYTOCHROME_P450_ARRANGED_BY_SUBSTRATE_TYPE']
+Size of feature set : 
+4
+Total elapse time : 263.14 minutes (4 hours) 
+######################################### epoch : 7#########################################
+#### Fold 1 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_CDC42RAC_PATHWAY', 'REACTOME_DESTABILIZATION_OF_MRNA_BY_BRF1', 'BIOCARTA_CD40_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6533564814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_EPHA4_PATHWAY', 'SA_REG_CASCADE_OF_CYCLIN_EXPR', 'REACTOME_DESTABILIZATION_OF_MRNA_BY_BRF1']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.7251157407407408
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_EPHA4_PATHWAY', 'SA_REG_CASCADE_OF_CYCLIN_EXPR', 'REACTOME_CELL_CYCLE_MITOTIC', 'BIOCARTA_CD40_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6846064814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.34 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['REACTOME_E2F_MEDIATED_REGULATION_OF_DNA_REPLICATION', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_AUTODEGRADATION_OF_CDH1_BY_CDH1_APC_C', 'REACTOME_FACTORS_INVOLVED_IN_MEGAKARYOCYTE_DEVELOPMENT_AND_PLATELET_PRODUCTION']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5843160377358491
+AUC score from testing : 0.5
+
+fold elapse time : 1.4 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_DEADENYLATION_DEPENDENT_MRNA_DECAY', 'REACTOME_SIGNALING_BY_BMP', 'REACTOME_CELL_CYCLE_MITOTIC']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6001157407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['REACTOME_CELL_CYCLE_CHECKPOINTS', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_STRESS_PATHWAY']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6128472222222222
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['REACTOME_INHIBITION_OF_THE_PROTEOLYTIC_ACTIVITY_OF_APC_C_REQUIRED_FOR_THE_ONSET_OF_ANAPHASE_BY_MITOTIC_SPINDLE_CHECKPOINT_COMPONENTS', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'KEGG_BUTANOATE_METABOLISM', 'REACTOME_SYNTHESIS_OF_DNA', 'REACTOME_INSULIN_SYNTHESIS_AND_PROCESSING']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6313657407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_CELL_CYCLE_CHECKPOINTS', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'REACTOME_PROCESSING_OF_CAPPED_INTRONLESS_PRE_MRNA']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6064814814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_EPHA4_PATHWAY', 'REACTOME_PASSIVE_TRANSPORT_BY_AQUAPORINS']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6313657407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'PID_SYNDECAN_1_PATHWAY', 'KEGG_FOCAL_ADHESION']
+Size of feature set : 3
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5909090909090909
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.6533564814814815, 0.7251157407407408, 0.6846064814814815, 0.5843160377358491, 0.6001157407407407, 0.6128472222222222, 0.6313657407407407, 0.6064814814814815, 0.6313657407407407, 0.5909090909090909]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_CDC42RAC_PATHWAY', 'REACTOME_DESTABILIZATION_OF_MRNA_BY_BRF1', 'BIOCARTA_CD40_PATHWAY']
+Size of feature set : 
+4
+Total elapse time : 276.38 minutes (5 hours) 
+######################################### epoch : 8#########################################
+#### Fold 1 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_P130CAS_LINKAGE_TO_MAPK_SIGNALING_FOR_INTEGRINS', 'BIOCARTA_PAR1_PATHWAY', 'REACTOME_SIGNALING_BY_GPCR']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5972222222222222
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_INTRINSIC_PATHWAY', 'PID_CDC42_REG_PATHWAY', 'REACTOME_MRNA_CAPPING']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5908564814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'SIG_REGULATION_OF_THE_ACTIN_CYTOSKELETON_BY_RHO_GTPASES', 'PID_HIF1A_PATHWAY', 'KEGG_THYROID_CANCER']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5905070754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_REGULATION_OF_ACTIN_CYTOSKELETON', 'REACTOME_GLUCOSE_METABOLISM', 'REACTOME_PURINE_METABOLISM']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.625
+AUC score from testing : 0.5
+
+fold elapse time : 1.34 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['PID_AURORA_B_PATHWAY', 'PID_SMAD2_3NUCLEAR_PATHWAY', 'PID_HIF2PATHWAY', 'REACTOME_RNA_POL_III_TRANSCRIPTION_TERMINATION']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5843160377358491
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'PID_HIF1_TFPATHWAY', 'BIOCARTA_VITCB_PATHWAY', 'KEGG_GLYCEROPHOSPHOLIPID_METABOLISM']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6626157407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['REACTOME_NCAM1_INTERACTIONS', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'PID_HIF1_TFPATHWAY', 'KEGG_BUTANOATE_METABOLISM', 'KEGG_BASAL_TRANSCRIPTION_FACTORS', 'REACTOME_RORA_ACTIVATES_CIRCADIAN_EXPRESSION']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6192129629629629
+AUC score from testing : 0.5
+
+fold elapse time : 1.33 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'PID_INTEGRIN1_PATHWAY', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'PID_BARD1_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.681712962962963
+AUC score from testing : 0.5
+
+fold elapse time : 1.33 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_RORA_ACTIVATES_CIRCADIAN_EXPRESSION', 'BIOCARTA_FEEDER_PATHWAY', 'PID_CDC42_REG_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6061320754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'BIOCARTA_PLATELETAPP_PATHWAY', 'REACTOME_METABOLISM_OF_PROTEINS', 'REACTOME_RORA_ACTIVATES_CIRCADIAN_EXPRESSION', 'KEGG_THYROID_CANCER']
+Size of feature set : 5
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5875420875420876
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.5972222222222222, 0.5908564814814815, 0.5905070754716981, 0.625, 0.5843160377358491, 0.6626157407407407, 0.6192129629629629, 0.681712962962963, 0.6061320754716981, 0.5875420875420876]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_P130CAS_LINKAGE_TO_MAPK_SIGNALING_FOR_INTEGRINS', 'BIOCARTA_PAR1_PATHWAY', 'REACTOME_SIGNALING_BY_GPCR']
+Size of feature set : 
+4
+Total elapse time : 289.54 minutes (5 hours) 
+######################################### epoch : 9#########################################
+#### Fold 1 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'BIOCARTA_IL1R_PATHWAY']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5752314814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_P130CAS_LINKAGE_TO_MAPK_SIGNALING_FOR_INTEGRINS', 'PID_P38_GAMMA_DELTA_PATHWAY', 'REACTOME_DESTABILIZATION_OF_MRNA_BY_TRISTETRAPROLIN_TTP', 'PID_TAP63_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5810731132075472
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'REACTOME_SIGNALLING_BY_NGF']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5688657407407408
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['PID_CDC42_REG_PATHWAY', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'BIOCARTA_IL1R_PATHWAY', 'KEGG_SPLICEOSOME']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.609375
+AUC score from testing : 0.5
+
+fold elapse time : 1.34 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['REACTOME_COLLAGEN_FORMATION', 'REACTOME_RAF_MAP_KINASE_CASCADE', 'NABA_PROTEOGLYCANS', 'REACTOME_MITOTIC_G2_G2_M_PHASES']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.578125
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['PID_CDC42_REG_PATHWAY', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'REACTOME_DESTABILIZATION_OF_MRNA_BY_TRISTETRAPROLIN_TTP']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6626157407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_DNA_REPLICATION', 'REACTOME_REMOVAL_OF_THE_FLAP_INTERMEDIATE_FROM_THE_C_STRAND', 'KEGG_OXIDATIVE_PHOSPHORYLATION', 'REACTOME_BASE_FREE_SUGAR_PHOSPHATE_REMOVAL_VIA_THE_SINGLE_NUCLEOTIDE_REPLACEMENT_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.578125
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_METABOLISM_OF_CARBOHYDRATES', 'KEGG_OXIDATIVE_PHOSPHORYLATION', 'REACTOME_RNA_POL_III_TRANSCRIPTION_INITIATION_FROM_TYPE_3_PROMOTER']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5844907407407408
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_RESPIRATORY_ELECTRON_TRANSPORT', 'BIOCARTA_VITCB_PATHWAY', 'REACTOME_PIP3_ACTIVATES_AKT_SIGNALING']
+Size of feature set : 3
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.59375
+AUC score from testing : 0.5
+
+fold elapse time : 1.29 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['PID_LYMPH_ANGIOGENESIS_PATHWAY', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'BIOCARTA_EPHA4_PATHWAY', 'REACTOME_REMOVAL_OF_THE_FLAP_INTERMEDIATE_FROM_THE_C_STRAND', 'ST_ERK1_ERK2_MAPK_PATHWAY']
+Size of feature set : 5
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6574074074074074
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.5752314814814815, 0.5810731132075472, 0.5688657407407408, 0.609375, 0.578125, 0.6626157407407407, 0.578125, 0.5844907407407408, 0.59375, 0.6574074074074074]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'BIOCARTA_IL1R_PATHWAY']
+Size of feature set : 
+3
+Total elapse time : 302.63 minutes (5 hours) 
+######################################### epoch : 10#########################################
+#### Fold 1 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'BIOCARTA_TOLL_PATHWAY', 'ST_ERK1_ERK2_MAPK_PATHWAY', 'PID_ARF6_DOWNSTREAM_PATHWAY', 'REACTOME_ASSOCIATION_OF_TRIC_CCT_WITH_TARGET_PROTEINS_DURING_BIOSYNTHESIS']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5815972222222222
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 2 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_P130CAS_LINKAGE_TO_MAPK_SIGNALING_FOR_INTEGRINS', 'KEGG_PURINE_METABOLISM']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5596064814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.33 minutes 
+
+
+#### Fold 3 ####
+Feature set : ['PID_HIF1_TFPATHWAY', 'REACTOME_ABORTIVE_ELONGATION_OF_HIV1_TRANSCRIPT_IN_THE_ABSENCE_OF_TAT', 'REACTOME_DESTABILIZATION_OF_MRNA_BY_BRF1', 'PID_MAPK_TRK_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5752314814814815
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 4 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'SA_REG_CASCADE_OF_CYCLIN_EXPR', 'REACTOME_PERK_REGULATED_GENE_EXPRESSION', 'KEGG_COMPLEMENT_AND_COAGULATION_CASCADES']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6435731132075472
+AUC score from testing : 0.5
+
+fold elapse time : 1.3 minutes 
+
+
+#### Fold 5 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'PID_HIF1_TFPATHWAY', 'REACTOME_CGMP_EFFECTS', 'BIOCARTA_SPPA_PATHWAY', 'REACTOME_TELOMERE_MAINTENANCE']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6373820754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 6 ####
+Feature set : ['REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_CHRONIC_MYELOID_LEUKEMIA', 'KEGG_SPLICEOSOME', 'REACTOME_GRB2_SOS_PROVIDES_LINKAGE_TO_MAPK_SIGNALING_FOR_INTERGRINS_', 'REACTOME_SHC_MEDIATED_SIGNALLING']
+Size of feature set : 5
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6373820754716981
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 7 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'REACTOME_GRB2_SOS_PROVIDES_LINKAGE_TO_MAPK_SIGNALING_FOR_INTERGRINS_', 'REACTOME_ACTIVATION_OF_NF_KAPPAB_IN_B_CELLS']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6157407407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.33 minutes 
+
+
+#### Fold 8 ####
+Feature set : ['REACTOME_NCAM1_INTERACTIONS', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_VALINE_LEUCINE_AND_ISOLEUCINE_BIOSYNTHESIS', 'REACTOME_ASSOCIATION_OF_TRIC_CCT_WITH_TARGET_PROTEINS_DURING_BIOSYNTHESIS', 'REACTOME_RNA_POL_I_TRANSCRIPTION', 'REACTOME_PI3K_CASCADE']
+Size of feature set : 6
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.640625
+AUC score from testing : 0.5
+
+fold elapse time : 1.32 minutes 
+
+
+#### Fold 9 ####
+Feature set : ['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'REACTOME_TRANSMEMBRANE_TRANSPORT_OF_SMALL_MOLECULES', 'KEGG_REGULATION_OF_ACTIN_CYTOSKELETON', 'REACTOME_FANCONI_ANEMIA_PATHWAY']
+Size of feature set : 4
+size of list_actual_outputs_testing : 29
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 29
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.6313657407407407
+AUC score from testing : 0.5
+
+fold elapse time : 1.31 minutes 
+
+
+#### Fold 10 ####
+Feature set : ['REACTOME_RESPIRATORY_ELECTRON_TRANSPORT', 'PID_INTEGRIN1_PATHWAY', 'KEGG_OXIDATIVE_PHOSPHORYLATION', 'PID_PLK1_PATHWAY', 'REACTOME_DESTABILIZATION_OF_MRNA_BY_TRISTETRAPROLIN_TTP', 'KEGG_STEROID_HORMONE_BIOSYNTHESIS']
+Size of feature set : 6
+size of list_actual_outputs_testing : 25
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+size of list_desired_outputs_testing : 25
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+AUC score from feature selection : 0.5993265993265993
+AUC score from testing : 0.5
+
+fold elapse time : 1.34 minutes 
+
+
+#### Summary ####
+Maximum AUC ROC score of feature in each fold = [0.5815972222222222, 0.5596064814814815, 0.5752314814814815, 0.6435731132075472, 0.6373820754716981, 0.6373820754716981, 0.6157407407407407, 0.640625, 0.6313657407407407, 0.5993265993265993]
+Average AUC score : 0.5
+Maximum AUC score : 0.5
+Feature set which gives highest AUC score : 
+['REACTOME_PROCESSIVE_SYNTHESIS_ON_THE_LAGGING_STRAND', 'BIOCARTA_TOLL_PATHWAY', 'ST_ERK1_ERK2_MAPK_PATHWAY', 'PID_ARF6_DOWNSTREAM_PATHWAY', 'REACTOME_ASSOCIATION_OF_TRIC_CCT_WITH_TARGET_PROTEINS_DURING_BIOSYNTHESIS']
+Size of feature set : 
+5
+Total elapse time : 315.78 minutes (5 hours) 
