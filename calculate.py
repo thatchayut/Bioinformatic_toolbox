@@ -91,17 +91,24 @@ def findOutput(f1, f2):
                 # print(f2[element_index][row_index, col_index])
                 list_f2.append(f2[element_index][row_index, col_index])
     print("list_f2 : " + str(list_f2))
-
+    
+    # old version
     # check which class is selected
-    result =[]
+    # result =[]
+    # for element_index in range(0, len(list_f1)):
+    #     if(list_f1[element_index] > list_f2[element_index]):
+    #         result.append(1)
+    #     elif(list_f1[element_index] < list_f2[element_index]):
+    #         result.append(0)
+    #     else:
+    #         # result.append("*")
+    #         result.append(0.5)
+
+    # find confidence score
+    result = []
     for element_index in range(0, len(list_f1)):
-        if(list_f1[element_index] > list_f2[element_index]):
-            result.append(1)
-        elif(list_f1[element_index] < list_f2[element_index]):
-            result.append(0)
-        else:
-            # result.append("*")
-            result.append(0.5)
+        confidence_score = (list_f1[element_index] / list_f2[element_index])
+        result.append(confidence_score)
     # print(result)
     return result
 
@@ -533,15 +540,15 @@ def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, sa
     # list_pathway_selected = []
 
     # fix top pathway as the first index
-    # list_pathway_selected = [0]
+    list_pathway_selected = [0]
 
     # version 2 
     # select 5% of top pathways
-    percent = 10
-    num_of_top_n_percent_pathway = math.ceil((len(list_pathway_name) * percent) / 100)
-    list_pathway_selected = []
-    for index in range(0, num_of_top_n_percent_pathway):
-        list_pathway_selected.append(index)
+    # percent = 5
+    # num_of_top_n_percent_pathway = math.ceil((len(list_pathway_name) * percent) / 100)
+    # list_pathway_selected = []
+    # for index in range(0, num_of_top_n_percent_pathway):
+    #     list_pathway_selected.append(index)
 
 
     num_of_pathways = len(list_pathway_name)
