@@ -9,7 +9,7 @@ from copy import deepcopy
 from sklearn.metrics import roc_auc_score
 
 def main():
-     # record start time
+    # record start time
     start_time = time.time()
 
     # prepare data
@@ -421,7 +421,7 @@ def main():
                             list_gene_name_in_pathway.append(gene_entrez_id)
 
                         
-                        # create list of gene expression 
+                        # create list of gene expression of every samples in the same class to be used in t-test
                         for gene_index in range(0, len(list_gene_name_in_pathway)):
                             list_gene_expression_with_entrez = []
                             list_gene_expression_from_sample = []
@@ -1386,13 +1386,6 @@ def main():
     result_file.write("Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_over_all_epoch) + "\n")
 
     result_file.close()
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     main()
