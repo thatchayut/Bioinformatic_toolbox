@@ -249,7 +249,7 @@ def main():
         # list to collect maximun AUC in each fold
         list_max_auc = []
 
-        # list t0 collect average absolte t-score of each fold
+        # list to collect average absolte t-score of each fold
         # list_avg_abs_tscore_each_fold = []
 
         # do only if number of chunks of both datasets are equal
