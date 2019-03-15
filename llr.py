@@ -263,44 +263,44 @@ def main():
                 # {1: [gene_probe_id, [exp1,exp2, ...]]}
 
                 # for class "relapse"
-                genes_expression_relapse = {}
+                genes_expression_relapse_train = {}
+                last_index_to_read_file_to_cal_mean_sd_relapse = len(col_to_read_file_to_cal_mean_sd_relapse)
                 for line_index in range(0, row_to_read_file_to_cal_mean_sd):
                     gene_expression_by_probe_id = []              
                     list_gene_expression_same_probe_id = [] 
 
-                    for element in file_to_cal_mean_sd_relapse.iloc[line_index, 1:-1]:
+                    for element in file_to_cal_mean_sd_relapse.iloc[line_index, 1:last_index_to_read_file_to_cal_mean_sd_relapse]:
                          list_gene_expression_same_probe_id.append(element)  
 
                     gene_probe_id = file_to_cal_mean_sd_relapse.iloc[line_index, 0]
                     gene_expression_by_probe_id.append(gene_probe_id)
                     gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
 
-                    genes_expression_relapse[line_index] = gene_expression_by_probe_id
+                    genes_expression_relapse_train[line_index] = gene_expression_by_probe_id
                 
                 # for class "non-relapse"
-                genes_expression_no_relapse = {}
+                genes_expression_no_relapse_train = {}
+                last_index_to_read_file_to_cal_mean_sd_no_relapse = len(col_to_read_file_to_cal_mean_sd_no_relapse)
                 for line_index in range(0, row_to_read_file_to_cal_mean_sd):
                     gene_expression_by_probe_id = []              
                     list_gene_expression_same_probe_id = [] 
 
-                    for element in file_to_cal_mean_sd_no_relapse.iloc[line_index, 1:-1]:
+                    for element in file_to_cal_mean_sd_no_relapse.iloc[line_index, 1:last_index_to_read_file_to_cal_mean_sd_no_relapse]:
                          list_gene_expression_same_probe_id.append(element)  
 
                     gene_probe_id = file_to_cal_mean_sd_no_relapse.iloc[line_index, 0]
                     gene_expression_by_probe_id.append(gene_probe_id)
                     gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
 
-                    genes_expression_no_relapse[line_index] = gene_expression_by_probe_id
-                
-                # find mean and sd of gene expression in each class
+                    genes_expression_no_relapse_train[line_index] = gene_expression_by_probe_id
 
                 # for class "relapse"
                 list_mean_sd_gene_expression_by_probe_id_relapse = []
-                for gene_index in range(0, len(genes_expression_relapse)):
+                for gene_index in range(0, len(genes_expression_relapse_train)):
                     result = []
-                    gene_name = genes_expression_relapse[gene_index][0]
-                    mean_of_list = calculate.mean(genes_expression_relapse[gene_index][1])
-                    sd_of_list = calculate.sd(genes_expression_relapse[gene_index][1])
+                    gene_name = genes_expression_relapse_train[gene_index][0]
+                    mean_of_list = calculate.mean(genes_expression_relapse_train[gene_index][1])
+                    sd_of_list = calculate.sd(genes_expression_relapse_train[gene_index][1])
                     result.append(gene_name)
                     result.append(mean_of_list)
                     result.append(sd_of_list)
@@ -308,17 +308,64 @@ def main():
                 
                 # for class "non-relapse"
                 list_mean_sd_gene_expression_by_probe_id_no_relapse = []
-                for gene_index in range(0, len(genes_expression_no_relapse)):
+                for gene_index in range(0, len(genes_expression_no_relapse_train)):
                     result = []
-                    gene_name = genes_expression_no_relapse[gene_index][0]
-                    mean_of_list = calculate.mean(genes_expression_no_relapse[gene_index][1])
-                    sd_of_list = calculate.sd(genes_expression_no_relapse[gene_index][1])
+                    gene_name = genes_expression_no_relapse_train[gene_index][0]
+                    mean_of_list = calculate.mean(genes_expression_no_relapse_train[gene_index][1])
+                    sd_of_list = calculate.sd(genes_expression_no_relapse_train[gene_index][1])
                     result.append(gene_name)
                     result.append(mean_of_list)
                     result.append(sd_of_list)
                     list_mean_sd_gene_expression_by_probe_id_no_relapse.append(result)
-
+                
                 # calculate gene lambda
+                # find mean and sd of gene expression in each class
+                # default row_to_read_file_to_get_lambda = 22283
+                row_to_read_file_to_get_lambda = 100
+
+                col_to_read_file_to_get_lambda_relapse = ["ID_REF"]
+                col_to_read_file_to_get_lambda_relapse.extend(list_sample_relapse)
+
+                col_to_read_file_to_get_lambda_no_relapse = ["ID_REF"]
+                col_to_read_file_to_get_lambda_no_relapse.extend(list_sample_no_relapse)
+
+                file_to_get_lambda_relapse = pd.read_csv("GSE2034-22071 (edited).csv", usecols = col_to_read_file_to_get_lambda_relapse, nrows = row_to_read_file_to_get_lambda)
+                file_to_get_lambda_no_relapse = pd.read_csv("GSE2034-22071 (edited).csv", usecols = col_to_read_file_to_get_lambda_no_relapse, nrows = row_to_read_file_to_get_lambda)
+    
+                # dictionary contains genes idintified by its probe id which contain all gene expression from samples
+                # {1: [gene_probe_id, [exp1,exp2, ...]]}
+
+                # for class "relapse"
+                genes_expression_relapse = {}
+                last_index_to_read_file_to_get_lambda_relapse = len(col_to_read_file_to_get_lambda_relapse)
+                for line_index in range(0, row_to_read_file_to_get_lambda):
+                    gene_expression_by_probe_id = []              
+                    list_gene_expression_same_probe_id = [] 
+                    for element in file_to_get_lambda_relapse.iloc[line_index, 1:last_index_to_read_file_to_get_lambda_relapse]:
+                        list_gene_expression_same_probe_id.append(element)  
+
+                    gene_probe_id = file_to_get_lambda_relapse.iloc[line_index, 0]
+                    gene_expression_by_probe_id.append(gene_probe_id)
+                    gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
+
+                    genes_expression_relapse[line_index] = gene_expression_by_probe_id
+
+                # for class "non-relapse"
+                genes_expression_no_relapse = {}
+                last_index_to_read_file_to_get_lambda_no_relapse = len(col_to_read_file_to_get_lambda_no_relapse)
+                for line_index in range(0, row_to_read_file_to_get_lambda):
+                    gene_expression_by_probe_id = []              
+                    list_gene_expression_same_probe_id = [] 
+
+                    for element in file_to_get_lambda_no_relapse.iloc[line_index, 1:last_index_to_read_file_to_get_lambda_no_relapse]:
+                         list_gene_expression_same_probe_id.append(element)  
+
+                    gene_probe_id = file_to_get_lambda_no_relapse.iloc[line_index, 0]
+                    gene_expression_by_probe_id.append(gene_probe_id)
+                    gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
+
+                    genes_expression_no_relapse[line_index] = gene_expression_by_probe_id
+                
                 # for class "relapse"
                 genes_lambda_relapse = {}
                 for gene_index in range(0, len(genes_expression_relapse)):
@@ -443,48 +490,47 @@ def main():
                     genes_lambda_no_relapse_normalized[gene_index] = gene_with_lambda
 
 
-                
-
-
                 # print("Process : Creating collection to collect samples and their genes' expression")
 
-                # # create dictionary used to collect pathways of each sample
-                # samples_relapse = {}
-                # samples_no_relapse = {}
+                # create dictionary used to collect pathways of each sample
+                samples_relapse = {}
+                samples_no_relapse = {}
 
-                # # get all pathways of all samples in class 'relapse'
-                # for element_index in range(0, len(list_sample_relapse)):
-                #     print()
-                #     print("Creating pathways for sample " + str(element_index + 1) + " relapse is in progress ...")
-                #     print(str(len(list_sample_relapse) - (element_index + 1)) + " samples left")
-                #     print()
+                # get all pathways of all samples in class 'relapse'
+                for sample_index in range(0, len(list_sample_relapse)):
+                    print()
+                    print("Creating pathways for sample " + str(sample_index + 1) + " relapse is in progress ...")
+                    print(str(len(list_sample_relapse) - (sample_index + 1)) + " samples left")
+                    print()
 
-                #     sample = []
-                #     sample_name = list_sample_relapse[element_index]
-                #     pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
-                #                 list_mean_sd_gene_expression_by_probe_id_relapse, list_mean_sd_gene_expression_by_probe_id_no_relapse)
+                    print("size list_sample_relapse : " + str(len(list_sample_relapse)))
+                    print("num of lambda : " + str(len(genes_lambda_relapse_normalized[0][1])))
 
-                #     sample.append(sample_name)
-                #     sample.append(pathways)
-                #     samples_relapse[element_index] = sample
+                    # create list of lambda of genes in this sample
+                    list_gene_lambda_value = []
+                    for gene_index in range(0, len(genes_lambda_relapse_normalized)):
+                        gene_with_lambda = []
+                        for lambda_index in range(0, len(genes_lambda_relapse_normalized[gene_index][1])):
+                            if (lambda_index == sample_index):
+                                gene_probe_id = genes_lambda_relapse_normalized[gene_index][0]
+                                lambda_value = genes_lambda_relapse_normalized[gene_index][1][lambda_index]
+
+                                gene_with_lambda.append(gene_probe_id)
+                                gene_with_lambda.append(lambda_value)
+
+                                list_gene_lambda_value.append(gene_with_lambda)
+
+                    print("list_gene_lambda_value : " + str(list_gene_lambda_value))
+
+                    # sample = []
+                    # sample_name = list_sample_relapse[sample_index]
+                    # pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
+                    #             genes_lambda = genes_lambda_relapse_normalized)
+
+                    # sample.append(sample_name)
+                    # sample.append(pathways)
+                    # samples_relapse[sample_index] = sample
                 
-                # for element_index in range(0, len(list_sample_no_relapse)):
-                #     print()
-                #     print("Creating pathways for sample " + str(element_index + 1) + " non-relapse is in progress ...")
-                #     print(str(len(list_sample_no_relapse) - (element_index + 1)) + " samples left")
-                #     print()
-
-                #     sample = []
-                #     sample_name = list_sample_no_relapse[element_index]
-                #     pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway, \
-                #                 list_mean_sd_gene_expression_by_probe_id_relapse, list_mean_sd_gene_expression_by_probe_id_no_relapse)
-
-                #     sample.append(sample_name)
-                #     sample.append(pathways)
-                #     samples_no_relapse[element_index] = sample
-
-                # print(samples_relapse[0])
-
                     
 
 

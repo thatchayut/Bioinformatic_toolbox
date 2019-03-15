@@ -225,11 +225,12 @@ def main():
                 # dictionary contains genes idintified by its probe id which contain all gene expression from all samples
                 # {1: [gene_probe_id, [exp1,exp2, ...]]}
                 genes_expression = {}
+                last_index_to_read_file_to_cal_zscore = len(col_to_read_file_to_cal_zscore)
                 for line_index in range(0, row_to_read_file_to_cal_zscore):
                     gene_expression_by_probe_id = []              
                     list_gene_expression_same_probe_id = [] 
 
-                    for element in file_to_cal_zscore.iloc[line_index, 1:-1]:
+                    for element in file_to_cal_zscore.iloc[line_index, 1:last_index_to_read_file_to_cal_zscore]:
                          list_gene_expression_same_probe_id.append(element)  
 
                     gene_probe_id = file_to_cal_zscore.iloc[line_index, 0]

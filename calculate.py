@@ -302,8 +302,7 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
         pathways[key] = pathway
     return pathways
 
-def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, list_mean_sd_gene_expression_by_probe_id_relapse,\
-                    list_mean_sd_gene_expression_by_probe_id_no_relapse):
+def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, genes_lambda):
     # prepare files to be used
     cols_to_read_file_to_convert = ["ID_REF", sample_id]
     # rows_to_read_file_pathway = 1329
@@ -319,7 +318,9 @@ def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample
 
     num_of_probe_id = len(list_probe_id)
     count_not_found = 0
+
     # scan probe id by its entrez id
+    # find matching between probe id and entrez id
     list_entrez_id = []
     print("Scanning in progress ...")
     print()
@@ -334,7 +335,6 @@ def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample
 
     num_of_available_data = num_of_probe_id - count_not_found
 
-    # print(file_pathway)
 
     # create dictionary to collect each pathway
     pathways = {}
@@ -354,6 +354,8 @@ def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample
                         gene_probe_id = file_to_convert.iloc[list_entrez_id_index, 0]
                         gene_expression = file_to_convert.iloc[list_entrez_id_index, 1]
                         
+                        
+
                         # find gene lambda
                         for gene_index in range(0, len(list_mean_sd_gene_expression_by_probe_id_relapse)):
                             gene_name = list_mean_sd_gene_expression_by_probe_id_relapse[gene_index][0]
