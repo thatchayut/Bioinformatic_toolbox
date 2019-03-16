@@ -302,7 +302,7 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
         pathways[key] = pathway
     return pathways
 
-def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, genes_lambda):
+def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, list_gene_lambda_value):
     # prepare files to be used
     cols_to_read_file_to_convert = ["ID_REF", sample_id]
     # rows_to_read_file_pathway = 1329
@@ -354,29 +354,12 @@ def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample
                         gene_probe_id = file_to_convert.iloc[list_entrez_id_index, 0]
                         gene_expression = file_to_convert.iloc[list_entrez_id_index, 1]
                         
-                        
+                        for gene_index in range(0, len(list_gene_lambda_value)):
+                            gene_name = list_gene_lambda_value[gene_index][0]
 
-                        # find gene lambda
-                        for gene_index in range(0, len(list_mean_sd_gene_expression_by_probe_id_relapse)):
-                            gene_name = list_mean_sd_gene_expression_by_probe_id_relapse[gene_index][0]
                             if (gene_name == gene_probe_id):
-                                
-                                gene_mean_relapse = list_mean_sd_gene_expression_by_probe_id_relapse[gene_index][1]
-                                gene_sd_relapse = list_mean_sd_gene_expression_by_probe_id_relapse[gene_index][2]
-
-                                gene_mean_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse[gene_index][1]
-                                gene_sd_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse[gene_index][2]
-
-                                gene_pdf_relapse = norm.pdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
-                                gene_pdf_no_relapse = norm.pdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)
-
-                                log_gene_pdf_relapse = math.log10(gene_pdf_relapse)
-                                log_gene_pdf_no_relapse = math.log10(gene_pdf_no_relapse)
-
-                                lambda_value = log_gene_pdf_relapse - log_gene_pdf_no_relapse
-                        
+                                lambda_value = list_gene_lambda_value[gene_index][1]
                                 list_gene_same_entrez.append(lambda_value)
-
 
                 # if gene expression is not found, assume it as 'zero'
                 if not list_gene_same_entrez:

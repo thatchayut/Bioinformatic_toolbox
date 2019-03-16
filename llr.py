@@ -318,6 +318,8 @@ def main():
                     result.append(sd_of_list)
                     list_mean_sd_gene_expression_by_probe_id_no_relapse.append(result)
                 
+
+                print(" Process : Calculate Log-likelihood ration of each gene ...")
                 # calculate gene lambda
                 # find mean and sd of gene expression in each class
                 # default row_to_read_file_to_get_lambda = 22283
@@ -489,22 +491,20 @@ def main():
 
                     genes_lambda_no_relapse_normalized[gene_index] = gene_with_lambda
 
-
-                # print("Process : Creating collection to collect samples and their genes' expression")
+                
+                print("Process : Creating collection to collect samples and their genes' expression")
 
                 # create dictionary used to collect pathways of each sample
                 samples_relapse = {}
                 samples_no_relapse = {}
 
-                # get all pathways of all samples in class 'relapse'
+                # get all pathways of all samples 
+                # for class 'relapse'
                 for sample_index in range(0, len(list_sample_relapse)):
                     print()
                     print("Creating pathways for sample " + str(sample_index + 1) + " relapse is in progress ...")
                     print(str(len(list_sample_relapse) - (sample_index + 1)) + " samples left")
                     print()
-
-                    print("size list_sample_relapse : " + str(len(list_sample_relapse)))
-                    print("num of lambda : " + str(len(genes_lambda_relapse_normalized[0][1])))
 
                     # create list of lambda of genes in this sample
                     list_gene_lambda_value = []
@@ -520,16 +520,48 @@ def main():
 
                                 list_gene_lambda_value.append(gene_with_lambda)
 
-                    print("list_gene_lambda_value : " + str(list_gene_lambda_value))
+                    sample = []
+                    sample_name = list_sample_relapse[sample_index]
+                    pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
+                                list_gene_lambda_value)
 
-                    # sample = []
-                    # sample_name = list_sample_relapse[sample_index]
-                    # pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
-                    #             genes_lambda = genes_lambda_relapse_normalized)
+                    sample.append(sample_name)
+                    sample.append(pathways)
+                    samples_relapse[sample_index] = sample
+                
+                # for class "non-relapse"
+                for sample_index in range(0, len(list_sample_no_relapse)):
+                    print()
+                    print("Creating pathways for sample " + str(sample_index + 1) + " relapse is in progress ...")
+                    print(str(len(list_sample_no_relapse) - (sample_index + 1)) + " samples left")
+                    print()
 
-                    # sample.append(sample_name)
-                    # sample.append(pathways)
-                    # samples_relapse[sample_index] = sample
+                    # create list of lambda of genes in this sample
+                    list_gene_lambda_value = []
+                    for gene_index in range(0, len(genes_lambda_no_relapse_normalized)):
+                        gene_with_lambda = []
+                        for lambda_index in range(0, len(genes_lambda_no_relapse_normalized[gene_index][1])):
+                            if (lambda_index == sample_index):
+                                gene_probe_id = genes_lambda_no_relapse_normalized[gene_index][0]
+                                lambda_value = genes_lambda_no_relapse_normalized[gene_index][1][lambda_index]
+
+                                gene_with_lambda.append(gene_probe_id)
+                                gene_with_lambda.append(lambda_value)
+
+                                list_gene_lambda_value.append(gene_with_lambda)
+
+                    sample = []
+                    sample_name = list_sample_no_relapse[sample_index]
+                    pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
+                                list_gene_lambda_value)
+                    
+                    sample.append(sample_name)
+                    sample.append(pathways)
+                    samples_no_relapse[sample_index] = sample
+                
+
+
+                
                 
                     
 
