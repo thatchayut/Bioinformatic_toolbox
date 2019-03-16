@@ -657,8 +657,12 @@ def main():
                     list_relapse_pathway_activity_for_pvalue = []
                     for pathway_index in range(0, rows_to_read_file_pathway):
                         pathway = []
-                        for sample_index in range(0, len(samples_relapse_feature_selection_pathway_activity)):
-                            pathway_activity = samples_relapse_feature_selection_pathway_activity[sample_index][1][pathway_index][1]
+                        # for sample_index in range(0, len(samples_relapse_feature_selection_pathway_activity)):
+                        #     pathway_activity = samples_relapse_feature_selection_pathway_activity[sample_index][1][pathway_index][1]
+                        #     pathway.append(pathway_activity)
+                        # list_relapse_pathway_activity_for_pvalue.append(pathway)
+                        for sample_index in range(0, len(samples_relapse_marker_evaluation_pathway_activity)):
+                            pathway_activity = samples_relapse_marker_evaluation_pathway_activity[sample_index][1][pathway_index][1]
                             pathway.append(pathway_activity)
                         list_relapse_pathway_activity_for_pvalue.append(pathway)
                     
@@ -666,10 +670,14 @@ def main():
                     list_no_relapse_pathway_activity_for_pvalue = []
                     for pathway_index in range(0, rows_to_read_file_pathway):
                         pathway = []
-                        for sample_index in range(0, len(samples_no_relapse_feature_selection_pathway_activity)):
-                            pathway_activity = samples_no_relapse_feature_selection_pathway_activity[sample_index][1][pathway_index][1]
+                        # for sample_index in range(0, len(samples_no_relapse_feature_selection_pathway_activity)):
+                        #     pathway_activity = samples_no_relapse_feature_selection_pathway_activity[sample_index][1][pathway_index][1]
+                        #     pathway.append(pathway_activity)
+                        # list_no_relapse_pathway_activity_for_pvalue.append(pathway)
+                        for sample_index in range(0, len(samples_no_relapse_marker_evaluation_pathway_activity)):
+                            pathway_activity = samples_no_relapse_marker_evaluation_pathway_activity[sample_index][1][pathway_index][1]
                             pathway.append(pathway_activity)
-                        list_no_relapse_pathway_activity_for_pvalue.append(pathway)
+                        list_relapse_pathway_activity_for_pvalue.append(pathway)
                     
                     # calculate p-value
                     list_pvalue_pathway_activity = []
