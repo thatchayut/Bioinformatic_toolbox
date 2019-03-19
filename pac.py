@@ -677,7 +677,7 @@ def main():
                         for sample_index in range(0, len(samples_no_relapse_marker_evaluation_pathway_activity)):
                             pathway_activity = samples_no_relapse_marker_evaluation_pathway_activity[sample_index][1][pathway_index][1]
                             pathway.append(pathway_activity)
-                        list_relapse_pathway_activity_for_pvalue.append(pathway)
+                        list_no_relapse_pathway_activity_for_pvalue.append(pathway)
                     
                     # calculate p-value
                     list_pvalue_pathway_activity = []
@@ -892,8 +892,8 @@ def main():
                     print()
 
                     # find feature set using sequential forward selection
-                    feature_set_name, auc_score_feature_selection = calculate.sfsAdvance(list_pathway_name_feature_selection, list_desired_outputs_feature_selection, list_sample_relapse_pathway_expression_feature_selection, \
-                            list_sample_no_relapse_pathway_expression_feature_selection, list_sample_all_pathway_expression_feature_selection)
+                    feature_set_name, auc_score_feature_selection = calculate.sfsAdvance(list_pathway_name_feature_selection, list_desired_outputs_feature_selection, list_sample_relapse_pathway_expression_marker_evaluation, \
+                            list_sample_no_relapse_pathway_expression_marker_evaluation, list_sample_all_pathway_expression_feature_selection)
 
                     list_max_auc.append(auc_score_feature_selection)
 

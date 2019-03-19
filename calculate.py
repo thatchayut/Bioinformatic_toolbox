@@ -196,7 +196,7 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
     # rows_to_read_file_pathway = 1329
     file_ref = pd.read_csv(file_ref_name)
     # For the last version, 'nrows' in file_to_convert has to be removed
-    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert, nrows = 100)
+    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert)
     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # list all probe id
@@ -308,7 +308,7 @@ def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample
     # rows_to_read_file_pathway = 1329
     file_ref = pd.read_csv(file_ref_name)
     # For the last version, 'nrows' in file_to_convert has to be removed
-    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert, nrows = 100)
+    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert)
     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # list all probe id
@@ -555,7 +555,8 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
 
     return feature_set_final, max_auc_score_over_all_features
 
-def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, samples_no_relapse_input, samples_test_input):
+def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, samples_no_relapse_input, samples_test_input, \
+    top_rank = None, top_rank_percent = None):
     print("list_pathway_name size : " + str(len(list_pathway_name)))
     print("list_desired_output : " + str(len(list_desired_output)))
     print("samples_relapse_input size : " + str(len(samples_relapse_input)))
@@ -631,6 +632,24 @@ def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, sa
     # list_pathway_selected = []
     # for index in range(0, num_of_top_n_percent_pathway):
     #     list_pathway_selected.append(index)
+
+    # get the list to be used as an initial set
+    list_pathway_selected = []
+
+    # if use top n pathway
+    if (top_rank is not None):
+        num_of_top_pathway = top_rank
+        for index in (0, num_of_top_pathway):
+            list_pathway_selected.append(index)
+    # if use top n percent pathway
+    elif (top_rank_percent is not None):
+        num_of_top_percent_pathway = math.ceil((len(list_pathway_name) * percent) / 100)
+        for index in range(0, num_of_top_percent_pathway):
+            list_pathway_selected.append(index)
+    # if use only the highest rank
+    else:
+        list_pathway_selected = [0]
+
 
 
     num_of_pathways = len(list_pathway_name)
