@@ -622,8 +622,8 @@ def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, sa
     # original 
     # list_pathway_selected = []
 
-    # fix top pathway as the first index
-    list_pathway_selected = [0]
+    # # fix top pathway as the first index
+    # list_pathway_selected = [0]
 
     # version 2 
     # select 5% of top pathways
@@ -632,6 +632,7 @@ def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, sa
     # list_pathway_selected = []
     # for index in range(0, num_of_top_n_percent_pathway):
     #     list_pathway_selected.append(index)
+    
 
     # get the list to be used as an initial set
     list_pathway_selected = []
