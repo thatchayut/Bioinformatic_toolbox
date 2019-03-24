@@ -49,10 +49,12 @@ def main():
     sample_no_relapse = file_training_output.loc[file_training_output['relapse (1=True)'].isin(['0'])]
     
     # add GEO asscession number to each list
+    # for class "relapse"
     list_sample_relapse = []
     for element in sample_relapse.loc[:, 'GEO asscession number']:
         list_sample_relapse.append(element)
     
+    # for class "non-relapse"
     list_sample_no_relapse = []
     for element in sample_no_relapse.loc[:, 'GEO asscession number']:
         list_sample_no_relapse.append(element)
@@ -92,6 +94,7 @@ def main():
     # list used to collect average auc score of each epoch
     list_avg_auc_each_epoch = []
 
+    # run through each epoch
     for epoch_count in range(0, num_of_epochs):
         print("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
         result_file.write("######################################### epoch : " + str(epoch_count + 1) + "#########################################\n")
@@ -100,9 +103,11 @@ def main():
         list_index_samples_relapse = []
         list_index_samples_no_relapse = []
 
+        # create index for samples in class "relapse"
         for index in range(0, len(list_sample_relapse)):
             list_index_samples_relapse.append(index)
         
+        # create index for samples in class "non-relapse"
         for index in range(0, len(list_sample_no_relapse)):
             list_index_samples_no_relapse.append(index)
         
@@ -120,20 +125,25 @@ def main():
         print(list_index_samples_no_relapse)
 
         # split data into k parts
+        # calculate number of sample in each part
         chunk_relapse_size = math.ceil(len(list_index_samples_relapse) / num_of_folds)
         chunk_no_relapse_size = math.ceil(len(list_index_samples_no_relapse) / num_of_folds)
 
+        # split data
+        # for class "relapse"
         chunk_list_relapse = list(calculate.chunks(list_index_samples_relapse, chunk_relapse_size))
         print("number of chunks in chunk_list_relapse = " + str(len(chunk_list_relapse)))
         print("chunk_list_relapse : ")
         print(chunk_list_relapse)
         print()
 
+        # for class "non-relapse"
         chunk_list_no_relapse = list(calculate.chunks(list_index_samples_no_relapse, chunk_no_relapse_size))
         print("number of in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse)))
         print("chunk_list_no_relapse : ")
         print(chunk_list_no_relapse)
 
+        # check if number of chunks in both classes are equal, then get number of chunks 
         check_valid, num_of_chunks = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
 
         # list and variable to track feature set that has the best auc score
@@ -148,11 +158,14 @@ def main():
 
         # do only if number of chunks of both datasets are equal
         if (check_valid == True):
+            # run through each fold
              for chunk_test_index in range(0, num_of_chunks):
                 # list of feature set
                 feature_set_name = []
 
+                # record start time of this fold
                 start_fold_time = time.time()
+
                 result_file.write("\n#### Fold " + str(chunk_test_index + 1) + " ####\n")
 
                 # separating data into testing and training dataset
@@ -167,12 +180,14 @@ def main():
                 print()
 
                 # get training set in this fold
+                # for class "relapse"
                 chunk_train_relapse = []
                 for chunk_train_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_relapse[chunk_train_relapse_index] is not chunk_test_relapse):
                         chunk_train_relapse.append(chunk_list_relapse[chunk_train_relapse_index])
                 print("chunk train relapse size = " + str(len(chunk_train_relapse)))
 
+                # for class "non-relapse"
                 chunk_train_no_relapse = []
                 for chunk_train_no_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_no_relapse[chunk_train_no_relapse_index] is not chunk_test_no_relapse):
@@ -180,6 +195,7 @@ def main():
                 print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
 
                 # merge training data of each class
+                # for class "relapse"
                 list_train_relapse = []
                 for i in range(0, len(chunk_train_relapse)):
                     list_train_relapse.extend(chunk_train_relapse[i])
@@ -188,6 +204,7 @@ def main():
                 print(list_train_relapse)
                 print()
 
+                # for class "non-relapse"
                 list_train_no_relapse = []
                 for i in range(0, len(chunk_train_no_relapse)):
                     list_train_no_relapse.extend(chunk_train_no_relapse[i])
@@ -197,15 +214,17 @@ def main():
                 print()
                 
                 # get sample name and add to a list to be used as column index
-                list_train_relapse_name = []
-                list_train_no_relapse_name = []
+                # for class "relapse"
+                list_train_relapse_name = []     
                 for i in range(0, len(list_train_relapse)):
                     list_train_relapse_name.append(list_sample_relapse[list_train_relapse[i]])
                 
+                # for class "non-relapse"
+                list_train_no_relapse_name = []
                 for i in range(0, len(list_train_no_relapse)):
                     list_train_no_relapse_name.append(list_sample_no_relapse[list_train_no_relapse[i]])
                 
-                # NORMALIZATION
+                # normalization using z-score
                 # create list to collect mean of each gene 
                 # calculate mean and sd directly from a file
                 list_gene_expression_by_entrez = []
@@ -225,11 +244,12 @@ def main():
                 # dictionary contains genes idintified by its probe id which contain all gene expression from all samples
                 # {1: [gene_probe_id, [exp1,exp2, ...]]}
                 genes_expression = {}
+                last_index_to_read_file_to_cal_zscore = len(col_to_read_file_to_cal_zscore)
                 for line_index in range(0, row_to_read_file_to_cal_zscore):
                     gene_expression_by_probe_id = []              
                     list_gene_expression_same_probe_id = [] 
 
-                    for element in file_to_cal_zscore.iloc[line_index, 1:-1]:
+                    for element in file_to_cal_zscore.iloc[line_index, 1:last_index_to_read_file_to_cal_zscore]:
                          list_gene_expression_same_probe_id.append(element)  
 
                     gene_probe_id = file_to_cal_zscore.iloc[line_index, 0]
@@ -250,10 +270,9 @@ def main():
                     result.append(sd_of_list)
                     list_mean_sd_gene_expression_by_probe_id.append(result)
                 
-                # create samples
+                # create samples with their pathways and member genes
+                # for class "relapse"
                 samples_relapse = {}
-                samples_no_relapse = {}
-
                 for element_index in range(0, len(list_sample_relapse)):
                     print()
                     print("Creating pathways for sample " + str(element_index + 1) + " relapse is in progress ...")
@@ -268,7 +287,9 @@ def main():
                     sample.append(sample_name)
                     sample.append(pathways)
                     samples_relapse[element_index] = sample       
-                
+
+                # for class "non-relapse"
+                samples_no_relapse = {}
                 for element_index in range(0, len(list_sample_no_relapse)):
                     print()
                     print("Creating pathways for sample " + str(element_index + 1) + " non-relapse is in progress ...")
@@ -286,17 +307,24 @@ def main():
 
                 
                 # splitting lists to use them as an evaluation set and feature selection set
-                # given that we use 3-fold cross validation in this level
+                # given that it is divided into 3 parts
                 print("\n#### given that we use 3 parts in this level for marker evaluation and feature selection set ####")
                 second_num_of_fold = 3
+
+                # calculate number of samples in each part
                 second_chunk_relapse_size = math.ceil(len(list_train_relapse) / second_num_of_fold)
                 second_chunk_no_relapse_size = math.ceil(len(list_train_no_relapse) / second_num_of_fold)
 
+                # split data 
+                # for class "relapse"
                 second_chunk_list_relapse = list(calculate.chunks(list_train_relapse, second_chunk_relapse_size))
                 print("# chunks in second_chunk_list_relapse = " + str(len(second_chunk_list_relapse)))
+
+                # for class "non-relapse"
                 second_chunk_list_no_relapse = list(calculate.chunks(list_train_no_relapse, second_chunk_no_relapse_size))
                 print("# chunks in second_chunk_list_no_relapse = " + str(len(second_chunk_list_no_relapse)))
 
+                # check if size of both classes are eqaul, then get number of parts
                 second_check_valid, second_num_of_chunks = calculate.checkEqualListSize(second_chunk_list_relapse, second_chunk_list_no_relapse)
 
                 # variable to collect data from sfs
@@ -312,7 +340,8 @@ def main():
                     feature_selection_relapse =  second_chunk_list_relapse[feature_selection_index]
                     feature_selection_no_relapse = second_chunk_list_no_relapse[feature_selection_index]
 
-                    # separate training dataset from testing dataset to use in t-test ranking
+                    # separate marker evaluation set from feature selection set 
+                    # for class "relapse"
                     marker_evaluation_relapse = []
                     for marker_evaluation_index in range(0, second_num_of_chunks):
                         if (second_chunk_list_relapse[marker_evaluation_index] is not feature_selection_relapse):
@@ -321,6 +350,7 @@ def main():
                     print("marker_evaluation_relapse = " + str(marker_evaluation_relapse))
                     print()
 
+                    # for class "non-relapse"
                     marker_evaluation_no_relapse = []
                     for marker_evaluation_index in range(0, second_num_of_chunks):
                         if (second_chunk_list_no_relapse[marker_evaluation_index] is not feature_selection_no_relapse):
@@ -329,23 +359,24 @@ def main():
                     print("marker_evaluation_no_relapse : " + str(marker_evaluation_no_relapse))    
                     print()
 
-                    # merge all samples in the same class
+                    # merge all samples in marker evaluation set with the same class
                     print("\n#### merge all samples in the same class to be used later ####")
 
+                    # for class "relapse"
                     list_sample_relapse_marker_evaluation = []
                     for i in range(0, len(marker_evaluation_relapse)):
                         list_sample_relapse_marker_evaluation.extend(marker_evaluation_relapse[i])
                     print("list_sample_relapse_marker_evaluation : " + str(list_sample_relapse_marker_evaluation))
 
+                    # for class "non-relapse"
                     list_sample_no_relapse_marker_evaluation = []
                     for i in range(0, len(marker_evaluation_no_relapse)):
                         list_sample_no_relapse_marker_evaluation.extend(marker_evaluation_no_relapse[i])
                     print("list_sample_no_relapse_marker_evaluation : " + str(list_sample_no_relapse_marker_evaluation))
 
                     # create collection of samples used in feature selection
+                    # for class "relapse"
                     samples_relapse_marker_evaluation = {}
-                    samples_no_relapse_marker_evaluation= {}
-
                     for sample_index in range(0, len(list_sample_relapse_marker_evaluation)):
                         index_samples_relapse = list_sample_relapse_marker_evaluation[sample_index]
                         samples_relapse_marker_evaluation[sample_index] = samples_relapse[index_samples_relapse]
@@ -354,6 +385,8 @@ def main():
                     print(samples_relapse_marker_evaluation)
                     print()
 
+                    # for class "non-relapse"
+                    samples_no_relapse_marker_evaluation= {}
                     for sample_index in range(0, len(list_sample_no_relapse_marker_evaluation)):
                         index_samples_no_relapse = list_sample_no_relapse_marker_evaluation[sample_index]
                         samples_no_relapse_marker_evaluation[sample_index] = samples_no_relapse[index_samples_no_relapse]
@@ -363,8 +396,10 @@ def main():
                     print()
 
                     # find CORG
+                    # list to collect CORG in each pathway
                     list_corg_each_pathway = []
 
+                    # find CORG in each pathway 
                     for pathway_index in range(0, rows_to_read_file_pathway):
                         list_ttest_gene_activity = []
 
@@ -656,8 +691,12 @@ def main():
                     list_relapse_pathway_activity_for_pvalue = []
                     for pathway_index in range(0, rows_to_read_file_pathway):
                         pathway = []
-                        for sample_index in range(0, len(samples_relapse_feature_selection_pathway_activity)):
-                            pathway_activity = samples_relapse_feature_selection_pathway_activity[sample_index][1][pathway_index][1]
+                        # for sample_index in range(0, len(samples_relapse_feature_selection_pathway_activity)):
+                        #     pathway_activity = samples_relapse_feature_selection_pathway_activity[sample_index][1][pathway_index][1]
+                        #     pathway.append(pathway_activity)
+                        # list_relapse_pathway_activity_for_pvalue.append(pathway)
+                        for sample_index in range(0, len(samples_relapse_marker_evaluation_pathway_activity)):
+                            pathway_activity = samples_relapse_marker_evaluation_pathway_activity[sample_index][1][pathway_index][1]
                             pathway.append(pathway_activity)
                         list_relapse_pathway_activity_for_pvalue.append(pathway)
                     
@@ -665,8 +704,12 @@ def main():
                     list_no_relapse_pathway_activity_for_pvalue = []
                     for pathway_index in range(0, rows_to_read_file_pathway):
                         pathway = []
-                        for sample_index in range(0, len(samples_no_relapse_feature_selection_pathway_activity)):
-                            pathway_activity = samples_no_relapse_feature_selection_pathway_activity[sample_index][1][pathway_index][1]
+                        # for sample_index in range(0, len(samples_no_relapse_feature_selection_pathway_activity)):
+                        #     pathway_activity = samples_no_relapse_feature_selection_pathway_activity[sample_index][1][pathway_index][1]
+                        #     pathway.append(pathway_activity)
+                        # list_no_relapse_pathway_activity_for_pvalue.append(pathway)
+                        for sample_index in range(0, len(samples_no_relapse_marker_evaluation_pathway_activity)):
+                            pathway_activity = samples_no_relapse_marker_evaluation_pathway_activity[sample_index][1][pathway_index][1]
                             pathway.append(pathway_activity)
                         list_no_relapse_pathway_activity_for_pvalue.append(pathway)
                     
@@ -883,8 +926,8 @@ def main():
                     print()
 
                     # find feature set using sequential forward selection
-                    feature_set_name, auc_score_feature_selection = calculate.sfsAdvance(list_pathway_name_feature_selection, list_desired_outputs_feature_selection, list_sample_relapse_pathway_expression_feature_selection, \
-                            list_sample_no_relapse_pathway_expression_feature_selection, list_sample_all_pathway_expression_feature_selection)
+                    feature_set_name, auc_score_feature_selection = calculate.sfsAdvance(list_pathway_name_feature_selection, list_desired_outputs_feature_selection, list_sample_relapse_pathway_expression_marker_evaluation, \
+                            list_sample_no_relapse_pathway_expression_marker_evaluation, list_sample_all_pathway_expression_feature_selection)
 
                     list_max_auc.append(auc_score_feature_selection)
 

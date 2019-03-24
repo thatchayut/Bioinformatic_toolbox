@@ -249,7 +249,7 @@ def main():
         # list to collect maximun AUC in each fold
         list_max_auc = []
 
-        # list t0 collect average absolte t-score of each fold
+        # list to collect average absolte t-score of each fold
         # list_avg_abs_tscore_each_fold = []
 
         # do only if number of chunks of both datasets are equal
@@ -378,11 +378,12 @@ def main():
                     print("Process : Gathering gene expression from file ...")
                     # get gene expression of class 'relapse'
                     genes_expression_relapse_from_file = {}
+                    last_index_to_read_file_to_cal_gene_tscore_relapse = len(col_to_read_file_cal_gene_tscore_relapse)
                     for line_index in range(0, row_to_read_file_cal_gene_tscore):
                         gene_expression_by_probe_id = []              
                         list_gene_expression_same_probe_id = [] 
 
-                        for element in file_to_cal_gene_tscore_relapse.iloc[line_index, 1:-1]:
+                        for element in file_to_cal_gene_tscore_relapse.iloc[line_index, 1:last_index_to_read_file_to_cal_gene_tscore_relapse:
                                 list_gene_expression_same_probe_id.append(element)  
 
                         gene_probe_id = file_to_cal_gene_tscore_relapse.iloc[line_index, 0]
@@ -393,11 +394,12 @@ def main():
 
                     # get gene expression of class 'non-relapse'
                     genes_expression_no_relapse_from_file = {}
+                    last_index_to_read_file_to_cal_gene_tscore_no_relapse = len(col_to_read_file_cal_gene_tscore_no_relapse)
                     for line_index in range(0, row_to_read_file_cal_gene_tscore):
                         gene_expression_by_probe_id = []              
                         list_gene_expression_same_probe_id = [] 
 
-                        for element in file_to_cal_gene_tscore_no_relapse.iloc[line_index, 1:-1]:
+                        for element in file_to_cal_gene_tscore_no_relapse.iloc[line_index, 1:last_index_to_read_file_to_cal_gene_tscore_no_relapse]:
                                 list_gene_expression_same_probe_id.append(element)  
 
                         gene_probe_id = file_to_cal_gene_tscore_no_relapse.iloc[line_index, 0]
