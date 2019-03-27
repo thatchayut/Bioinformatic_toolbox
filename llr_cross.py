@@ -971,7 +971,7 @@ def main():
         chunk_list_no_relapse_cv = list(calculate.chunks(list_index_samples_no_relapse_second_dataset, chunk_no_relapse_size_cv))
         print("number of in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse_cv)))
 
-        check_valid_cv, num_of_chunks_cv = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
+        check_valid_cv, num_of_chunks_cv = calculate.checkEqualListSize(chunk_list_relapse_cv, chunk_list_no_relapse_cv)
         print("num_of_chunks_cv : "  +str(num_of_chunks_cv))
 
         # list to track feature set that has the best auc score
@@ -1322,6 +1322,7 @@ def main():
                     sample.append(sample_name)
                     sample.append(pathways)
                     samples_relapse_second_dataset[sample_index] = sample
+
                 
                 # for class "non-relapse"
                 samples_no_relapse_second_dataset = {}
@@ -1586,9 +1587,9 @@ def main():
                 # create list of desired outputs
                 file_desired_outputs = file_output_second_dataset.loc[file_output_second_dataset['GEO asscession number'].isin(list_samples_name_testing_all)]
 
-                file_desired_outputs['pathway_id'] = file_desired_outputs['GEO asscession number'].apply(lambda name: list_samples_name_testing_all.index(name)) 
-                file_desired_outputs = file_desired_outputs.sort_values(by = ['pathway_id'])
-                file_desired_outputs.drop(columns = 'pathway_id', inplace = True)
+                file_desired_outputs['sample_id'] = file_desired_outputs['GEO asscession number'].apply(lambda name: list_samples_name_testing_all.index(name)) 
+                file_desired_outputs = file_desired_outputs.sort_values(by = ['sample_id'])
+                file_desired_outputs.drop(columns = 'sample_id', inplace = True)
 
                 list_desired_outputs = []
                 for element in file_desired_outputs.loc[:, 'relapse (1=True)']:
