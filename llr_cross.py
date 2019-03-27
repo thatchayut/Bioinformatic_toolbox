@@ -15,7 +15,7 @@ def main():
     # prepare data
     # for 1st dataset
     # default row_to_read_file_gene_first_dataset = 22283
-    row_to_read_file_gene_first_dataset = 100
+    row_to_read_file_gene_first_dataset = 22283
     file_gene_first_dataset_name = "GSE2034-22071 (edited).csv"
     file_gene_first_dataset = pd.read_csv(file_gene_first_dataset_name, nrows = row_to_read_file_gene_first_dataset)
 
@@ -24,7 +24,7 @@ def main():
 
     # for 2nd dataset
     # default row_to_read_file_second_dataset = 22283
-    row_to_read_file_gene_second_dataset = 100
+    row_to_read_file_gene_second_dataset = 22283
     file_gene_second_dataset_name = "GSE3494_GPL96.csv"
     file_gene_second_dataset = pd.read_csv(file_gene_second_dataset_name, nrows = row_to_read_file_gene_second_dataset) 
 
@@ -33,7 +33,7 @@ def main():
     
     # files to be used to get pathways and their gene expression
     # default rows_to_read_file_pathway = 1329
-    rows_to_read_file_pathway = 100
+    rows_to_read_file_pathway = 1329
     file_ref_name = "accession_number_to_entrez_id.csv"
     # file_to_convert_name = "GSE2034-22071 (edited).csv"
     file_to_convert_first_dataset_name = "GSE2034-22071 (edited).csv"
@@ -265,7 +265,7 @@ def main():
         # calculate gene lambda
         # find mean and sd of gene expression in each class
         # default row_to_read_file_to_get_lambda = 22283
-        row_to_read_file_to_get_lambda = 100
+        row_to_read_file_to_get_lambda = 22283
 
         col_to_read_file_to_get_lambda_relapse = ["ID_REF"]
         col_to_read_file_to_get_lambda_relapse.extend(list_sample_relapse_first_dataset)

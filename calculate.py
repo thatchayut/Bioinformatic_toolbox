@@ -308,7 +308,7 @@ def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample
     # rows_to_read_file_pathway = 1329
     file_ref = pd.read_csv(file_ref_name)
     # For the last version, 'nrows' in file_to_convert has to be removed
-    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert, nrows = 100)
+    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read_file_to_convert)
     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # list all probe id
