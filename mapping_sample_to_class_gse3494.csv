@@ -1,4 +1,4 @@
-﻿SAMPLE_ID,p53 seq mut status (p53+=mutant; p53-=wt),relapse (1=True)
+﻿GEO asscession number,p53 seq mut status (p53+=mutant; p53-=wt),relapse (1=True)
 GSM79114,p53-,0
 GSM79115,p53+,1
 GSM79116,p53+,1

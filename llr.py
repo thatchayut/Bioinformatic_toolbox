@@ -169,7 +169,7 @@ def main():
                 print("chunk_test_no_relapse : " + str(chunk_test_no_relapse))
                 print()
 
-                 # get training set in this fold
+                # get training set in this fold
                 chunk_train_relapse = []
                 for chunk_train_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_relapse[chunk_train_relapse_index] is not chunk_test_relapse):
