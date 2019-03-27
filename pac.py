@@ -149,6 +149,7 @@ def main():
         # list and variable to track feature set that has the best auc score
         auc_score_max = 0
         list_feature_set_max_auc = []
+        list_corg_in_feature_set_max_auc = []
 
         # list to collect auc score from testing which will be used to calculate an average auc score
         list_auc_score = []
@@ -1189,11 +1190,34 @@ def main():
                 auc_score = roc_auc_score(list_desired_outputs, list_actual_outputs)
                 list_auc_score.append(auc_score)
 
+                # get corg of each feature in feature set
+                # get index of members in feature set in relation to th eorder of pathway in an input file
+                list_index_feature_set = []
+                for feature_index in range(0, len(feature_set_name)):
+                    for pathway_index in range(0, len(list_pathway_name)):
+                        feature = feature_set_name[feature_index]
+                        pathway = list_pathway_name[pathway_index][1]
+
+                        if (feature == pathway):
+                            index_feature_in_list_pathway = list_pathway_name[pathway_index][0]
+                            list_index_feature_set.append(index_feature_in_list_pathway)
+
+                # map index of members in feature set to index of CORG 
+                list_corg_feature_set = []
+                for feature_index in range(0, len(list_index_feature_set)):
+                    index_in_list = list_index_feature_set[feature_index]
+
+                    corg_this_feature = list_corg_all_pathway[index_in_list]
+                    list_corg_feature_set.append(corg_this_feature)
+
+
                 print()
                 print("#### Evaluation of " + str(chunk_test_index + 1) + " - fold ####")
                 # print("Feature set : " + str(list_top_ranked_pathways))
                 print("Feature set : " + str(feature_set_name))
-                print("Size of feature set : " + str(len(feature_set_name)))
+                print("CORG of each feature in feature set : ")
+                print(list_corg_feature_set)
+                print("size of feature set : " + str(len(feature_set_name)))
                 print("size of list_actual_outputs : " + str(len(list_actual_outputs)))
                 print("list_actual_outputs : ")
                 print(list_actual_outputs)
@@ -1207,10 +1231,13 @@ def main():
                  # track feature set which gives maximum auc score
                 if (auc_score > auc_score_max):
                     list_feature_set_max_auc = deepcopy(feature_set_name)
+                    list_corg_in_feature_set_max_auc = deepcopy(list_corg_feature_set)
                     auc_score_max = auc_score
                 
                 result_file.write("Feature set : " + str(feature_set_name) + "\n")
-                result_file.write("Size of feature set : " + str(len(feature_set_name)) + "\n")
+                result_file.write("CORG of each feature in feature set : \n")
+                result_file.write(str(list_corg_feature_set) + "\n")
+                result_file.write("size of feature set : " + str(len(feature_set_name)) + "\n")
                 result_file.write("size of list_actual_outputs : " + str(len(list_actual_outputs)) + "\n")
                 result_file.write(str(list_actual_outputs) + "\n")
                 result_file.write("\n")
@@ -1244,6 +1271,8 @@ def main():
         print(" Maximum AUC score : " + str(auc_score_max))
         print(" Feature set which gives highest AUC score : ")
         print(list_feature_set_max_auc)
+        print(" CORG of each feature in the feature set which gives the highest AUC score : ")
+        print(list_corg_in_feature_set_max_auc)
         print()
         print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
 
@@ -1259,6 +1288,9 @@ def main():
         result_file.write("\n")
         result_file.write("Feature set which gives the highest AUC score from testing : " + "\n")
         result_file.write(str(list_feature_set_max_auc))
+        result_file.write("\n")
+        result_file.write("CORG of each feature in the feature set which gives the highest AUC score : \n")
+        result_file.write(str(list_corg_in_feature_set_max_auc))
         result_file.write("\n")
         result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
         result_file.write("\n")
