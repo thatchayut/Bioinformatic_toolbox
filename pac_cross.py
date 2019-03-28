@@ -6,7 +6,6 @@ import calculate
 import time
 from copy import deepcopy
 from sklearn.metrics import roc_auc_score
-from scipy.stats import norm
 
 def main():
     # record start time
@@ -30,7 +29,7 @@ def main():
 
     file_output_second_dataset_name = "mapping_sample_to_class_gse3494.csv"
     file_output_second_dataset = pd.read_csv(file_output_second_dataset_name, usecols = ["GEO asscession number", "relapse (1=True)"])
-    
+
     # files to be used to get pathways and their gene expression
     # default rows_to_read_file_pathway = 1329
     rows_to_read_file_pathway = 1329
@@ -48,7 +47,7 @@ def main():
         pathway_name.append(i)
         pathway_name.append(file_pathway.loc[i, "PATHWAY_NAME"])
         list_pathway_name.append(pathway_name)
-    
+
     # consider non-relapse and relapse (not in specific period of time)
     # for 1st dataset
     sample_relapse_first_dataset = file_output_first_dataset.loc[file_output_first_dataset['relapse (1=True)'].isin(['1'])]
@@ -115,7 +114,7 @@ def main():
     for epoch_count in range(0, num_of_epochs):
         print("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
         result_file.write("######################################### epoch : " + str(epoch_count + 1) + "#########################################\n")
-  
+
         # create list of indexes used to indicate the position in the list
         # for 1st dataset
         list_index_samples_relapse_first_dataset = []
@@ -178,342 +177,100 @@ def main():
         print()
 
         # get sample name and add to a list to be used as column index
+        # for class "relapse"
         list_relapse_first_dataset_name = []      
         for i in range(0, len(list_relapse_first_dataset)):
             list_relapse_first_dataset_name.append(list_sample_relapse_first_dataset[list_relapse_first_dataset[i]])
 
+        # for class "non-relapse"
         list_no_relapse_first_dataset_name = []
         for i in range(0, len(list_no_relapse_first_dataset)):
             list_no_relapse_first_dataset_name.append(list_sample_no_relapse_first_dataset[list_no_relapse_first_dataset[i]])
+        
+        # prepare file to be used in calculating z-score
+        # default row_to_read_file_to_cal_zscore = 22283
+        row_to_read_file_to_cal_zscore = row_to_read_file_gene_first_dataset
+        col_to_read_file_to_cal_zscore = ["ID_REF"]
+        col_to_read_file_to_cal_zscore.extend(list_relapse_first_dataset_name)
+        col_to_read_file_to_cal_zscore.extend(list_no_relapse_first_dataset_name)
+        print("col_to_read_file_to_cal_zscore : ")
+        print(col_to_read_file_to_cal_zscore)
+        file_to_cal_zscore = pd.read_csv(file_gene_first_dataset_name, usecols = col_to_read_file_to_cal_zscore, nrows = row_to_read_file_to_cal_zscore)
+        num_of_all_samples  = len(col_to_read_file_to_cal_zscore)
 
-        # find mean and sd of gene expression of each gene in each class
-        # prepare file to get gene expression
-
-        # default row_to_read_file_to_cal_mean_sd = 22283
-        row_to_read_file_to_cal_mean_sd = row_to_read_file_gene_first_dataset
-
-        col_to_read_file_to_cal_mean_sd_relapse = ["ID_REF"]
-        col_to_read_file_to_cal_mean_sd_relapse.extend(list_relapse_first_dataset_name)
-
-        col_to_read_file_to_cal_mean_sd_no_relapse = ["ID_REF"]
-        col_to_read_file_to_cal_mean_sd_no_relapse.extend(list_no_relapse_first_dataset_name)
-
-        file_to_cal_mean_sd_relapse = pd.read_csv(file_gene_first_dataset_name, usecols = col_to_read_file_to_cal_mean_sd_relapse, nrows = row_to_read_file_to_cal_mean_sd)
-        file_to_cal_mean_sd_no_relapse = pd.read_csv(file_gene_first_dataset_name, usecols = col_to_read_file_to_cal_mean_sd_no_relapse, nrows = row_to_read_file_to_cal_mean_sd)
-
-        # dictionary contains genes idintified by its probe id which contain all gene expression from samples
+        # dictionary contains genes idintified by its probe id which contain all gene expression from all samples
         # {1: [gene_probe_id, [exp1,exp2, ...]]}
-
-        # for class "relapse"
-        genes_expression_relapse_first_dataset = {}
-        last_index_to_read_file_to_cal_mean_sd_relapse = len(col_to_read_file_to_cal_mean_sd_relapse)
-        for line_index in range(0, row_to_read_file_to_cal_mean_sd):
+        genes_expression_first_dataset = {}
+        last_index_to_read_file_to_cal_zscore = len(col_to_read_file_to_cal_zscore)
+        for line_index in range(0, row_to_read_file_to_cal_zscore):
             gene_expression_by_probe_id = []              
             list_gene_expression_same_probe_id = [] 
 
-            for element in file_to_cal_mean_sd_relapse.iloc[line_index, 1:last_index_to_read_file_to_cal_mean_sd_relapse]:
+            for element in file_to_cal_zscore.iloc[line_index, 1:last_index_to_read_file_to_cal_zscore]:
                     list_gene_expression_same_probe_id.append(element)  
 
-            gene_probe_id = file_to_cal_mean_sd_relapse.iloc[line_index, 0]
+            gene_probe_id = file_to_cal_zscore.iloc[line_index, 0]
             gene_expression_by_probe_id.append(gene_probe_id)
             gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
 
-            genes_expression_relapse_first_dataset[line_index] = gene_expression_by_probe_id
-
-        # for class "non-relapse"
-        genes_expression_no_relapse_first_dataset = {}
-        last_index_to_read_file_to_cal_mean_sd_no_relapse = len(col_to_read_file_to_cal_mean_sd_no_relapse)
-        for line_index in range(0, row_to_read_file_to_cal_mean_sd):
-            gene_expression_by_probe_id = []              
-            list_gene_expression_same_probe_id = [] 
-
-            for element in file_to_cal_mean_sd_no_relapse.iloc[line_index, 1:last_index_to_read_file_to_cal_mean_sd_no_relapse]:
-                    list_gene_expression_same_probe_id.append(element)  
-
-            gene_probe_id = file_to_cal_mean_sd_no_relapse.iloc[line_index, 0]
-            gene_expression_by_probe_id.append(gene_probe_id)
-            gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
-
-            genes_expression_no_relapse_first_dataset[line_index] = gene_expression_by_probe_id
-
-        # find mean and sd
-        # for class "relapse"
-        list_mean_sd_gene_expression_by_probe_id_relapse = []
-        for gene_index in range(0, len(genes_expression_relapse_first_dataset)):
+            genes_expression_first_dataset[line_index] = gene_expression_by_probe_id
+        
+        # calculate mean and sd of each gene
+        list_mean_sd_gene_expression_by_probe_id_first_dataset = []
+        for gene_index in range(0, len(genes_expression_first_dataset)):
             result = []
-            gene_name = genes_expression_relapse_first_dataset[gene_index][0]
-            mean_of_list = calculate.mean(genes_expression_relapse_first_dataset[gene_index][1])
-            sd_of_list = calculate.sd(genes_expression_relapse_first_dataset[gene_index][1])
+            gene_name = genes_expression_first_dataset[gene_index][0]
+            mean_of_list = calculate.mean(genes_expression_first_dataset[gene_index][1])
+            sd_of_list = calculate.sd(genes_expression_first_dataset[gene_index][1])
             result.append(gene_name)
             result.append(mean_of_list)
             result.append(sd_of_list)
-            list_mean_sd_gene_expression_by_probe_id_relapse.append(result)
+            list_mean_sd_gene_expression_by_probe_id_first_dataset.append(result)
         
-        # for class "non-relapse"
-        list_mean_sd_gene_expression_by_probe_id_no_relapse = []
-        for gene_index in range(0, len(genes_expression_no_relapse_first_dataset)):
-            result = []
-            gene_name = genes_expression_no_relapse_first_dataset[gene_index][0]
-            mean_of_list = calculate.mean(genes_expression_no_relapse_first_dataset[gene_index][1])
-            sd_of_list = calculate.sd(genes_expression_no_relapse_first_dataset[gene_index][1])
-            result.append(gene_name)
-            result.append(mean_of_list)
-            result.append(sd_of_list)
-            list_mean_sd_gene_expression_by_probe_id_no_relapse.append(result)
-
-        print(" Process : Calculate Log-likelihood ration of each gene ...")
-        # calculate gene lambda
-        # find mean and sd of gene expression in each class
-        # default row_to_read_file_to_get_lambda = 22283
-        row_to_read_file_to_get_lambda = row_to_read_file_gene_first_dataset
-
-        col_to_read_file_to_get_lambda_relapse = ["ID_REF"]
-        col_to_read_file_to_get_lambda_relapse.extend(list_sample_relapse_first_dataset)
-
-        col_to_read_file_to_get_lambda_no_relapse = ["ID_REF"]
-        col_to_read_file_to_get_lambda_no_relapse.extend(list_sample_no_relapse_first_dataset)
-
-        file_to_get_lambda_relapse = pd.read_csv(file_gene_first_dataset_name, usecols = col_to_read_file_to_get_lambda_relapse, nrows = row_to_read_file_to_get_lambda)
-        file_to_get_lambda_no_relapse = pd.read_csv(file_gene_first_dataset_name, usecols = col_to_read_file_to_get_lambda_no_relapse, nrows = row_to_read_file_to_get_lambda)
-
-        # dictionary contains genes idintified by its probe id which contain all gene expression from samples for feature selection procedure
-        # {1: [gene_probe_id, [exp1,exp2, ...]]}
-
+        # create samples with their pathways and member genes
         # for class "relapse"
-        genes_expression_relapse_for_lambda = {}
-        last_index_to_read_file_to_get_lambda_relapse = len(col_to_read_file_to_get_lambda_relapse)
-        for line_index in range(0, row_to_read_file_to_get_lambda):
-            gene_expression_by_probe_id = []              
-            list_gene_expression_same_probe_id = [] 
-            for element in file_to_get_lambda_relapse.iloc[line_index, 1:last_index_to_read_file_to_get_lambda_relapse]:
-                list_gene_expression_same_probe_id.append(element)  
-
-            gene_probe_id = file_to_get_lambda_relapse.iloc[line_index, 0]
-            gene_expression_by_probe_id.append(gene_probe_id)
-            gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
-
-            genes_expression_relapse_for_lambda[line_index] = gene_expression_by_probe_id
-        
-        # for class "non-relapse"
-        genes_expression_no_relapse_for_lambda = {}
-        last_index_to_read_file_to_get_lambda_no_relapse = len(col_to_read_file_to_get_lambda_no_relapse)
-        for line_index in range(0, row_to_read_file_to_get_lambda):
-            gene_expression_by_probe_id = []              
-            list_gene_expression_same_probe_id = [] 
-
-            for element in file_to_get_lambda_no_relapse.iloc[line_index, 1:last_index_to_read_file_to_get_lambda_no_relapse]:
-                    list_gene_expression_same_probe_id.append(element)  
-
-            gene_probe_id = file_to_get_lambda_no_relapse.iloc[line_index, 0]
-            gene_expression_by_probe_id.append(gene_probe_id)
-            gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
-
-            genes_expression_no_relapse_for_lambda[line_index] = gene_expression_by_probe_id
-        
-        # calculate log-likelihood ratio of each gene
-        # for class "relapse"
-        genes_lambda_relapse = {}
-        for gene_index in range(0, len(genes_expression_relapse_for_lambda)):
-            result = []
-            gene_name = genes_expression_relapse_for_lambda[gene_index][0]
-
-            gene_mean_relapse = list_mean_sd_gene_expression_by_probe_id_relapse[gene_index][1]
-            gene_sd_relapse = list_mean_sd_gene_expression_by_probe_id_relapse[gene_index][2]
-
-            gene_mean_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse[gene_index][1]
-            gene_sd_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse[gene_index][2]
-
-            list_gene_lambda = []
-            for gene_expression_index in range(0, len(genes_expression_relapse_for_lambda[gene_index][1])):
-                gene_expression = genes_expression_relapse_for_lambda[gene_index][1][gene_expression_index]
-
-                log_gene_pdf_under_relapse = norm.logpdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
-                log_gene_pdf_under_no_relapse = norm.logpdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)            
-
-                lambda_value = log_gene_pdf_under_relapse - log_gene_pdf_under_no_relapse
-
-                list_gene_lambda.append(lambda_value)
-            
-            result.append(gene_name)
-            result.append(list_gene_lambda)
-
-            genes_lambda_relapse[gene_index] = result
-        
-        # for class "non-relapse"
-        genes_lambda_no_relapse = {}
-        for gene_index in range(0, len(genes_expression_no_relapse_for_lambda)):
-            result = []
-            gene_name = genes_expression_no_relapse_for_lambda[gene_index][0]
-
-            gene_mean_relapse = list_mean_sd_gene_expression_by_probe_id_relapse[gene_index][1]
-            gene_sd_relapse = list_mean_sd_gene_expression_by_probe_id_relapse[gene_index][2]
-
-            gene_mean_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse[gene_index][1]
-            gene_sd_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse[gene_index][2]
-
-            list_gene_lambda = []
-            for gene_expression_index in range(0, len(genes_expression_no_relapse_for_lambda[gene_index][1])):
-                gene_expression = genes_expression_no_relapse_for_lambda[gene_index][1][gene_expression_index]
-
-                # gene_pdf_under_relapse = norm.pdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
-                # gene_pdf_under_no_relapse = norm.pdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)
-
-                # log_gene_pdf_under_relapse = math.log10(gene_pdf_under_relapse)
-                # log_gene_pdf_under_no_relapse = math.log10(gene_pdf_under_no_relapse)
-
-                log_gene_pdf_under_relapse = norm.logpdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
-                log_gene_pdf_under_no_relapse = norm.logpdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)
-
-                lambda_value = log_gene_pdf_under_relapse - log_gene_pdf_under_no_relapse
-
-                list_gene_lambda.append(lambda_value)
-            
-            result.append(gene_name)
-            result.append(list_gene_lambda)
-
-            genes_lambda_no_relapse[gene_index] = result
-
-        print(" Process : Normalize log-likelihood ratio of gene in samples ...")
-        # normalize lambda value
-        list_gene_lambda_mean_sd = []
-        for gene_index in range(0, len(genes_lambda_relapse)):
-            gene_mean_sd = []
-            gene_probe_id = genes_lambda_relapse[gene_index][0]
-
-            all_lambda_this_gene = []
-            all_lambda_this_gene.extend(genes_lambda_relapse[gene_index][1])
-            all_lambda_this_gene.extend(genes_lambda_no_relapse[gene_index][1])
-            
-            mean_lambda_this_gene = calculate.mean(all_lambda_this_gene)
-            sd_lambda_this_gene  = calculate.sd(all_lambda_this_gene)
-
-            gene_mean_sd.append(gene_probe_id)
-            gene_mean_sd.append(mean_lambda_this_gene)
-            gene_mean_sd.append(sd_lambda_this_gene)
-
-            list_gene_lambda_mean_sd.append(gene_mean_sd)
-
-        # for class "relapse"
-        genes_lambda_relapse_normalized = {}
-        for gene_index in range(0, len(genes_lambda_relapse)):
-            gene_with_lambda = []
-            gene_probe_id = genes_lambda_relapse[gene_index][0]
-
-            list_gene_lambda = []
-            for lambda_index in range(0, len(genes_lambda_relapse[gene_index][1])):
-                lambda_value = genes_lambda_relapse[gene_index][1][lambda_index]
-
-                mean_this_gene = list_gene_lambda_mean_sd[gene_index][1]
-                sd_this_gene = list_gene_lambda_mean_sd[gene_index][2]
-
-                lambda_value_normalized = ((lambda_value - mean_this_gene) / sd_this_gene)
-
-                list_gene_lambda.append(lambda_value_normalized)
-            
-            gene_with_lambda.append(gene_probe_id)
-            gene_with_lambda.append(list_gene_lambda)
-
-            genes_lambda_relapse_normalized[gene_index] = gene_with_lambda
-
-        # for class "non-relapse"
-        genes_lambda_no_relapse_normalized = {}
-        for gene_index in range(0, len(genes_lambda_no_relapse)):
-            gene_with_lambda = []
-            gene_probe_id = genes_lambda_no_relapse[gene_index][0]
-
-            list_gene_lambda = []
-            for lambda_index in range(0, len(genes_lambda_no_relapse[gene_index][1])):
-                lambda_value = genes_lambda_no_relapse[gene_index][1][lambda_index]
-
-                mean_this_gene = list_gene_lambda_mean_sd[gene_index][1]
-                sd_this_gene = list_gene_lambda_mean_sd[gene_index][2]
-
-                lambda_value_normalized = ((lambda_value - mean_this_gene) / sd_this_gene)
-
-                list_gene_lambda.append(lambda_value_normalized)
-            
-            gene_with_lambda.append(gene_probe_id)
-            gene_with_lambda.append(list_gene_lambda)
-
-            genes_lambda_no_relapse_normalized[gene_index] = gene_with_lambda
-
-        print("Process : Creating collection to collect samples and their genes' expression")
-        # create dictionary used to collect pathways of each sample
         samples_relapse_first_dataset = {}
-        samples_no_relapse_first_dataset = {}
-
-        # get all pathways of all samples 
-        # for class 'relapse'
-        for sample_index in range(0, len(list_sample_relapse_first_dataset)):
+        for element_index in range(0, len(list_sample_relapse_first_dataset)):
             print()
-            print("Creating pathways for sample " + str(sample_index + 1) + " relapse is in progress ...")
-            print(str(len(list_sample_relapse_first_dataset) - (sample_index + 1)) + " samples left")
+            print("Creating pathways for sample " + str(element_index + 1) + " relapse is in progress ...")
+            print(str(len(list_sample_relapse_first_dataset) - (element_index + 1)) + " samples left")
             print()
-
-            # create list of lambda of genes in this sample
-            list_gene_lambda_value = []
-            for gene_index in range(0, len(genes_lambda_relapse_normalized)):
-                gene_with_lambda = []
-                for lambda_index in range(0, len(genes_lambda_relapse_normalized[gene_index][1])):
-                    if (lambda_index == sample_index):
-                        gene_probe_id = genes_lambda_relapse_normalized[gene_index][0]
-                        lambda_value = genes_lambda_relapse_normalized[gene_index][1][lambda_index]
-
-                        gene_with_lambda.append(gene_probe_id)
-                        gene_with_lambda.append(lambda_value)
-
-                        list_gene_lambda_value.append(gene_with_lambda)
 
             sample = []
-            sample_name = list_sample_relapse_first_dataset[sample_index]
-            pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_first_dataset_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
-                        list_gene_lambda_value)
+            sample_name = list_sample_relapse_first_dataset[element_index]
+            pathways = calculate.getPathway(file_ref_name, file_to_convert_first_dataset_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
+                        list_mean_sd_gene_expression_by_probe_id_first_dataset)
 
             sample.append(sample_name)
             sample.append(pathways)
-            samples_relapse_first_dataset[sample_index] = sample
+            samples_relapse_first_dataset[element_index] = sample
         
         # for class "non-relapse"
-        for sample_index in range(0, len(list_sample_no_relapse_first_dataset)):
+        samples_no_relapse_first_dataset = {}
+        for element_index in range(0, len(list_sample_no_relapse_first_dataset)):
             print()
-            print("Creating pathways for sample " + str(sample_index + 1) + " non-relapse is in progress ...")
-            print(str(len(list_sample_no_relapse_first_dataset) - (sample_index + 1)) + " samples left")
+            print("Creating pathways for sample " + str(element_index + 1) + " non-relapse is in progress ...")
+            print(str(len(list_sample_no_relapse_first_dataset) - (element_index + 1)) + " samples left")
             print()
-
-            # create list of lambda of genes in this sample
-            list_gene_lambda_value = []
-            for gene_index in range(0, len(genes_lambda_no_relapse_normalized)):
-                gene_with_lambda = []
-                for lambda_index in range(0, len(genes_lambda_no_relapse_normalized[gene_index][1])):
-                    if (lambda_index == sample_index):
-                        gene_probe_id = genes_lambda_no_relapse_normalized[gene_index][0]
-                        lambda_value = genes_lambda_no_relapse_normalized[gene_index][1][lambda_index]
-
-                        gene_with_lambda.append(gene_probe_id)
-                        gene_with_lambda.append(lambda_value)
-
-                        list_gene_lambda_value.append(gene_with_lambda)
 
             sample = []
-            sample_name = list_sample_no_relapse_first_dataset[sample_index]
-            pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_first_dataset_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
-                        list_gene_lambda_value)
-            
+            sample_name = list_sample_no_relapse_first_dataset[element_index]
+            pathways = calculate.getPathway(file_ref_name, file_to_convert_first_dataset_name, file_pathway_name, sample_name, rows_to_read_file_pathway, \
+                        list_mean_sd_gene_expression_by_probe_id_first_dataset)
+
             sample.append(sample_name)
             sample.append(pathways)
-            samples_no_relapse_first_dataset[sample_index] = sample
-
-
+            samples_no_relapse_first_dataset[element_index] = sample
+        
         check_valid, num_of_chunks = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
 
         # variable to collect data from sfs
         feature_set_name = None
+        list_corg_all_pathway= None
         auc_score_feature_selection = None
-        
-        
+
         # do only if number of chunks of both datasets are equal
         if (check_valid == True):
-
             # random a chunk of data to be use as a feature selection set
             feature_selection_index = random.randint(0, num_of_chunks - 1)
 
@@ -555,7 +312,7 @@ def main():
                 list_sample_no_relapse_marker_evaluation.extend(marker_evaluation_no_relapse[i])
             print("list_sample_no_relapse_marker_evaluation : " + str(list_sample_no_relapse_marker_evaluation))
 
-            # create collection of samples used in feature selection   
+            # create collection of samples used in feature selection
             # for class "relapse"
             samples_relapse_marker_evaluation = {}
             for sample_index in range(0, len(list_sample_relapse_marker_evaluation)):
@@ -567,7 +324,7 @@ def main():
             print()
 
             # for class "non-relapse"
-            samples_no_relapse_marker_evaluation= {}
+            samples_no_relapse_marker_evaluation = {}
             for sample_index in range(0, len(list_sample_no_relapse_marker_evaluation)):
                 index_samples_no_relapse = list_sample_no_relapse_marker_evaluation[sample_index]
                 samples_no_relapse_marker_evaluation[sample_index] = samples_no_relapse_first_dataset[index_samples_no_relapse]
@@ -576,57 +333,228 @@ def main():
             print(samples_no_relapse_marker_evaluation)
             print()
 
+            # find CORG
+            # list to collect CORG in each pathway
+            list_corg_each_pathway = []
+
+             # find CORG in each pathway 
+            for pathway_index in range(0, rows_to_read_file_pathway):
+                list_ttest_gene_activity = []
+
+                list_gene_name_in_pathway = []
+                list_gene_sample_relapse = []
+                list_gene_sample_no_relapse = []
+
+                # get number of genes in this pathway
+                num_of_genes_in_pathway = len(samples_relapse_marker_evaluation[0][1][pathway_index][1])
+
+                # create list of gene entrez id in this pathway
+                for gene_index in range(0, num_of_genes_in_pathway):
+                    gene_entrez_id = samples_relapse_marker_evaluation[0][1][pathway_index][1][gene_index][0]
+                    list_gene_name_in_pathway.append(gene_entrez_id)
+                
+                # create list of gene expression of every samples in the same class to be used in t-test
+                for gene_index in range(0, len(list_gene_name_in_pathway)):
+                    list_gene_expression_with_entrez = []
+                    list_gene_expression_from_sample = []
+                    gene_entrez_id = list_gene_name_in_pathway[gene_index]
+
+                    for sample_index in range(0, len(samples_relapse_marker_evaluation)):
+                        gene_expression = samples_relapse_marker_evaluation[sample_index][1][pathway_index][1][gene_index][1]
+                        list_gene_expression_from_sample.append(gene_expression)
+
+                    list_gene_expression_with_entrez.append(gene_entrez_id)    
+                    list_gene_expression_with_entrez.append(list_gene_expression_from_sample)
+                    list_gene_sample_relapse.append(list_gene_expression_with_entrez)
+
+                for gene_index in range(0, len(list_gene_name_in_pathway)):
+                    list_gene_expression_with_entrez = []
+                    list_gene_expression_from_sample = []
+                    gene_entrez_id = list_gene_name_in_pathway[gene_index]
+
+                    for sample_index in range(0, len(samples_no_relapse_marker_evaluation)):
+                        gene_expression = samples_no_relapse_marker_evaluation[sample_index][1][pathway_index][1][gene_index][1]
+                        list_gene_expression_from_sample.append(gene_expression)
+
+                    list_gene_expression_with_entrez.append(gene_entrez_id)
+                    list_gene_expression_with_entrez.append(list_gene_expression_from_sample)    
+                    list_gene_sample_no_relapse.append(list_gene_expression_with_entrez)
+                
+                # find t-test score of each gene
+                list_ttest = []
+                for gene_index in range(0, num_of_genes_in_pathway):
+                    gene_ttest = []
+                    gene_name = list_gene_name_in_pathway[gene_index]
+                    
+                    gene_ttest_value = stats.ttest_ind(list_gene_sample_relapse[gene_index][1], list_gene_sample_no_relapse[gene_index][1], equal_var = False)[0]
+                    
+                    gene_ttest.append(gene_name)
+                    gene_ttest.append(gene_ttest_value)
+                    list_ttest.append(gene_ttest)
+
+                list_ttest.sort(key = lambda x : x[1], reverse = True)
+
+                # create corg of each pathway (use top 10% as an initial set)
+                num_of_top_gene = int((num_of_genes_in_pathway * 10) / 100)
+                if (num_of_top_gene < 1):
+                    num_of_top_gene = 1
+                
+                list_corg_initial = []
+                for i in range(0, num_of_top_gene):
+                    list_corg_initial.append(list_ttest[i][0])
+                
+                check_finish = False
+                check_improve_discriminative = True
+                max_discriminative_over_all_features = 0
+
+                while (check_finish == False):
+                    if (check_improve_discriminative == True):
+                        max_ttest_in_consider = 0
+                        list_member_gene = []
+
+                        for gene_index in range(0, num_of_genes_in_pathway):
+                            list_gene_to_consider = deepcopy(list_corg_initial)
+                            gene_entrez_id = list_ttest[gene_index][0]
+
+                            if (gene_entrez_id not in list_corg_initial):
+                                list_gene_to_consider.extend([gene_entrez_id])
+
+                                # create list of gene expression of each sample using this member genes
+                                list_sample_relapse_find_discrimination = []
+                                list_sample_no_relapse_find_discrimination = []
+
+                                # for class 'relapse'
+                                if (len(list_gene_to_consider) == 1):
+                                    gene_entrez_id = list_gene_to_consider[0]
+                                    # find gene expression using gene entrez id
+                                    for gene_sample_relapse_index in range(0, len(list_gene_sample_relapse)):
+                                        if (list_gene_sample_relapse[gene_sample_relapse_index][0] == gene_entrez_id):
+                                            list_sample_relapse_find_discrimination.append(list_gene_sample_relapse[gene_sample_relapse_index][1])
+                                else:
+                                    for member_gene_index in range(0, len(list_gene_to_consider)):
+                                        gene_entrez_id = list_gene_to_consider[member_gene_index]
+                                        # find gene expression using gene entrez id
+                                        for gene_sample_relapse_index in range(0, len(list_gene_sample_relapse)):
+                                            if (list_gene_sample_relapse[gene_sample_relapse_index][0] == gene_entrez_id):
+                                                list_sample_relapse_find_discrimination.append(list_gene_sample_relapse[gene_sample_relapse_index][1]) 
+
+                                # for class 'non-relapse'
+                                if (len(list_gene_to_consider) == 1):
+                                    gene_entrez_id = list_gene_to_consider[0]
+                                    # find gene expression using gene entrez id
+                                    for gene_sample_no_relapse_index in range(0, len(list_gene_sample_no_relapse)):
+                                        if (list_gene_sample_no_relapse[gene_sample_no_relapse_index][0] == gene_entrez_id):
+                                            list_sample_no_relapse_find_discrimination.append(list_gene_sample_no_relapse[gene_sample_no_relapse_index][1])
+                                else:
+                                    for member_gene_index in range(0, len(list_gene_to_consider)):
+                                        gene_entrez_id = list_gene_to_consider[member_gene_index]
+                                        # find gene expression using gene entrez id
+                                        for gene_sample_no_relapse_index in range(0, len(list_gene_sample_no_relapse)):
+                                            if (list_gene_sample_no_relapse[gene_sample_no_relapse_index][0] == gene_entrez_id):
+                                                list_sample_no_relapse_find_discrimination.append(list_gene_sample_no_relapse[gene_sample_no_relapse_index][1])
+        
+                                # calculate activity score
+                                list_sample_relapse_activity_score = []
+                                list_sample_no_relapse_activity_score = []
+
+                                # for class 'relapse'
+                                for sample_index in range(0, len(samples_relapse_marker_evaluation)):
+                                    sum_gene_expression = 0
+                                    for gene_index in range(0, len(list_sample_relapse_find_discrimination)):
+                                        sum_gene_expression += list_sample_relapse_find_discrimination[gene_index][sample_index]
+                                        # sum_gene_expression += list_sample_relapse_find_discrimination[sample_index][gene_index]
+                                    activity_score = (sum_gene_expression / math.sqrt(len(list_sample_relapse_find_discrimination)))
+                                    list_sample_relapse_activity_score.append(activity_score)
+
+                                # for class 'non-relapse'
+                                for sample_index in range(0, len(samples_no_relapse_marker_evaluation)):
+                                    sum_gene_expression = 0
+                                    for gene_index in range(0, len(list_sample_no_relapse_find_discrimination)):
+                                        sum_gene_expression += list_sample_no_relapse_find_discrimination[gene_index][sample_index]
+                                        # sum_gene_expression += list_sample_no_relapse_find_discrimination[sample_index][gene_index]
+                                    activity_score = (sum_gene_expression / math.sqrt(len(list_sample_no_relapse_find_discrimination)))
+                                    list_sample_no_relapse_activity_score.append(activity_score)
+                                
+                                # calculate ttest score of this gene set as a discriminative score
+                                ttest_member_gene_set = stats.ttest_ind(list_sample_relapse_activity_score, list_sample_no_relapse_activity_score, equal_var = False)[0]
+
+                                if (ttest_member_gene_set > max_ttest_in_consider):
+                                    max_ttest_in_consider = ttest_member_gene_set
+                                    list_member_gene = deepcopy(list_gene_to_consider)
+
+                            # tracking member genes set which gives higher discriminative score
+                            if (max_ttest_in_consider > max_discriminative_over_all_features):
+                                max_discriminative_over_all_features = max_ttest_in_consider
+                                list_corg_initial = deepcopy(list_member_gene)
+                            else:
+                                check_improve_discriminative = False
+                    else:
+                        check_finish = True 
+
+                list_corg_each_pathway.append(list_corg_initial) 
+
+            print("list_corg_each_pathway : ")
+            print(list_corg_each_pathway)
+            print()
+
+            # copy list_corg_each_pathway to be used in feature selection process
+            list_corg_all_pathway = deepcopy(list_corg_each_pathway)
+
             # create list contain pathway activity of each samples to be used in sfs
-            # create samples which contain only corg in each pathway                  
+            # create samples which contain only corg in each pathway
+            samples_relapse_marker_evaluation_pathway_activity = {}
+            samples_no_relapse_marker_evaluation_pathway_activity = {}
 
             # for class 'relapse'
-            samples_relapse_marker_evaluation_pathway_activity = {}
             for sample_index in range(0, len(samples_relapse_marker_evaluation)):
                 list_sample_with_pathway_activity = []
                 list_pathway_activity = []
                 for pathway_index in range(0, len(samples_relapse_marker_evaluation[sample_index][1])):
                     pathway = []
-                    sum_gene_lambda = 0
+                    sum_gene_expression = 0
+                    num_of_corg = len(list_corg_each_pathway[pathway_index])
                     for gene_index in range(0, len(samples_relapse_marker_evaluation[sample_index][1][pathway_index])):
-                        gene_lambda_value =  samples_relapse_marker_evaluation[sample_index][1][pathway_index][1][gene_index][1]
-                        sum_gene_lambda += gene_lambda_value
+                        gene_entrez_id = samples_relapse_marker_evaluation[sample_index][1][pathway_index][1][gene_index][0]
+                        gene_expression =  samples_relapse_marker_evaluation[sample_index][1][pathway_index][1][gene_index][1]
+                        if (gene_entrez_id in list_corg_each_pathway[pathway_index]):
+                            sum_gene_expression += gene_expression
+                    pathway_activity = (sum_gene_expression / math.sqrt(num_of_corg))
                     pathway_name = samples_relapse_marker_evaluation[sample_index][1][pathway_index][0]
-
                     pathway.append(pathway_name)
-                    pathway.append(sum_gene_lambda)
-
+                    pathway.append(pathway_activity)
                     list_pathway_activity.append(pathway)
                 
                 sample_name = samples_relapse_marker_evaluation[sample_index][0]
 
                 list_sample_with_pathway_activity.append(sample_name)
                 list_sample_with_pathway_activity.append(list_pathway_activity)
-
+                
                 samples_relapse_marker_evaluation_pathway_activity[sample_index] = list_sample_with_pathway_activity
             
-            # for class "non-relapse"
-            samples_no_relapse_marker_evaluation_pathway_activity = {}
+            # for class 'non-relapse'
             for sample_index in range(0, len(samples_no_relapse_marker_evaluation)):
                 list_sample_with_pathway_activity = []
                 list_pathway_activity = []
                 for pathway_index in range(0, len(samples_no_relapse_marker_evaluation[sample_index][1])):
                     pathway = []
-                    sum_gene_lambda = 0
+                    sum_gene_expression = 0
+                    num_of_corg = len(list_corg_each_pathway[pathway_index])
                     for gene_index in range(0, len(samples_no_relapse_marker_evaluation[sample_index][1][pathway_index])):
-                        gene_lambda_value =  samples_no_relapse_marker_evaluation[sample_index][1][pathway_index][1][gene_index][1]
-                        sum_gene_lambda += gene_lambda_value
+                        gene_entrez_id = samples_no_relapse_marker_evaluation[sample_index][1][pathway_index][1][gene_index][0]
+                        gene_expression =  samples_no_relapse_marker_evaluation[sample_index][1][pathway_index][1][gene_index][1]
+                        if (gene_entrez_id in list_corg_each_pathway[pathway_index]):
+                            sum_gene_expression += gene_expression
+                    pathway_activity = (sum_gene_expression / math.sqrt(num_of_corg))
                     pathway_name = samples_no_relapse_marker_evaluation[sample_index][1][pathway_index][0]
-
                     pathway.append(pathway_name)
-                    pathway.append(sum_gene_lambda)
-
+                    pathway.append(pathway_activity)
                     list_pathway_activity.append(pathway)
                 
                 sample_name = samples_no_relapse_marker_evaluation[sample_index][0]
 
                 list_sample_with_pathway_activity.append(sample_name)
                 list_sample_with_pathway_activity.append(list_pathway_activity)
-
+                
                 samples_no_relapse_marker_evaluation_pathway_activity[sample_index] = list_sample_with_pathway_activity
             
             # create samples for feature selection
@@ -636,14 +564,14 @@ def main():
                 index_samples_relapse = feature_selection_relapse[sample_index]
                 samples_relapse_feature_selection[sample_index] = samples_relapse_first_dataset[index_samples_relapse]
             
-            # for class "non-relapse"
+            # for class 'non-relapse'
             samples_no_relapse_feature_selection = {}
             for sample_index in range(0, len(feature_selection_no_relapse)):
                 index_samples_no_relapse = feature_selection_no_relapse[sample_index]
                 samples_no_relapse_feature_selection[sample_index] = samples_no_relapse_first_dataset[index_samples_no_relapse]
             
-            # calculate pathway activity        
-
+            # calculate pathway activity 
+            
             # for class 'relapse'
             samples_relapse_feature_selection_pathway_activity = {}
             for sample_index in range(0, len(samples_relapse_feature_selection)):
@@ -651,22 +579,24 @@ def main():
                 list_pathway_activity = []
                 for pathway_index in range(0, len(samples_relapse_feature_selection[sample_index][1])):
                     pathway = []
-                    sum_gene_lambda = 0
+                    sum_gene_expression = 0
+                    num_of_corg = len(list_corg_each_pathway[pathway_index])
                     for gene_index in range(0, len(samples_relapse_feature_selection[sample_index][1][pathway_index])):
-                        gene_lambda_value =  samples_relapse_feature_selection[sample_index][1][pathway_index][1][gene_index][1]
-                        sum_gene_lambda += gene_lambda_value
+                        gene_entrez_id = samples_relapse_feature_selection[sample_index][1][pathway_index][1][gene_index][0]
+                        gene_expression =  samples_relapse_feature_selection[sample_index][1][pathway_index][1][gene_index][1]
+                        if (gene_entrez_id in list_corg_each_pathway[pathway_index]):
+                            sum_gene_expression += gene_expression
+                    pathway_activity = (sum_gene_expression / math.sqrt(num_of_corg))
                     pathway_name = samples_relapse_feature_selection[sample_index][1][pathway_index][0]
-
                     pathway.append(pathway_name)
-                    pathway.append(sum_gene_lambda)
-
+                    pathway.append(pathway_activity)
                     list_pathway_activity.append(pathway)
                 
                 sample_name = samples_relapse_feature_selection[sample_index][0]
 
                 list_sample_with_pathway_activity.append(sample_name)
                 list_sample_with_pathway_activity.append(list_pathway_activity)
-
+                
                 samples_relapse_feature_selection_pathway_activity[sample_index] = list_sample_with_pathway_activity
             
             # for class 'non-relapse'
@@ -676,24 +606,27 @@ def main():
                 list_pathway_activity = []
                 for pathway_index in range(0, len(samples_no_relapse_feature_selection[sample_index][1])):
                     pathway = []
-                    sum_gene_lambda = 0
+                    sum_gene_expression = 0
+                    num_of_corg = len(list_corg_each_pathway[pathway_index])
                     for gene_index in range(0, len(samples_no_relapse_feature_selection[sample_index][1][pathway_index])):
-                        gene_lambda_value =  samples_no_relapse_feature_selection[sample_index][1][pathway_index][1][gene_index][1]
-                        sum_gene_lambda += gene_lambda_value
+                        gene_entrez_id = samples_no_relapse_feature_selection[sample_index][1][pathway_index][1][gene_index][0]
+                        gene_expression =  samples_no_relapse_feature_selection[sample_index][1][pathway_index][1][gene_index][1]
+                        if (gene_entrez_id in list_corg_each_pathway[pathway_index]):
+                            sum_gene_expression += gene_expression
+                    pathway_activity = (sum_gene_expression / math.sqrt(num_of_corg))
                     pathway_name = samples_no_relapse_feature_selection[sample_index][1][pathway_index][0]
-
                     pathway.append(pathway_name)
-                    pathway.append(sum_gene_lambda)
-
+                    pathway.append(pathway_activity)
                     list_pathway_activity.append(pathway)
                 
                 sample_name = samples_no_relapse_feature_selection[sample_index][0]
 
                 list_sample_with_pathway_activity.append(sample_name)
                 list_sample_with_pathway_activity.append(list_pathway_activity)
-
+                
                 samples_no_relapse_feature_selection_pathway_activity[sample_index] = list_sample_with_pathway_activity
-            
+
+
             # create list contains pathway activity of each sample preparing for calculating p-value
             # for class 'relapse'
             list_relapse_pathway_activity_for_pvalue = []
@@ -703,7 +636,7 @@ def main():
                     pathway_activity = samples_relapse_marker_evaluation_pathway_activity[sample_index][1][pathway_index][1]
                     pathway.append(pathway_activity)
                 list_relapse_pathway_activity_for_pvalue.append(pathway)
-
+            
             # for class 'non-relapse'
             list_no_relapse_pathway_activity_for_pvalue = []
             for pathway_index in range(0, rows_to_read_file_pathway):
@@ -712,8 +645,8 @@ def main():
                     pathway_activity = samples_no_relapse_marker_evaluation_pathway_activity[sample_index][1][pathway_index][1]
                     pathway.append(pathway_activity)
                 list_no_relapse_pathway_activity_for_pvalue.append(pathway)
-
-             # calculate p-value
+            
+            # calculate p-value
             list_pvalue_pathway_activity = []
             for pathway_index in range(0, rows_to_read_file_pathway):
                 pathway_pvalue = []
@@ -729,13 +662,13 @@ def main():
             # sort pathway using p-value in ascending order
             list_pvalue_pathway_activity.sort(key = lambda x : x[1], reverse = False)
 
-            # reorder pathway in each sample       
-            
+            # reorder pathway in each sample        
+
             # for marker evaluation class "relapse"
             samples_relapse_marker_evaluation_pathway_activity_sorted = {}
             for sample_index in range(0, len(samples_relapse_marker_evaluation_pathway_activity)):
                 sample_name = samples_relapse_marker_evaluation_pathway_activity[sample_index][0]
-                list_relapse_marker_evaluation_pathway_activity_sorted = []
+                list_relapse_train_pathway_activity_sorted = []
                 list_pathway_activity_sorted = []
                 for pvalue_index in range(0, len(list_pvalue_pathway_activity)):
                     pathway = []
@@ -746,15 +679,15 @@ def main():
                             pathway.append(pathway_name)
                             pathway.append(pathway_activity)
                             list_pathway_activity_sorted.append(pathway)
-                list_relapse_marker_evaluation_pathway_activity_sorted.append(sample_name)
-                list_relapse_marker_evaluation_pathway_activity_sorted.append(list_pathway_activity_sorted)
-                samples_relapse_marker_evaluation_pathway_activity_sorted[sample_index] = list_relapse_marker_evaluation_pathway_activity_sorted
+                list_relapse_train_pathway_activity_sorted.append(sample_name)
+                list_relapse_train_pathway_activity_sorted.append(list_pathway_activity_sorted)
+                samples_relapse_marker_evaluation_pathway_activity_sorted[sample_index] = list_relapse_train_pathway_activity_sorted
             
             # for marker evaluation class "non-relapse"
             samples_no_relapse_marker_evaluation_pathway_activity_sorted ={}
             for sample_index in range(0, len(samples_no_relapse_marker_evaluation_pathway_activity)):
                 sample_name = samples_no_relapse_marker_evaluation_pathway_activity[sample_index][0]
-                list_no_relapse_marker_evaluation_pathway_activity_sorted = []
+                list_no_relapse_train_pathway_activity_sorted = []
                 list_pathway_activity_sorted = []
                 for pvalue_index in range(0, len(list_pvalue_pathway_activity)):
                     pathway = []
@@ -765,15 +698,15 @@ def main():
                             pathway.append(pathway_name)
                             pathway.append(pathway_activity)
                             list_pathway_activity_sorted.append(pathway)
-                list_no_relapse_marker_evaluation_pathway_activity_sorted.append(sample_name)
-                list_no_relapse_marker_evaluation_pathway_activity_sorted.append(list_pathway_activity_sorted)
-                samples_no_relapse_marker_evaluation_pathway_activity_sorted[sample_index] = list_no_relapse_marker_evaluation_pathway_activity_sorted
-
+                list_no_relapse_train_pathway_activity_sorted.append(sample_name)
+                list_no_relapse_train_pathway_activity_sorted.append(list_pathway_activity_sorted)
+                samples_no_relapse_marker_evaluation_pathway_activity_sorted[sample_index] = list_no_relapse_train_pathway_activity_sorted
+            
             # for feature selection class "relapse"
             samples_relapse_feature_selection_pathway_activity_sorted = {}
             for sample_index in range(0, len(samples_relapse_feature_selection_pathway_activity)):
                 sample_name = samples_relapse_feature_selection_pathway_activity[sample_index][0]
-                list_relapse_feature_selection_pathway_activity_sorted = []
+                list_relapse_validation_pathway_activity_sorted = []
                 list_pathway_activity_sorted = []
                 for pvalue_index in range(0, len(list_pvalue_pathway_activity)):
                     pathway = []
@@ -784,15 +717,15 @@ def main():
                             pathway.append(pathway_name)
                             pathway.append(pathway_activity)
                             list_pathway_activity_sorted.append(pathway)
-                list_relapse_feature_selection_pathway_activity_sorted.append(sample_name)
-                list_relapse_feature_selection_pathway_activity_sorted.append(list_pathway_activity_sorted)
-                samples_relapse_feature_selection_pathway_activity_sorted[sample_index] = list_relapse_feature_selection_pathway_activity_sorted
+                list_relapse_validation_pathway_activity_sorted.append(sample_name)
+                list_relapse_validation_pathway_activity_sorted.append(list_pathway_activity_sorted)
+                samples_relapse_feature_selection_pathway_activity_sorted[sample_index] = list_relapse_validation_pathway_activity_sorted
             
             # for feature selection class "non-relapse"
-            samples_no_relapse_feature_selection_pathway_activity_sorted = {} 
+            samples_no_relapse_feature_selection_pathway_activity_sorted = {}
             for sample_index in range(0, len(samples_no_relapse_feature_selection_pathway_activity)):
                 sample_name = samples_no_relapse_feature_selection_pathway_activity[sample_index][0]
-                list_no_relapse_feature_selection_pathway_activity_sorted = []
+                list_no_relapse_validation_pathway_activity_sorted = []
                 list_pathway_activity_sorted = []
                 for pvalue_index in range(0, len(list_pvalue_pathway_activity)):
                     pathway = []
@@ -803,10 +736,10 @@ def main():
                             pathway.append(pathway_name)
                             pathway.append(pathway_activity)
                             list_pathway_activity_sorted.append(pathway)
-                list_no_relapse_feature_selection_pathway_activity_sorted.append(sample_name)
-                list_no_relapse_feature_selection_pathway_activity_sorted.append(list_pathway_activity_sorted)
-                samples_no_relapse_feature_selection_pathway_activity_sorted[sample_index] = list_no_relapse_feature_selection_pathway_activity_sorted
-
+                list_no_relapse_validation_pathway_activity_sorted.append(sample_name)
+                list_no_relapse_validation_pathway_activity_sorted.append(list_pathway_activity_sorted)
+                samples_no_relapse_feature_selection_pathway_activity_sorted[sample_index] = list_no_relapse_validation_pathway_activity_sorted
+            
             # get sample name of data in feature selection sample for feature selection
             # for class 'relapse'
             feature_selection_relapse_name = []
@@ -819,7 +752,7 @@ def main():
             for index in range(0, len(feature_selection_no_relapse)):
                 index_samples_no_relapse = feature_selection_no_relapse[index]
                 feature_selection_no_relapse_name.append(samples_no_relapse_first_dataset[index_samples_no_relapse][0])
-                
+            
             # merge testing data to be used in lda for feature selection 
             feature_selection_all_name = []
             feature_selection_all_name.extend(feature_selection_relapse_name)
@@ -830,7 +763,7 @@ def main():
             file_desired_outputs_feature_selection['sample_id'] = file_desired_outputs_feature_selection['GEO asscession number'].apply(lambda name: feature_selection_all_name.index(name)) 
             file_desired_outputs_feature_selection = file_desired_outputs_feature_selection.sort_values(by = ['sample_id'])
             file_desired_outputs_feature_selection.drop(columns = 'sample_id', inplace = True)
-            
+
             list_desired_outputs_feature_selection = []
             for element in file_desired_outputs_feature_selection.loc[:, 'relapse (1=True)']:
                 list_desired_outputs_feature_selection.append(element)
@@ -844,7 +777,8 @@ def main():
                 list_pathway_name_feature_selection.append(pathway_name)
             
             # create list contain pathway activity of each samples to be used in sfs
-            # for marker evaluation class "relapse"
+            # for marker evaluation set
+            # for class "relapse"
             list_sample_relapse_pathway_expression_marker_evaluation = []
             for sample_index in range(0, len(samples_relapse_marker_evaluation_pathway_activity_sorted)):
                 list_pathway_activity = []
@@ -863,7 +797,7 @@ def main():
             print(list_sample_relapse_pathway_expression_marker_evaluation)
             print()
 
-            # for marker evaluation class "non-relapse"
+            # for class "non-relapse"
             list_sample_no_relapse_pathway_expression_marker_evaluation = []
             for sample_index in range(0, len(samples_no_relapse_marker_evaluation_pathway_activity_sorted)):
                 list_pathway_activity = []
@@ -882,7 +816,8 @@ def main():
             print(list_sample_no_relapse_pathway_expression_marker_evaluation)
             print()
 
-            # for feature selection class "relapse"
+            # for feature selection set
+            # for class "relapse"
             list_sample_relapse_pathway_expression_feature_selection = []
             for sample_index in range(0, len(samples_relapse_feature_selection_pathway_activity_sorted)):
                 list_pathway_activity = []
@@ -901,7 +836,7 @@ def main():
             print(list_sample_relapse_pathway_expression_feature_selection)
             print()
 
-            # for feature selection class "non-relapse"
+            # for class "non-relapse"
             list_sample_no_relapse_pathway_expression_feature_selection = []
             for sample_index in range(0, len(samples_no_relapse_feature_selection_pathway_activity_sorted)):
                 list_pathway_activity = []
@@ -937,26 +872,29 @@ def main():
             print("feature_set_name : " + str(feature_set_name))
             print("auc_score_feature_selection : " + str(auc_score_feature_selection))
             print()
+
             result_file.write("feature_set_name : " + str(feature_set_name))
             result_file.write("\n")
             result_file.write("auc_score_feature_selection : " + str(auc_score_feature_selection))
             result_file.write("\n")
             print("\n-------------------------------------------------------------------------------------------------------------\n")
-        
+
         # conducting cross-validation on the second dataset
         # prepare data for cross-validation
 
         print(" Process : Cross validation ...")
-        # create list of indexes used to indicate the position in the list
-        list_index_samples_relapse_second_dataset = []
-        list_index_samples_no_relapse_second_dataset = []
 
+        # create list of indexes used to indicate the position in the list
+        # for class "relapse"
+        list_index_samples_relapse_second_dataset = []
         for index in range(0, len(list_sample_relapse_second_dataset)):
             list_index_samples_relapse_second_dataset.append(index)
         
+        # for class "non-relapse"
+        list_index_samples_no_relapse_second_dataset = []
         for index in range(0, len(list_sample_no_relapse_second_dataset)):
             list_index_samples_no_relapse_second_dataset.append(index)
-
+        
         # shuffle it to make it flexible for epoch changed
         random.shuffle(list_index_samples_relapse_second_dataset)
         random.shuffle(list_index_samples_no_relapse_second_dataset)
@@ -974,13 +912,13 @@ def main():
         check_valid_cv, num_of_chunks_cv = calculate.checkEqualListSize(chunk_list_relapse_cv, chunk_list_no_relapse_cv)
         print("num_of_chunks_cv : "  +str(num_of_chunks_cv))
 
-        # list to track feature set that has the best auc score
+        # list and variable to track feature set that has the best auc score
         auc_score_max = 0
         list_feature_set_max_auc = []
-        list_auc_score = []
+        list_corg_in_feature_set_max_auc = []
 
-        # # list to collect maximun AUC in each fold
-        # list_max_auc = []
+        # list to collect auc score from testing which will be used to calculate an average auc score
+        list_auc_score = []
 
         # do only if number of chunks of both datasets are equal
         if (check_valid_cv == True):
@@ -1002,14 +940,14 @@ def main():
                 # get training set in this fold
                 # for class "relapse"
                 chunk_train_relapse = []
-                for chunk_train_relapse_index in range(0, num_of_chunks_cv):
+                for chunk_train_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_relapse_cv[chunk_train_relapse_index] is not chunk_test_relapse):
                         chunk_train_relapse.append(chunk_list_relapse_cv[chunk_train_relapse_index])
                 print("chunk train relapse size = " + str(len(chunk_train_relapse)))
 
                 # for class "non-relapse"
                 chunk_train_no_relapse = []
-                for chunk_train_no_relapse_index in range(0, num_of_chunks_cv):
+                for chunk_train_no_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_no_relapse_cv[chunk_train_no_relapse_index] is not chunk_test_no_relapse):
                         chunk_train_no_relapse.append(chunk_list_no_relapse_cv[chunk_train_no_relapse_index])
                 print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
@@ -1044,317 +982,83 @@ def main():
                 for i in range(0, len(list_train_no_relapse)):
                     list_train_no_relapse_name.append(list_sample_no_relapse_second_dataset[list_train_no_relapse[i]])
 
-                # find mean and sd of gene expression of each gene in each class
-                # prepare file to get gene expression
-                # default row_to_read_file_to_cal_mean_sd_cv = 22283
-                row_to_read_file_to_cal_mean_sd_cv = row_to_read_file_gene_second_dataset
+                # default row_to_read_file_to_cal_zscore = 22283
+                row_to_read_file_to_cal_zscore_cv = row_to_read_file_gene_second_dataset
 
-                col_to_read_file_to_cal_mean_sd_relapse_cv = ["ID_REF"]
-                col_to_read_file_to_cal_mean_sd_relapse_cv.extend(list_train_relapse_name)
+                col_to_read_file_to_cal_zscore_cv = ["ID_REF"]
+                col_to_read_file_to_cal_zscore_cv.extend(list_train_relapse_name)
+                col_to_read_file_to_cal_zscore_cv.extend(list_train_no_relapse_name)
+                print("col_to_read_file_to_cal_zscore : ")
+                print(col_to_read_file_to_cal_zscore_cv)
+                
+                print(file_gene_second_dataset_name)
+                file_to_cal_zscore_cv = pd.read_csv(file_gene_second_dataset_name, usecols = col_to_read_file_to_cal_zscore_cv, nrows = row_to_read_file_to_cal_zscore_cv)
+                num_of_all_samples_cv  = len(col_to_read_file_to_cal_zscore_cv)
 
-                col_to_read_file_to_cal_mean_sd_no_relapse_cv = ["ID_REF"]
-                col_to_read_file_to_cal_mean_sd_no_relapse_cv.extend(list_train_no_relapse_name)
-
-                file_to_cal_mean_sd_relapse_cv = pd.read_csv(file_gene_second_dataset_name, usecols = col_to_read_file_to_cal_mean_sd_relapse_cv, nrows = row_to_read_file_to_cal_mean_sd_cv)
-                file_to_cal_mean_sd_no_relapse_cv = pd.read_csv(file_gene_second_dataset_name, usecols = col_to_read_file_to_cal_mean_sd_no_relapse_cv, nrows = row_to_read_file_to_cal_mean_sd_cv)
-
-                # dictionary contains genes idintified by its probe id which contain all gene expression from samples
+                # dictionary contains genes idintified by its probe id which contain all gene expression from all samples
                 # {1: [gene_probe_id, [exp1,exp2, ...]]}
-
-                # for class "relapse"
-                genes_expression_relapse_train = {}
-                last_index_to_read_file_to_cal_mean_sd_relapse_cv = len(col_to_read_file_to_cal_mean_sd_relapse_cv)
-                for line_index in range(0, row_to_read_file_to_cal_mean_sd_cv):
+                genes_expression_second_dataset = {}
+                last_index_to_read_file_to_cal_zscore_cv = len(col_to_read_file_to_cal_zscore_cv)
+                for line_index in range(0, row_to_read_file_to_cal_zscore_cv):
                     gene_expression_by_probe_id = []              
                     list_gene_expression_same_probe_id = [] 
 
-                    for element in file_to_cal_mean_sd_relapse_cv.iloc[line_index, 1:last_index_to_read_file_to_cal_mean_sd_relapse_cv]:
+                    for element in file_to_cal_zscore_cv.iloc[line_index, 1:last_index_to_read_file_to_cal_zscore_cv]:
                          list_gene_expression_same_probe_id.append(element)  
 
-                    gene_probe_id = file_to_cal_mean_sd_relapse_cv.iloc[line_index, 0]
+                    gene_probe_id = file_to_cal_zscore_cv.iloc[line_index, 0]
                     gene_expression_by_probe_id.append(gene_probe_id)
                     gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
 
-                    genes_expression_relapse_train[line_index] = gene_expression_by_probe_id
+                    genes_expression_second_dataset[line_index] = gene_expression_by_probe_id
                 
-                # for class "non-relapse"
-                genes_expression_no_relapse_train = {}
-                last_index_to_read_file_to_cal_mean_sd_no_relapse_cv = len(col_to_read_file_to_cal_mean_sd_no_relapse_cv)
-                for line_index in range(0, row_to_read_file_to_cal_mean_sd_cv):
-                    gene_expression_by_probe_id = []              
-                    list_gene_expression_same_probe_id = [] 
-
-                    for element in file_to_cal_mean_sd_no_relapse_cv.iloc[line_index, 1:last_index_to_read_file_to_cal_mean_sd_no_relapse_cv]:
-                         list_gene_expression_same_probe_id.append(element)  
-
-                    gene_probe_id = file_to_cal_mean_sd_no_relapse_cv.iloc[line_index, 0]
-                    gene_expression_by_probe_id.append(gene_probe_id)
-                    gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
-
-                    genes_expression_no_relapse_train[line_index] = gene_expression_by_probe_id
-                
-                # calculate mean and sd
-                # for class "relapse"
-                list_mean_sd_gene_expression_by_probe_id_relapse_cv = []
-                for gene_index in range(0, len(genes_expression_relapse_train)):
+                # calculate mean and sd of each gene
+                list_mean_sd_gene_expression_by_probe_id_cv = []
+                for gene_index in range(0, len(genes_expression_second_dataset)):
                     result = []
-                    gene_name = genes_expression_relapse_train[gene_index][0]
-                    mean_of_list = calculate.mean(genes_expression_relapse_train[gene_index][1])
-                    sd_of_list = calculate.sd(genes_expression_relapse_train[gene_index][1])
+                    gene_name = genes_expression_second_dataset[gene_index][0]
+                    mean_of_list = calculate.mean(genes_expression_second_dataset[gene_index][1])
+                    sd_of_list = calculate.sd(genes_expression_second_dataset[gene_index][1])
                     result.append(gene_name)
                     result.append(mean_of_list)
                     result.append(sd_of_list)
-                    list_mean_sd_gene_expression_by_probe_id_relapse_cv.append(result)
-
-                # for class "non-relapse"
-                list_mean_sd_gene_expression_by_probe_id_no_relapse_cv = []
-                for gene_index in range(0, len(genes_expression_no_relapse_train)):
-                    result = []
-                    gene_name = genes_expression_no_relapse_train[gene_index][0]
-                    mean_of_list = calculate.mean(genes_expression_no_relapse_train[gene_index][1])
-                    sd_of_list = calculate.sd(genes_expression_no_relapse_train[gene_index][1])
-                    result.append(gene_name)
-                    result.append(mean_of_list)
-                    result.append(sd_of_list)
-                    list_mean_sd_gene_expression_by_probe_id_no_relapse_cv.append(result)
+                    list_mean_sd_gene_expression_by_probe_id_cv.append(result)
                 
-                print(" Process : Calculate Log-likelihood ration of each gene ...")
-                # calculate gene lambda
-                # find mean and sd of gene expression in each class
-                # default row_to_read_file_to_get_lambda_cv = 22283
-                row_to_read_file_to_get_lambda_cv = row_to_read_file_gene_second_dataset
-
-                col_to_read_file_to_get_lambda_relapse_cv = ["ID_REF"]
-                col_to_read_file_to_get_lambda_relapse_cv.extend(list_sample_relapse_second_dataset)
-
-                col_to_read_file_to_get_lambda_no_relapse_cv = ["ID_REF"]
-                col_to_read_file_to_get_lambda_no_relapse_cv.extend(list_sample_no_relapse_second_dataset)
-
-                file_to_get_lambda_relapse_cv = pd.read_csv(file_gene_second_dataset_name, usecols = col_to_read_file_to_get_lambda_relapse_cv, nrows = row_to_read_file_to_get_lambda_cv)
-                file_to_get_lambda_no_relapse_cv = pd.read_csv(file_gene_second_dataset_name, usecols = col_to_read_file_to_get_lambda_no_relapse_cv, nrows = row_to_read_file_to_get_lambda_cv)
-
-                # dictionary contains genes idintified by its probe id which contain all gene expression from samples
-                # {1: [gene_probe_id, [exp1,exp2, ...]]}
-
+                # create samples with their pathways and member genes
                 # for class "relapse"
-                genes_expression_relapse_second_dataset = {}
-                last_index_to_read_file_to_get_lambda_relapse_cv = len(col_to_read_file_to_get_lambda_relapse_cv)
-                for line_index in range(0, row_to_read_file_to_get_lambda_cv):
-                    gene_expression_by_probe_id = []              
-                    list_gene_expression_same_probe_id = [] 
-                    for element in file_to_get_lambda_relapse_cv.iloc[line_index, 1:last_index_to_read_file_to_get_lambda_relapse_cv]:
-                        list_gene_expression_same_probe_id.append(element)  
-
-                    gene_probe_id = file_to_get_lambda_relapse_cv.iloc[line_index, 0]
-                    gene_expression_by_probe_id.append(gene_probe_id)
-                    gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
-
-                    genes_expression_relapse_second_dataset[line_index] = gene_expression_by_probe_id
-                
-                # for class "non-relapse"
-                genes_expression_no_relapse_second_dataset = {}
-                last_index_to_read_file_to_get_lambda_no_relapse_cv = len(col_to_read_file_to_get_lambda_no_relapse_cv)
-                for line_index in range(0, row_to_read_file_to_get_lambda_cv):
-                    gene_expression_by_probe_id = []              
-                    list_gene_expression_same_probe_id = [] 
-
-                    for element in file_to_get_lambda_no_relapse_cv.iloc[line_index, 1:last_index_to_read_file_to_get_lambda_no_relapse_cv]:
-                         list_gene_expression_same_probe_id.append(element)  
-
-                    gene_probe_id = file_to_get_lambda_no_relapse_cv.iloc[line_index, 0]
-                    gene_expression_by_probe_id.append(gene_probe_id)
-                    gene_expression_by_probe_id.append(list_gene_expression_same_probe_id)
-
-                    genes_expression_no_relapse_second_dataset[line_index] = gene_expression_by_probe_id
-                
-                # calculate log-likelihood ratio
-                # for class "relapse"
-                genes_lambda_relapse_second_dataset = {}
-                for gene_index in range(0, len(genes_expression_relapse_second_dataset)):
-                    result = []
-                    gene_name = genes_expression_relapse_second_dataset[gene_index][0]
-
-                    gene_mean_relapse = list_mean_sd_gene_expression_by_probe_id_relapse_cv[gene_index][1]
-                    gene_sd_relapse = list_mean_sd_gene_expression_by_probe_id_relapse_cv[gene_index][2]
-
-                    gene_mean_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse_cv[gene_index][1]
-                    gene_sd_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse_cv[gene_index][2]
-
-                    list_gene_lambda = []
-                    for gene_expression_index in range(0, len(genes_expression_relapse_second_dataset[gene_index][1])):
-                        gene_expression = genes_expression_relapse_second_dataset[gene_index][1][gene_expression_index]       
-
-                        log_gene_pdf_under_relapse = norm.logpdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
-                        log_gene_pdf_under_no_relapse = norm.logpdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)              
-
-                        lambda_value = log_gene_pdf_under_relapse - log_gene_pdf_under_no_relapse
-
-                        list_gene_lambda.append(lambda_value)
-                    
-                    result.append(gene_name)
-                    result.append(list_gene_lambda)
-
-                    genes_lambda_relapse_second_dataset[gene_index] = result
-                
-                # for class "non-relapse"
-                genes_lambda_no_relapse_second_dataset = {}
-                for gene_index in range(0, len(genes_expression_no_relapse_second_dataset)):
-                    result = []
-                    gene_name = genes_expression_no_relapse_second_dataset[gene_index][0]
-
-                    gene_mean_relapse = list_mean_sd_gene_expression_by_probe_id_relapse_cv[gene_index][1]
-                    gene_sd_relapse = list_mean_sd_gene_expression_by_probe_id_relapse_cv[gene_index][2]
-
-                    gene_mean_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse_cv[gene_index][1]
-                    gene_sd_no_relapse = list_mean_sd_gene_expression_by_probe_id_no_relapse_cv[gene_index][2]
-
-                    list_gene_lambda = []
-                    for gene_expression_index in range(0, len(genes_expression_no_relapse_second_dataset[gene_index][1])):
-                        gene_expression = genes_expression_no_relapse_second_dataset[gene_index][1][gene_expression_index]
-
-                        log_gene_pdf_under_relapse = norm.logpdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
-                        log_gene_pdf_under_no_relapse = norm.logpdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)
-
-                        lambda_value = log_gene_pdf_under_relapse - log_gene_pdf_under_no_relapse
-
-                        list_gene_lambda.append(lambda_value)
-                    
-                    result.append(gene_name)
-                    result.append(list_gene_lambda)
-
-                    genes_lambda_no_relapse_second_dataset[gene_index] = result
-                
-                print(" Process : Normalize log-likelihood ratio of gene in samples ...")
-
-                # normalize lambda value
-                list_gene_lambda_mean_sd_second_dataset = []
-                for gene_index in range(0, len(genes_lambda_relapse_second_dataset)):
-                    gene_mean_sd = []
-                    gene_probe_id = genes_lambda_relapse_second_dataset[gene_index][0]
-
-                    all_lambda_this_gene = []
-                    all_lambda_this_gene.extend(genes_lambda_relapse_second_dataset[gene_index][1])
-                    all_lambda_this_gene.extend(genes_lambda_no_relapse_second_dataset[gene_index][1])
-                    
-                    mean_lambda_this_gene = calculate.mean(all_lambda_this_gene)
-                    sd_lambda_this_gene  = calculate.sd(all_lambda_this_gene)
-
-                    gene_mean_sd.append(gene_probe_id)
-                    gene_mean_sd.append(mean_lambda_this_gene)
-                    gene_mean_sd.append(sd_lambda_this_gene)
-
-                    list_gene_lambda_mean_sd_second_dataset.append(gene_mean_sd)
-                
-                # for class "relapse"
-                genes_lambda_relapse_normalized_second_dataset = {}
-                for gene_index in range(0, len(genes_lambda_relapse_second_dataset)):
-                    gene_with_lambda = []
-                    gene_probe_id = genes_lambda_relapse_second_dataset[gene_index][0]
-
-                    list_gene_lambda = []
-                    for lambda_index in range(0, len(genes_lambda_relapse_second_dataset[gene_index][1])):
-                        lambda_value = genes_lambda_relapse_second_dataset[gene_index][1][lambda_index]
-
-                        mean_this_gene = list_gene_lambda_mean_sd_second_dataset[gene_index][1]
-                        sd_this_gene = list_gene_lambda_mean_sd_second_dataset[gene_index][2]
-
-                        lambda_value_normalized = ((lambda_value - mean_this_gene) / sd_this_gene)
-
-                        list_gene_lambda.append(lambda_value_normalized)
-                    
-                    gene_with_lambda.append(gene_probe_id)
-                    gene_with_lambda.append(list_gene_lambda)
-
-                    genes_lambda_relapse_normalized_second_dataset[gene_index] = gene_with_lambda
-                
-                # for class "non-relapse"
-                genes_lambda_no_relapse_normalized_second_dataset = {}
-                for gene_index in range(0, len(genes_lambda_no_relapse_second_dataset)):
-                    gene_with_lambda = []
-                    gene_probe_id = genes_lambda_no_relapse_second_dataset[gene_index][0]
-
-                    list_gene_lambda = []
-                    for lambda_index in range(0, len(genes_lambda_no_relapse_second_dataset[gene_index][1])):
-                        lambda_value = genes_lambda_no_relapse_second_dataset[gene_index][1][lambda_index]
-
-                        mean_this_gene = list_gene_lambda_mean_sd[gene_index][1]
-                        sd_this_gene = list_gene_lambda_mean_sd[gene_index][2]
-
-                        lambda_value_normalized = ((lambda_value - mean_this_gene) / sd_this_gene)
-
-                        list_gene_lambda.append(lambda_value_normalized)
-                    
-                    gene_with_lambda.append(gene_probe_id)
-                    gene_with_lambda.append(list_gene_lambda)
-
-                    genes_lambda_no_relapse_normalized_second_dataset[gene_index] = gene_with_lambda
-                
-                # create dictionary used to collect pathways of each sample             
-
-                # get all pathways of all samples 
-                # for class 'relapse'
                 samples_relapse_second_dataset = {}
-                for sample_index in range(0, len(list_sample_relapse_second_dataset)):
+                for element_index in range(0, len(list_sample_relapse_second_dataset)):
                     print()
-                    print("Creating pathways for sample " + str(sample_index + 1) + " relapse is in progress for cross-validation ...")
-                    print(str(len(list_sample_relapse_second_dataset) - (sample_index + 1)) + " samples left")
+                    print("Creating pathways for sample " + str(element_index + 1) + " relapse is in progress for cross-validation...")
+                    print(str(len(list_sample_relapse_second_dataset) - (element_index + 1)) + " samples left")
                     print()
-
-                    # create list of lambda of genes in this sample
-                    list_gene_lambda_value = []
-                    for gene_index in range(0, len(genes_lambda_relapse_normalized_second_dataset)):
-                        gene_with_lambda = []
-                        for lambda_index in range(0, len(genes_lambda_relapse_normalized_second_dataset[gene_index][1])):
-                            if (lambda_index == sample_index):
-                                gene_probe_id = genes_lambda_relapse_normalized_second_dataset[gene_index][0]
-                                lambda_value = genes_lambda_relapse_normalized_second_dataset[gene_index][1][lambda_index]
-
-                                gene_with_lambda.append(gene_probe_id)
-                                gene_with_lambda.append(lambda_value)
-
-                                list_gene_lambda_value.append(gene_with_lambda)
 
                     sample = []
-                    sample_name = list_sample_relapse_second_dataset[sample_index]
-                    pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_second_dataset_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
-                                list_gene_lambda_value)
+                    sample_name = list_sample_relapse_second_dataset[element_index]
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_second_dataset_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
+                                list_mean_sd_gene_expression_by_probe_id_cv)
 
                     sample.append(sample_name)
                     sample.append(pathways)
-                    samples_relapse_second_dataset[sample_index] = sample
-
+                    samples_relapse_second_dataset[element_index] = sample    
                 
                 # for class "non-relapse"
                 samples_no_relapse_second_dataset = {}
-                for sample_index in range(0, len(list_sample_no_relapse_second_dataset)):
+                for element_index in range(0, len(list_sample_no_relapse_second_dataset)):
                     print()
-                    print("Creating pathways for sample " + str(sample_index + 1) + " non-relapse is in progress for cross-validation ...")
-                    print(str(len(list_sample_no_relapse_second_dataset) - (sample_index + 1)) + " samples left")
+                    print("Creating pathways for sample " + str(element_index + 1) + " non-relapse is in progress for cross-validation...")
+                    print(str(len(list_sample_no_relapse_second_dataset) - (element_index + 1)) + " samples left")
                     print()
-
-                    # create list of lambda of genes in this sample
-                    list_gene_lambda_value = []
-                    for gene_index in range(0, len(genes_lambda_no_relapse_normalized_second_dataset)):
-                        gene_with_lambda = []
-                        for lambda_index in range(0, len(genes_lambda_no_relapse_normalized_second_dataset[gene_index][1])):
-                            if (lambda_index == sample_index):
-                                gene_probe_id = genes_lambda_no_relapse_normalized_second_dataset[gene_index][0]
-                                lambda_value = genes_lambda_no_relapse_normalized_second_dataset[gene_index][1][lambda_index]
-
-                                gene_with_lambda.append(gene_probe_id)
-                                gene_with_lambda.append(lambda_value)
-
-                                list_gene_lambda_value.append(gene_with_lambda)
 
                     sample = []
-                    sample_name = list_sample_no_relapse_second_dataset[sample_index]
-                    pathways = calculate.getPathwayLLR(file_ref_name, file_to_convert_second_dataset_name, file_pathway_name, sample_name, rows_to_read_file_pathway,\
-                                list_gene_lambda_value)
-                    
+                    sample_name = list_sample_no_relapse_second_dataset[element_index]
+                    pathways = calculate.getPathway(file_ref_name, file_to_convert_second_dataset_name, file_pathway_name, sample_name, rows_to_read_file_pathway, \
+                                list_mean_sd_gene_expression_by_probe_id_cv)
+
                     sample.append(sample_name)
                     sample.append(pathways)
-                    samples_no_relapse_second_dataset[sample_index] = sample
-
+                    samples_no_relapse_second_dataset[element_index] = sample 
+                
                 # preparing data for evaluation and creating classifier
                 # create classifier
 
@@ -1369,9 +1073,8 @@ def main():
                 for sample_index in range(0,len(list_train_no_relapse)):
                     index_samples_no_relapse = list_train_no_relapse[sample_index]
                     samples_classifier_no_relapse[sample_index] = samples_no_relapse_second_dataset[index_samples_no_relapse]
-
+                
                 # calculate pathway activity of classifier
-
                 # for class 'relapse'
                 samples_classifier_relapse_pathway_activity = {}
                 for sample_index in range(0, len(samples_classifier_relapse)):
@@ -1379,22 +1082,24 @@ def main():
                     list_pathway_activity = []
                     for pathway_index in range(0, len(samples_classifier_relapse[sample_index][1])):
                         pathway = []
-                        sum_gene_lambda = 0
+                        sum_gene_expression = 0
+                        num_of_corg = len(list_corg_all_pathway[pathway_index])
                         for gene_index in range(0, len(samples_classifier_relapse[sample_index][1][pathway_index])):
-                            gene_lambda_value =  samples_classifier_relapse[sample_index][1][pathway_index][1][gene_index][1]
-                            sum_gene_lambda += gene_lambda_value
+                            gene_entrez_id = samples_classifier_relapse[sample_index][1][pathway_index][1][gene_index][0]
+                            gene_expression =  samples_classifier_relapse[sample_index][1][pathway_index][1][gene_index][1]
+                            if (gene_entrez_id in list_corg_all_pathway[pathway_index]):
+                                sum_gene_expression += gene_expression
+                        pathway_activity = (sum_gene_expression / math.sqrt(num_of_corg))
                         pathway_name = samples_classifier_relapse[sample_index][1][pathway_index][0]
-
                         pathway.append(pathway_name)
-                        pathway.append(sum_gene_lambda)
-
+                        pathway.append(pathway_activity)
                         list_pathway_activity.append(pathway)
                     
                     sample_name = samples_classifier_relapse[sample_index][0]
 
                     list_sample_with_pathway_activity.append(sample_name)
                     list_sample_with_pathway_activity.append(list_pathway_activity)
-
+                    
                     samples_classifier_relapse_pathway_activity[sample_index] = list_sample_with_pathway_activity
                 
                 # for class 'non-relapse'
@@ -1404,22 +1109,24 @@ def main():
                     list_pathway_activity = []
                     for pathway_index in range(0, len(samples_classifier_no_relapse[sample_index][1])):
                         pathway = []
-                        sum_gene_lambda = 0
+                        sum_gene_expression = 0
+                        num_of_corg = len(list_corg_all_pathway[pathway_index])
                         for gene_index in range(0, len(samples_classifier_no_relapse[sample_index][1][pathway_index])):
-                            gene_lambda_value =  samples_classifier_no_relapse[sample_index][1][pathway_index][1][gene_index][1]
-                            sum_gene_lambda += gene_lambda_value
+                            gene_entrez_id = samples_classifier_no_relapse[sample_index][1][pathway_index][1][gene_index][0]
+                            gene_expression =  samples_classifier_no_relapse[sample_index][1][pathway_index][1][gene_index][1]
+                            if (gene_entrez_id in list_corg_all_pathway[pathway_index]):
+                                sum_gene_expression += gene_expression
+                        pathway_activity = (sum_gene_expression / math.sqrt(num_of_corg))
                         pathway_name = samples_classifier_no_relapse[sample_index][1][pathway_index][0]
-
                         pathway.append(pathway_name)
-                        pathway.append(sum_gene_lambda)
-
+                        pathway.append(pathway_activity)
                         list_pathway_activity.append(pathway)
                     
                     sample_name = samples_classifier_no_relapse[sample_index][0]
 
                     list_sample_with_pathway_activity.append(sample_name)
                     list_sample_with_pathway_activity.append(list_pathway_activity)
-
+                    
                     samples_classifier_no_relapse_pathway_activity[sample_index] = list_sample_with_pathway_activity
                 
                 # create testing data
@@ -1443,22 +1150,24 @@ def main():
                     list_pathway_activity = []
                     for pathway_index in range(0, len(samples_testing_relapse[sample_index][1])):
                         pathway = []
-                        sum_gene_lambda = 0
+                        sum_gene_expression = 0
+                        num_of_corg = len(list_corg_all_pathway[pathway_index])
                         for gene_index in range(0, len(samples_testing_relapse[sample_index][1][pathway_index])):
-                            gene_lambda_value =  samples_testing_relapse[sample_index][1][pathway_index][1][gene_index][1]
-                            sum_gene_lambda += gene_lambda_value
+                            gene_entrez_id = samples_testing_relapse[sample_index][1][pathway_index][1][gene_index][0]
+                            gene_expression =  samples_testing_relapse[sample_index][1][pathway_index][1][gene_index][1]
+                            if (gene_entrez_id in list_corg_all_pathway[pathway_index]):
+                                sum_gene_expression += gene_expression
+                        pathway_activity = (sum_gene_expression / math.sqrt(num_of_corg))
                         pathway_name = samples_testing_relapse[sample_index][1][pathway_index][0]
-
                         pathway.append(pathway_name)
-                        pathway.append(sum_gene_lambda)
-
+                        pathway.append(pathway_activity)
                         list_pathway_activity.append(pathway)
                     
                     sample_name = samples_testing_relapse[sample_index][0]
 
                     list_sample_with_pathway_activity.append(sample_name)
                     list_sample_with_pathway_activity.append(list_pathway_activity)
-
+                    
                     samples_testing_relapse_pathway_activity[sample_index] = list_sample_with_pathway_activity
                 
                 # for class 'non-relapse'
@@ -1468,22 +1177,24 @@ def main():
                     list_pathway_activity = []
                     for pathway_index in range(0, len(samples_testing_no_relapse[sample_index][1])):
                         pathway = []
-                        sum_gene_lambda = 0
+                        sum_gene_expression = 0
+                        num_of_corg = len(list_corg_all_pathway[pathway_index])
                         for gene_index in range(0, len(samples_testing_no_relapse[sample_index][1][pathway_index])):
-                            gene_lambda_value =  samples_testing_no_relapse[sample_index][1][pathway_index][1][gene_index][1]
-                            sum_gene_lambda += gene_lambda_value
+                            gene_entrez_id = samples_testing_no_relapse[sample_index][1][pathway_index][1][gene_index][0]
+                            gene_expression =  samples_testing_no_relapse[sample_index][1][pathway_index][1][gene_index][1]
+                            if (gene_entrez_id in list_corg_all_pathway[pathway_index]):
+                                sum_gene_expression += gene_expression
+                        pathway_activity = (sum_gene_expression / math.sqrt(num_of_corg))
                         pathway_name = samples_testing_no_relapse[sample_index][1][pathway_index][0]
-
                         pathway.append(pathway_name)
-                        pathway.append(sum_gene_lambda)
-
+                        pathway.append(pathway_activity)
                         list_pathway_activity.append(pathway)
                     
                     sample_name = samples_testing_no_relapse[sample_index][0]
 
                     list_sample_with_pathway_activity.append(sample_name)
                     list_sample_with_pathway_activity.append(list_pathway_activity)
-
+                    
                     samples_testing_no_relapse_pathway_activity[sample_index] = list_sample_with_pathway_activity
                 
                 # create list to be used in lda
@@ -1502,7 +1213,7 @@ def main():
                     list_classifier_relapse_pathway_expression.append(list_pathway_activity)
                 print("list_classifier_relapse_pathway_expression : ")
                 print(list_classifier_relapse_pathway_expression)
-                print()    
+                print() 
 
                 # for classifier class "non-relapse"
                 list_classifier_no_relapse_pathway_expression = []
@@ -1519,7 +1230,7 @@ def main():
                     list_classifier_no_relapse_pathway_expression.append(list_pathway_activity)
                 print("list_classifier_no_relapse_pathway_expression : ")
                 print(list_classifier_no_relapse_pathway_expression)
-                print()
+                print()   
 
                 # for testing data class "relapse"
                 list_testing_relapse_pathway_expression = []
@@ -1536,8 +1247,8 @@ def main():
                     list_testing_relapse_pathway_expression.append(list_pathway_activity)
                 print("list_testing_relapse_pathway_expression : ")
                 print(list_testing_relapse_pathway_expression)
-                print()  
-
+                print()     
+                
                 # for testing data class "non-relapse"
                 list_testing_no_relapse_pathway_expression = []
                 for sample_index in range(0, len(samples_testing_no_relapse_pathway_activity)):
@@ -1561,6 +1272,7 @@ def main():
                 list_testing_all_pathway_expression.extend(list_testing_no_relapse_pathway_expression)
 
                 # create list to contain all sample name used in testing procedure
+                # for class "relapse"
                 list_chunk_test_relapse_name = []
                 for index in range(0, len(chunk_test_relapse)):
                     index_samples_relapse = chunk_test_relapse[index]
@@ -1569,6 +1281,7 @@ def main():
                 print(list_chunk_test_relapse_name)
                 print()
 
+                # for class "non-relapse"
                 list_chunk_test_no_relapse_name = []
                 for index in range(0, len(chunk_test_no_relapse)):
                         index_samples_no_relapse = chunk_test_no_relapse[index]
@@ -1594,7 +1307,7 @@ def main():
                 list_desired_outputs = []
                 for element in file_desired_outputs.loc[:, 'relapse (1=True)']:
                     list_desired_outputs.append(element)
-
+                
                 # calculate lda 
                 list_actual_outputs = calculate.lda(list_testing_all_pathway_expression, list_classifier_relapse_pathway_expression, list_classifier_no_relapse_pathway_expression)
 
@@ -1602,11 +1315,33 @@ def main():
                 auc_score = roc_auc_score(list_desired_outputs, list_actual_outputs)
                 list_auc_score.append(auc_score)
 
+                # get corg of each feature in feature set
+                # get index of members in feature set in relation to th eorder of pathway in an input file
+                list_index_feature_set = []
+                for feature_index in range(0, len(feature_set_name)):
+                    for pathway_index in range(0, len(list_pathway_name)):
+                        feature = feature_set_name[feature_index]
+                        pathway = list_pathway_name[pathway_index][1]
+
+                        if (feature == pathway):
+                            index_feature_in_list_pathway = list_pathway_name[pathway_index][0]
+                            list_index_feature_set.append(index_feature_in_list_pathway)
+
+                # map index of members in feature set to index of CORG 
+                list_corg_feature_set = []
+                for feature_index in range(0, len(list_index_feature_set)):
+                    index_in_list = list_index_feature_set[feature_index]
+
+                    corg_this_feature = list_corg_all_pathway[index_in_list]
+                    list_corg_feature_set.append(corg_this_feature)
+                
                 print()
                 print("#### Evaluation of " + str(chunk_test_index + 1) + " - fold ####")
                 # print("Feature set : " + str(list_top_ranked_pathways))
                 print("Feature set : " + str(feature_set_name))
-                print("Size of feature set : " + str(len(feature_set_name)))
+                print("CORG of each feature in feature set : ")
+                print(list_corg_feature_set)
+                print("size of feature set : " + str(len(feature_set_name)))
                 print("size of list_actual_outputs : " + str(len(list_actual_outputs)))
                 print("list_actual_outputs : ")
                 print(list_actual_outputs)
@@ -1620,10 +1355,13 @@ def main():
                  # track feature set which gives maximum auc score
                 if (auc_score > auc_score_max):
                     list_feature_set_max_auc = deepcopy(feature_set_name)
+                    list_corg_in_feature_set_max_auc = deepcopy(list_corg_feature_set)
                     auc_score_max = auc_score
-
+                
                 result_file.write("Feature set : " + str(feature_set_name) + "\n")
-                result_file.write("Size of feature set : " + str(len(feature_set_name)) + "\n")
+                result_file.write("CORG of each feature in feature set : \n")
+                result_file.write(str(list_corg_feature_set) + "\n")
+                result_file.write("size of feature set : " + str(len(feature_set_name)) + "\n")
                 result_file.write("size of list_actual_outputs : " + str(len(list_actual_outputs)) + "\n")
                 result_file.write(str(list_actual_outputs) + "\n")
                 result_file.write("\n")
@@ -1649,7 +1387,7 @@ def main():
         total_elapse_time_hour = total_elapse_time_minute / 60  
         total_elapse_time_hour = round(total_elapse_time_minute / 60)
 
-        list_avg_auc_each_epoch.append(calculate.mean(list_auc_score))   
+        list_avg_auc_each_epoch.append(calculate.mean(list_auc_score))
 
         print()
         print("#### Summary ####")
@@ -1657,9 +1395,10 @@ def main():
         print(" Maximum AUC score : " + str(auc_score_max))
         print(" Feature set which gives highest AUC score : ")
         print(list_feature_set_max_auc)
+        print(" CORG of each feature in the feature set which gives the highest AUC score : ")
+        print(list_corg_in_feature_set_max_auc)
         print()
         print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
-            
 
         result_file.write("\n#### Summary ####\n")
 
@@ -1674,10 +1413,12 @@ def main():
         result_file.write("Feature set which gives the highest AUC score from testing : " + "\n")
         result_file.write(str(list_feature_set_max_auc))
         result_file.write("\n")
+        result_file.write("CORG of each feature in the feature set which gives the highest AUC score : \n")
+        result_file.write(str(list_corg_in_feature_set_max_auc))
+        result_file.write("\n")
         result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
         result_file.write("\n")
         result_file.write("\n")
-
 
         print("----------------------------------------------------------------------------------------------------")
     
@@ -1687,7 +1428,7 @@ def main():
     result_file.write("Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_over_all_epoch) + "\n")
 
     result_file.close()
-                
+
 
 
 
