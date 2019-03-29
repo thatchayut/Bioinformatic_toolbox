@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import pandas as pd
 import math
 import calculate
@@ -17,11 +16,8 @@ def main():
     # row_to_read = 22283
     row_to_read = 22283
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read)
-    
-    # version 1: consider only relapse and non-relapse within 5 years
-    # file_training_output = pd.read_csv("mapping_sample_to_class_relapse.csv", usecols = ['GEO asscession number', 'relapses within 5 years (1 = yes, 0=no)'])
-    
-    # version 2: consider non-relapse and relapse (not in specific period of time)
+
+    # onsider non-relapse and relapse (not in specific period of time)
     file_training_output_relapse = pd.read_csv("mapping_sample_to_class_relapse.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
     file_training_output_no_relapse = pd.read_csv("mapping_sample_to_class_no_relapse.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
     file_training_output = pd.read_csv("mapping_sample_to_class_no_relapse.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
@@ -38,15 +34,10 @@ def main():
         gene_name.append(i)
         gene_name.append(file_training_input.loc[i, "ID_REF"])
         list_gene_name.append(gene_name)
-    # print(list_gene_name)
 
     # separate data into 2 classes
 
-    # version 1: consider only relapse and non-relapse within 5 years
-    # sample_relapse = file_training_output.loc[file_training_output['relapses within 5 years (1 = yes, 0=no)'].isin(['1'])]
-    # sample_no_relapse = file_training_output.loc[file_training_output['relapses within 5 years (1 = yes, 0=no)'].isin(['0'])]
-
-    # version 2: consider non-relapse and relapse (not in specific period of time)
+    # consider non-relapse and relapse (not in specific period of time)
     sample_relapse = file_training_output_relapse.loc[file_training_output_relapse['relapse (1=True)'].isin(['1'])]
     sample_no_relapse = file_training_output_no_relapse.loc[file_training_output_no_relapse['relapse (1=True)'].isin(['0'])]
     # print(sample_no_relapse)
@@ -82,14 +73,6 @@ def main():
             break
     num_of_folds = int(num_of_folds)
 
-    # get number of ranked gene to be shown
-    while True:
-        number_of_ranked_gene = input("Number of ranked feature: ")
-        if ((number_of_ranked_gene.isnumeric() == False) or (int(number_of_ranked_gene) > row_to_read) or (int(number_of_ranked_gene) <= 0)):
-            print("Invalid input...")
-        else:
-            break
-    
     # get epoch
     while True:
         epoch = input("Epoch : ")
@@ -98,11 +81,22 @@ def main():
         else:
             break
 
+    # get number of ranked gene to be shown
+    while True:
+        number_of_ranked_gene = input("Number of ranked feature: ")
+        if ((number_of_ranked_gene.isnumeric() == False) or (int(number_of_ranked_gene) > row_to_read) or (int(number_of_ranked_gene) <= 0)):
+            print("Invalid input...")
+        else:
+            break
+    
     # get output file's name
     file_name = input("Name of Output File : ")
 
     # prepare text file for results to be written in
     result_file = open(str(file_name) + ".txt", "w+")
+
+    # list used to collect average auc score of each epoch
+    list_avg_auc_each_epoch = []
 
     for epoch_count in range(0, int(epoch)):
         start_epoch_time = time.time()
@@ -123,6 +117,12 @@ def main():
 
         # list to collect maximun AUC in each fold
         list_max_auc = []
+
+        # list and variable to track feature set that has the best auc score
+        auc_score_max = 0
+        list_feature_set_max_auc = []
+        list_auc_score = []
+
 
         # do only if number of chunks of both datasets are equal
         if (check_valid == True):
@@ -278,7 +278,8 @@ def main():
                     # for class 'relapse'
                     # print("#### class 'Relapse' ####")
                     col_to_read_relapse = ["ID_REF"]
-                    col_to_read_relapse.extend(second_layer_train_relapse[0])
+                    # col_to_read_relapse.extend(second_layer_train_relapse[0])
+                    col_to_read_relapse.extend(ttest_list_sample_relapse)
                     # print(col_to_read_relapse)
                     file_training_input_relapse = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_relapse)
                     # print(file_training_input_relapse)
@@ -296,7 +297,8 @@ def main():
                     # for class 'no relapse'
                     # print("#### class 'no Relapse' ####")
                     col_to_read_no_relapse = ["ID_REF"]
-                    col_to_read_no_relapse.extend(second_layer_train_no_relapse[0])
+                    # col_to_read_no_relapse.extend(second_layer_train_no_relapse[0])
+                    col_to_read_no_relapse.extend(ttest_list_sample_no_relapse)
                     # print(col_to_read_no_relapse)
                     file_training_input_no_relapse = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_no_relapse)
                     # print(file_training_input_no_relapse)
@@ -463,7 +465,8 @@ def main():
                 print("#### class 'Relapse' for creating classifier ####")
                 col_to_read_relapse_for_eval = ["ID_REF"]
                 # col_to_read_relapse_for_eval.extend(first_layer_test_relapse)
-                col_to_read_relapse_for_eval.extend(first_layer_train_relapse[0])
+                # col_to_read_relapse_for_eval.extend(first_layer_train_relapse[0])
+                col_to_read_relapse_for_eval.extend(second_list_sample_relapse)
                 # print(col_to_read_relapse)
                 file_training_input_relapse_for_eval = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_relapse_for_eval)
                 # print(file_training_input_relapse)
@@ -481,7 +484,8 @@ def main():
                 print("#### class 'no Relapse' for creating classifier ####")
                 col_to_read_no_relapse_for_eval = ["ID_REF"]
                 # col_to_read_no_relapse_for_eval.extend(first_layer_test_no_relapse)
-                col_to_read_no_relapse_for_eval.extend(first_layer_train_no_relapse[0])
+                # col_to_read_no_relapse_for_eval.extend(first_layer_train_no_relapse[0])
+                col_to_read_no_relapse_for_eval.extend(second_list_sample_no_relapse)
                 # print(col_to_read_no_relapse)
                 file_training_input_no_relapse_for_eval = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_no_relapse_for_eval)
                 # print(file_training_input_no_relapse)
@@ -588,6 +592,7 @@ def main():
 
                 # calculate AUC score
                 auc_score_for_eval = roc_auc_score(list_desired_output_for_eval, list_actual_output_for_eval)
+                list_auc_score.append(auc_score_for_eval)
 
                 print("#### Evaluation of " + str(first_layer_test_index + 1) + " - fold ####")
                 print("Feature Set : " + str(feature_set_name))
@@ -595,28 +600,57 @@ def main():
                 print("Desired Output : " + str(list_desired_output_for_eval))
                 print("AUC ROC score = " + str(auc_score_for_eval))
 
+                # track feature set which gives maximum auc score
+                if (auc_score_for_eval > auc_score_max):
+                    list_feature_set_max_auc = deepcopy(feature_set_name)
+                    auc_score_max = auc_score
+
                 # record ending time of this iteration
                 end_epoch_time = time.time()
                 time_elapse_epoch_second = end_epoch_time - start_epoch_time
                 time_elapse_epoch_minute = time_elapse_epoch_second / 60
                 time_elapse_epoch_hour = time_elapse_epoch_minute / 60
 
+                time_elapse_epoch_minute = round(time_elapse_epoch_minute, 2)
+                time_elapse_epoch_hour = round(time_elapse_epoch_hour, 2)
+
                 # write output to an output file
                 result_file.write("Fold : " + str(first_layer_test_index + 1) + "\n")
                 result_file.write("Feature Set : " + str(feature_set_name) + "\n")
                 result_file.write("Actual Output : " + str(list_actual_output_for_eval) + "\n")
                 result_file.write("Desired Output : " + str(list_desired_output_for_eval) + "\n")
-                result_file.write("AUC ROC Score : " + str(auc_score_for_eval) +  "\n")
+                result_file.write("AUC ROC Score from testing : " + str(auc_score_for_eval) +  "\n")
                 result_file.write("\n")
-        result_file.write("Maximum AUC ROC score of feature in each fold = " + str(list_max_auc) + "\n")
+        
+        list_avg_auc_each_epoch.append(calculate.mean(list_auc_score))
+
+        result_file.write("\n#### Summary ####\n")
+        result_file.write("Average AUC score : " + str(calculate.mean(list_auc_score)) + "\n")
+        result_file.write("AUC score from feature selection in each fold : " + str(list_max_auc) + "\n")
+        result_file.write("Size of feature set which gives the highest AUC score from testing : " + str(len(list_feature_set_max_auc)))
+        result_file.write("\n")
+        result_file.write("Feature set which gives the highest AUC score from testing : " + "\n")
+        result_file.write(str(list_feature_set_max_auc))
+        result_file.write("\n")
         result_file.write("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
         print("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
-        print("Maximum AUC ROC score of feature in each fold  = " + str(list_max_auc))
+        print("AUC score from feature selection in each fold  = " + str(list_max_auc))
+
+    # calculate mean over all epoch
+    mean_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
+    print("Average AUC score over " + str(epoch) + " epoch : " + str(mean_over_all_epoch))
+    result_file.write("\n")
+    result_file.write("Average AUC score over " + str(epoch) + " epoch : " + str(mean_over_all_epoch) + "\n")
+
     # record end time
     end_time = time.time()
     time_elapse_second = end_time - start_time
     time_elapse_minute = time_elapse_second / 60
     time_elapse_hour = time_elapse_minute / 60
+
+    time_elapse_minute = round(time_elapse_minute, 2)
+    time_elapse_hour = round(time_elapse_hour, 2)
+
     print("Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)")
     result_file.write("Total Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)\n")
 

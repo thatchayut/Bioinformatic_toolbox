@@ -910,7 +910,6 @@ def main():
         print("number of in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse_cv)))
 
         check_valid_cv, num_of_chunks_cv = calculate.checkEqualListSize(chunk_list_relapse_cv, chunk_list_no_relapse_cv)
-        print("num_of_chunks_cv : "  +str(num_of_chunks_cv))
 
         # list and variable to track feature set that has the best auc score
         auc_score_max = 0
