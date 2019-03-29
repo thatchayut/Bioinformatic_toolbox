@@ -531,11 +531,11 @@ def main():
                     # sort pathways using their pathway activity
                     list_pathway_activity.sort(key = lambda x : x[1], reverse = True)
 
-                    # find average absolute t-score
-                    average_absolute_tscore = 0
-                    for index in range(0, len(list_pathway_activity)):
-                        average_absolute_tscore += math.fabs(list_pathway_activity[index][1])
-                    average_absolute_tscore /= len(list_pathway_activity)
+                    # # find average absolute t-score
+                    # average_absolute_tscore = 0
+                    # for index in range(0, len(list_pathway_activity)):
+                    #     average_absolute_tscore += math.fabs(list_pathway_activity[index][1])
+                    # average_absolute_tscore /= len(list_pathway_activity)
 
                     # list_avg_abs_tscore_each_fold.append(average_absolute_tscore)
 
@@ -681,6 +681,11 @@ def main():
                     print("feature_set_name : " + str(feature_set_name))
                     print("auc_score_feature_selection : " + str(auc_score_feature_selection))
                     print()
+
+                    # result_file.write("feature_set_name : " + str(feature_set_name))
+                    # result_file.write("\n")
+                    # result_file.write("auc_score_feature_selection : " + str(auc_score_feature_selection))
+                    # result_file.write("\n")
 
                 # preparing data for evaluation and creating classifier
                 # prepare data for testing
