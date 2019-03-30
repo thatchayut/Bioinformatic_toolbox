@@ -38,10 +38,26 @@ def main():
         else:
             print(" WARNING : Available choices are " + str(list_available_experiment_number[0] + " to " + str(list_available_experiment_number[len(list_available_experiment_number) - 1]) + "."))
 
-    # gene_based_cross_interface.main()
-    # gene_based_interface.main()
-    pac_interface.main()
-
+    if (method_number == "1"):
+        if (experiment_number == "1"):
+            gene_based_interface.main()
+        elif (experiment_number == "2"):
+            gene_based_cross_interface.main()
+    elif (method_number == "2"):
+        if (experiment_number == "1"):
+            mean_interface.main()
+        elif (experiment_number == "2"):
+            mean_cross_interface.main()
+    elif (method_number == "3"):
+        if (experiment_number == "1"):
+            pac_interface.main()
+        elif (experiment_number == "2"):
+            pac_cross_interface.main()
+    elif (method_number == "4"):
+        if (experiment_number == "1"):
+            llr_interface.main()
+        elif (experiment_number == "2"):
+            llr_cross_interface.main()
 
 if __name__ == "__main__":
     main()

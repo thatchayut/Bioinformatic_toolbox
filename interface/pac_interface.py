@@ -48,8 +48,10 @@ def main():
     print(" 2. Enter number of rows of this file to be read ")
     while True:
         row_to_read_file_input = input(" Number of rows : ")
-        if (int(row_to_read_file_input) < 1):
-            print("WARNING : Number of rows cannot be lower than 1.")
+        if(row_to_read_file_input.isnumeric() == False):
+            print(" WARNING : Number of rows must be numeric.")
+        elif (int(row_to_read_file_input) < 1):
+            print(" WARNING : Number of rows cannot be lower than 1.") 
         else:
             break
     print()
@@ -70,8 +72,10 @@ def main():
     print(" 3. Enter number of rows of the file contaning pathways and their member genes")
     while True:
         rows_to_read_file_pathway = input(" Number of rows : ")
-        if (int(rows_to_read_file_pathway) < 1):
-            print("WARNING : Number of rows cannot be lower than 1.")
+        if(rows_to_read_file_pathway.isnumeric() == False):
+            print(" WARNING : Number of rows must be numeric.")
+        elif (int(rows_to_read_file_pathway) < 1):
+            print(" WARNING : Number of rows cannot be lower than 1.")
         else:
             break
     print()
@@ -93,16 +97,16 @@ def main():
     while True:
         num_of_folds = input(" Number of folds: ")
         if (num_of_folds.isnumeric() == False):
-            print("WARNING : Invalid input must be numeric")
+            print(" WARNING : Number of folds must be numeric")
         
         # these conditions are not available in mock-up
-        # elif(int(num_of_folds) > len(list_sample_relapse_second_dataset)):
-        #     print("WARNING : Number of folds exceeds the size of the 1st dataset")
-        # elif(int(num_of_folds) > len(list_sample_relapse_second_dataset)):
-        #     print("WARNING : Number of folds exceeds the size of the 2nd dataset")
+        # elif(int(num_of_folds) > len(list_sample_relapse)):
+        #     print("WARNING : Number of folds exceeds the size of samples in class "relapse")
+        # elif(int(num_of_folds) > len(list_sample_no_relapse)):
+        #     print("WARNING : Number of folds exceeds the size of samples in class "non-relapse")
 
         elif(int(num_of_folds) <= 1):
-            print("WARNING : Number of folds cannot lower than or equal to 1")
+            print(" WARNING : Number of folds cannot lower than or equal to 1")
         else:
             break
     num_of_folds = int(num_of_folds)    

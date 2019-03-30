@@ -40,8 +40,10 @@ def main():
 
     print(" 2. Enter number of rows of this file to be read ")
     while True:
-        row_to_read_file_input = input(" Number of rows : ")
-        if (int(row_to_read_file_input) < 1):
+        row_to_read_file_input = input(" Number of rows : ")  
+        if(row_to_read_file_input.isnumeric() == False):
+            print(" WARNING : Number of rows must be numeric.")
+        elif (int(row_to_read_file_input) < 1):
             print("WARNING : Number of rows cannot be lower than 1.")
         else:
             break
@@ -68,16 +70,16 @@ def main():
     while True:
         num_of_folds = input("Number of folds: ")
         if (num_of_folds.isnumeric() == False):
-            print("WARNING : Invalid input must be numeric")
+            print(" WARNING : Number of folds must be numeric")
         
         # these conditions are not available in mock-up
-        # elif(int(num_of_folds) > len(list_sample_relapse_second_dataset)):
-        #     print("WARNING : Number of folds exceeds the size of the 1st dataset")
-        # elif(int(num_of_folds) > len(list_sample_relapse_second_dataset)):
-        #     print("WARNING : Number of folds exceeds the size of the 2nd dataset")
+        # elif(int(num_of_folds) > len(list_sample_relapse)):
+        #     print("WARNING : Number of folds exceeds the size of samples in class "relapse")
+        # elif(int(num_of_folds) > len(list_sample_no_relapse)):
+        #     print("WARNING : Number of folds exceeds the size of samples in class "non-relapse")
 
         elif(int(num_of_folds) <= 1):
-            print("WARNING : Number of folds cannot lower than or equal to 1")
+            print(" WARNING : Number of folds cannot lower than or equal to 1")
         else:
             break
     num_of_folds = int(num_of_folds)    
@@ -86,14 +88,14 @@ def main():
     print(" 3. Enter number of top-ranked features")
     while True:
         number_of_ranked_gene = input("Number of top-ranked features: ")
-        if(number_of_ranked_gene.isnumeric() == False):
+        if (number_of_ranked_gene.isnumeric() == False):
             print(" WARNING : Number of top-ranked features must be numeric.")
         
         # these conditions are not available in mock-up
         # elif(int(number_of_ranked_gene) > row_to_read_file_gene_first_dataset):
         #     print(" WARINING : Number of top-ranked features must not exceed available genes from the first file.")
         
-        elif(int(number_of_ranked_gene) <= 0):
+        elif (int(number_of_ranked_gene) <= 0):
             print(" WARNING : Number of top-ranked features must not be lower than or equal to 0.")    
         else:
             break
