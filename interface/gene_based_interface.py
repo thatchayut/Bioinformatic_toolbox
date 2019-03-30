@@ -7,7 +7,7 @@ def main():
     print(" # Experiment : Within Dataset")
     print(" # You will be asked to provide related files and required information about them including ")
     print(" #   [1] A file contains mapping between gene probe IDs and samples")
-    print(" #   [2] Number of rows of the file contains mapping between gene probe IDs and samples to be read")
+    print(" #   [2] Number of rows of the file containing mapping between gene probe IDs and samples to be read")
     print(" #   [3] A file contains mapping between samples and their class")  
     print(" # These files must follow a required format shown in file_format.pdf")
     print(" #")
@@ -31,8 +31,10 @@ def main():
     num_of_folds = None
     number_of_ranked_gene = None
 
+    file_name = None
+
     print(" # Enter required information about the first dataset ")
-    print(" 1. Enter name of the file containing mapping between probes IDs and samples ")
+    print(" 1. Enter name of a file containing mapping between probes IDs and samples ")
     file_training_input_name = add_ons.checkFileValid()
     print()
 
@@ -45,7 +47,7 @@ def main():
             break
     print()
 
-    print(" 3. Enter name of file containing mapping between samples and their class")
+    print(" 3. Enter name of a file containing mapping between samples and their class")
     file_training_output_name = add_ons.checkFileValid()
     print()
 
@@ -53,8 +55,11 @@ def main():
     print(" 1. Enter number of epochs ")
     while True:
         epoch = input(" Epochs : ")
-        if ((epoch.isnumeric() == False) or (int(epoch) <= 0)):
-            print("Invalid input...")
+
+        if (epoch.isnumeric() == False):
+            print(" WARNING : Number of epochs must be numeric.")
+        elif (int(epoch) <= 0):
+            print(" WARINING : Number of epochs must be greater than 0.")
         else:
             break
     print()
@@ -94,6 +99,7 @@ def main():
             break
     print()
 
+    file_name = input(" # Enter name of an output file : ")
 
 if __name__ == "__main__":
     main()

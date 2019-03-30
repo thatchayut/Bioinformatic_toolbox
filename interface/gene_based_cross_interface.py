@@ -8,7 +8,7 @@ def main():
     print(" # This method requires 2 datasets.")
     print(" # You will be asked to provide related files and required information about them including ")
     print(" #   [1] A file contains mapping between gene probe IDs and samples of the first dataset")
-    print(" #   [2] Number of rows of the file contains mapping between gene probe IDs and samples of the first dataset to be read")
+    print(" #   [2] Number of rows of the file containing mapping between gene probe IDs and samples of the first dataset to be read")
     print(" #   [3] A file contains mapping between samples and their class of the first dataset")  
     print(" #   [4] A file contains mapping between gene probe IDs and samples of the second dataset")
     print(" #   [5] Number of rows of the file contains mapping between gene probe IDs and samples of the second dataset to be read")
@@ -38,9 +38,11 @@ def main():
     num_of_folds = None
     number_of_ranked_gene = None
 
+    file_name = None
+
 
     print(" # Enter required information about the first dataset ")
-    print(" 1. Enter name of the file containing mapping between probes IDs and samples of the first dataset ")
+    print(" 1. Enter name of a file containing mapping between probes IDs and samples of the first dataset ")
     file_gene_first_dataset_name = add_ons.checkFileValid()
     print()
 
@@ -58,7 +60,7 @@ def main():
     print()
 
     print(" # Enter required information about the second dataset ")
-    print(" 1. Enter name of the file containing mapping between probes IDs and samples of the second dataset ")
+    print(" 1. Enter name of a file containing mapping between probes IDs and samples of the second dataset ")
     file_gene_second_dataset_name = add_ons.checkFileValid()
     print()
 
@@ -71,7 +73,7 @@ def main():
             break
     print()
 
-    print(" 3. Enter name of file containing mapping between samples and their class of the second dataset")
+    print(" 3. Enter name of a containing mapping between samples and their class of the second dataset")
     file_output_second_dataset_name = add_ons.checkFileValid()
     print()
 
@@ -79,8 +81,11 @@ def main():
     print(" 1. Enter number of epochs ")
     while True:
         epoch = input(" Epochs : ")
-        if ((epoch.isnumeric() == False) or (int(epoch) <= 0)):
-            print("Invalid input...")
+
+        if (epoch.isnumeric() == False):
+            print(" WARNING : Number of epochs must be numeric.")
+        elif (int(epoch) <= 0):
+            print(" WARINING : Number of epochs must be greater than 0.")
         else:
             break
     print()
@@ -113,12 +118,14 @@ def main():
         # these conditions are not available in mock-up
         # elif(int(number_of_ranked_gene) > row_to_read_file_gene_first_dataset):
         #     print(" WARINING : Number of top-ranked features must not exceed available genes from the first file.")
-        
+
         elif(int(number_of_ranked_gene) <= 0):
             print(" WARNING : Number of top-ranked features must not be lower than or equal to 0.")    
         else:
             break
     print()
+
+    file_name = input(" # Enter name of an output file : ")
 
     
 

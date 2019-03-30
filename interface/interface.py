@@ -39,7 +39,8 @@ def main():
             print(" WARNING : Available choices are " + str(list_available_experiment_number[0] + " to " + str(list_available_experiment_number[len(list_available_experiment_number) - 1]) + "."))
 
     # gene_based_cross_interface.main()
-    gene_based_interface.main()
+    # gene_based_interface.main()
+    pac_interface.main()
 
 
 if __name__ == "__main__":
