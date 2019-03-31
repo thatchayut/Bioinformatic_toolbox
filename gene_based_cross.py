@@ -449,14 +449,14 @@ def main():
                 # get training set in this fold
                 # for class "relapse"
                 chunk_train_relapse = []
-                for chunk_train_relapse_index in range(0, num_of_chunks):
+                for chunk_train_relapse_index in range(0, num_of_chunks_cv):
                     if (chunk_list_relapse_cv[chunk_train_relapse_index] is not chunk_test_relapse):
                         chunk_train_relapse.append(chunk_list_relapse_cv[chunk_train_relapse_index])
                 print("chunk train relapse size = " + str(len(chunk_train_relapse)))
 
                 # for class "non-relapse"
                 chunk_train_no_relapse = []
-                for chunk_train_no_relapse_index in range(0, num_of_chunks):
+                for chunk_train_no_relapse_index in range(0, num_of_chunks_cv):
                     if (chunk_list_no_relapse_cv[chunk_train_no_relapse_index] is not chunk_test_no_relapse):
                         chunk_train_no_relapse.append(chunk_list_no_relapse_cv[chunk_train_no_relapse_index])
                 print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))

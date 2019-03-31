@@ -43,16 +43,19 @@ def main():
             gene_based_interface.main()
         elif (experiment_number == "2"):
             gene_based_cross_interface.main()
+
     elif (method_number == "2"):
         if (experiment_number == "1"):
             mean_interface.main()
         elif (experiment_number == "2"):
             mean_cross_interface.main()
+
     elif (method_number == "3"):
         if (experiment_number == "1"):
             pac_interface.main()
         elif (experiment_number == "2"):
             pac_cross_interface.main()
+            
     elif (method_number == "4"):
         if (experiment_number == "1"):
             llr_interface.main()
