@@ -2,35 +2,119 @@ import pandas as pd
 import math
 import calculate
 import random
-from scipy import stats
 import numpy as np
-from sklearn.metrics import roc_auc_score
-from copy import deepcopy
 import time
 import os
+import add_ons
+from scipy import stats
+from sklearn.metrics import roc_auc_score
+from copy import deepcopy
+
 
 
 def main():
     # record start time
     start_time = time.time()
 
+    print()
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print(" # Method : Gene-Based Classification")
+    print(" # Experiment : Cross-Dataset")
+    print(" # This method requires 2 datasets.")
+    print(" # You will be asked to provide related files and required information about them including ")
+    print(" #   [1] A file contains mapping between gene probe IDs and samples of the first dataset")
+    print(" #   [2] Number of rows of the file containing mapping between gene probe IDs and samples of the first dataset to be read")
+    print(" #   [3] A file contains mapping between samples and their class of the first dataset")  
+    print(" #   [4] A file contains mapping between gene probe IDs and samples of the second dataset")
+    print(" #   [5] Number of rows of the file contains mapping between gene probe IDs and samples of the second dataset to be read")
+    print(" #   [6] A file contains mapping samples and their class of the second dataset")
+    print(" # These files must follow a required format shown in file_format.pdf")
+    print(" #")
+    print(" # You will be asked to provide required information to conduct an experiment including")
+    print(" #   [1] Number of epochs")
+    print(" #   [2] Number of folds")
+    print(" #   [3] Number of top-ranked feature")
+    print(" #")
+    print(" # You will be asked for the name of an output file.")
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print()
+
+    # prepare variables
+    file_gene_first_dataset_name = None
+    file_gene_second_dataset_name = None
+
+    row_to_read_file_gene_first_dataset = None
+    row_to_read_file_gene_second_dataset = None
+    
+    file_output_first_dataset_name = None
+    file_output_second_dataset_name = None
+
+    epoch = None
+    num_of_folds = None
+    number_of_ranked_gene = None
+
+    file_name = None
+
+
+    print(" # Enter required information about the first dataset ")
+    print(" 1. Enter name of a file containing mapping between probes IDs and samples of the first dataset ")
+    file_gene_first_dataset_name = add_ons.checkFileValid()
+    print()
+
+    print(" 2. Enter number of rows of this file to be read ")
+    while True:
+        row_to_read_file_gene_first_dataset = input(" Number of rows : ")
+        if (row_to_read_file_gene_first_dataset.isnumeric() == False):
+            print(" WARNING : Number of rows must be numeric.")
+        elif (int(row_to_read_file_gene_first_dataset) < 1):
+            print("WARNING : Number of rows cannot be lower than 1.")
+        else:
+            break
+    row_to_read_file_gene_first_dataset = int(row_to_read_file_gene_first_dataset)
+    print()
+
+    print(" 3. Enter name of file containing mapping between samples and their class of the first dataset")
+    file_output_first_dataset_name = add_ons.checkFileValid()
+    print()
+
+    print(" # Enter required information about the second dataset ")
+    print(" 1. Enter name of a file containing mapping between probes IDs and samples of the second dataset ")
+    file_gene_second_dataset_name = add_ons.checkFileValid()
+    print()
+
+    print(" 2. Enter number of rows of this file to be read ")
+    while True:
+        row_to_read_file_gene_second_dataset = input(" Number of rows : ")
+        if(row_to_read_file_gene_second_dataset.isnumeric() == False):
+            print(" WARNING : Number of rows must be numeric.")
+        elif (int(row_to_read_file_gene_second_dataset) < 1):
+            print(" WARNING : Number of rows cannot be lower than 1.")
+        else:
+            break
+    row_to_read_file_gene_second_dataset = int(row_to_read_file_gene_second_dataset)
+    print()
+
+    print(" 3. Enter name of a containing mapping between samples and their class of the second dataset")
+    file_output_second_dataset_name = add_ons.checkFileValid()
+    print()
+
     # prepare data
     # for 1st dataset
     # default row_to_read_file_gene_first_dataset = 22283
-    row_to_read_file_gene_first_dataset = 22283
-    file_gene_first_dataset_name = "GSE2034-22071 (edited).csv"
+    # row_to_read_file_gene_first_dataset = 22283
+    # file_gene_first_dataset_name = "GSE2034-22071 (edited).csv"
     file_gene_first_dataset = pd.read_csv(file_gene_first_dataset_name, nrows = row_to_read_file_gene_first_dataset)
 
-    file_output_first_dataset_name = "mapping_sample_to_class_gse2034.csv"
+    # file_output_first_dataset_name = "mapping_sample_to_class_gse2034.csv"
     file_output_first_dataset = pd.read_csv(file_output_first_dataset_name, usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # for 2nd dataset
     # default row_to_read_file_second_dataset = 22283
-    row_to_read_file_gene_second_dataset = 22283
-    file_gene_second_dataset_name = "GSE3494_GPL96.csv"
+    # row_to_read_file_gene_second_dataset = 22283
+    # file_gene_second_dataset_name = "GSE3494_GPL96.csv"
     file_gene_second_dataset = pd.read_csv(file_gene_second_dataset_name, nrows = row_to_read_file_gene_second_dataset) 
 
-    file_output_second_dataset_name = "mapping_sample_to_class_gse3494.csv"
+    # file_output_second_dataset_name = "mapping_sample_to_class_gse3494.csv"
     file_output_second_dataset = pd.read_csv(file_output_second_dataset_name, usecols = ["GEO asscession number", "relapse (1=True)"])
 
     # get gene order id with its name
@@ -70,39 +154,55 @@ def main():
     for element in sample_no_relapse_second_dataset.loc[:, 'GEO asscession number']:
         list_sample_no_relapse_second_dataset.append(element)
 
-    # get number of folds
+    print(" # Enter required information to conduct an experiment")
+    print(" 1. Enter number of epochs ")
     while True:
-        num_of_folds = input("Number of folds: ")
+        epoch = input(" Epochs : ")
+
+        if (epoch.isnumeric() == False):
+            print(" WARNING : Number of epochs must be numeric.")
+        elif (int(epoch) <= 0):
+            print(" WARINING : Number of epochs must be greater than 0.")
+        else:
+            break
+    print()
+
+    print(" 2. Enter number of folds ")
+    while True:
+        num_of_folds = input(" Number of folds: ")
         if (num_of_folds.isnumeric() == False):
-            print("WARNING : Invalid input must be numeric")
+            print(" WARNING : Number of folds must be numeric")
+        
+        # these conditions are not available in mock-up
         elif(int(num_of_folds) > len(list_sample_relapse_second_dataset)):
-            print("WARNING : Number of folds exceeds the size of the 1st dataset")
+            print("WARNING : Number of folds exceeds the size of samples in class relapse in the second dataset.")
         elif(int(num_of_folds) > len(list_sample_relapse_second_dataset)):
-            print("WARNING : Number of folds exceeds the size of the 2nd dataset")
+            print("WARNING : Number of folds exceeds the size of samples in clss non-relapse in the second dataset.")
+
         elif(int(num_of_folds) <= 1):
-            print("WARNING : Number of folds cannot lower than or equal to 1")
+            print(" WARNING : Number of folds cannot lower than or equal to 1")
         else:
             break
-    num_of_folds = int(num_of_folds)
+    num_of_folds = int(num_of_folds)    
+    print()
 
-    # get epoch
+    print(" 3. Enter number of top-ranked features")
     while True:
-        epoch = input("Epoch : ")
-        if ((epoch.isnumeric() == False) or (int(epoch) <= 0)):
-            print("Invalid input...")
-        else:
-            break
+        number_of_ranked_gene = input(" Number of top-ranked features: ")
+        if(number_of_ranked_gene.isnumeric() == False):
+            print(" WARNING : Number of top-ranked features must be numeric.")
 
-    # get number of ranked gene to be shown
-    while True:
-        number_of_ranked_gene = input("Number of ranked feature: ")
-        if ((number_of_ranked_gene.isnumeric() == False) or (int(number_of_ranked_gene) > row_to_read_file_gene_first_dataset) or (int(number_of_ranked_gene) <= 0)):
-            print("Invalid input...")
+        # these conditions are not available in mock-up
+        elif(int(number_of_ranked_gene) > row_to_read_file_gene_first_dataset):
+            print(" WARINING : Number of top-ranked features must not exceed available genes from the first file.")
+
+        elif(int(number_of_ranked_gene) <= 0):
+            print(" WARNING : Number of top-ranked features must not be lower than or equal to 0.")    
         else:
             break
-    
-    # get output file's name
-    file_name = input("Name of Output File : ")
+    print()
+
+    file_name = input(" # Enter name of an output file : ")
 
     # prepare text file for results to be written in
     result_file = open(str(file_name) + ".txt", "w+")
@@ -131,10 +231,11 @@ def main():
         chunk_no_relapse_size = math.ceil(len(list_sample_no_relapse_first_dataset) / num_of_chunk_feature_selection)
 
         chunk_list_relapse = list(calculate.chunks(list_sample_relapse_first_dataset, chunk_relapse_size))
-        print("number of chunks in chunk_list_relapse = " + str(len(chunk_list_relapse)))
+        print()
+        print(" Number of chunks in class relapse of the first dataset : " + str(len(chunk_list_relapse)) + "\n")
 
         chunk_list_no_relapse = list(calculate.chunks(list_sample_no_relapse_first_dataset, chunk_no_relapse_size))
-        print("number of in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse)))
+        print(" Number of chunks in class non-relapse of the first dataset : " + str(len(chunk_list_no_relapse)) + "\n")
 
         check_valid, num_of_chunks = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
 
@@ -146,6 +247,9 @@ def main():
         feature_set_name = []
         top_n_genes_name_for_eval = []
 
+        print()
+        print(" # The first dataset is used in feature selection.\n")
+        print(" # Process : Feature selection")
         # do only if number of chunks of both datasets are equal
         if (check_valid == True):
             # random a chunk of data to be use as a feature selection set
@@ -161,33 +265,33 @@ def main():
             for marker_evaluation_index in range(0, num_of_chunks):
                 if (chunk_list_relapse[marker_evaluation_index] is not feature_selection_relapse):
                     marker_evaluation_relapse.append(chunk_list_relapse[marker_evaluation_index])
-            print("marker_evaluation_relapse size = " + str(len(marker_evaluation_relapse)))
-            print("marker_evaluation_relapse = " + str(marker_evaluation_relapse))
-            print()
+            # print("marker_evaluation_relapse size = " + str(len(marker_evaluation_relapse)))
+            # print("marker_evaluation_relapse = " + str(marker_evaluation_relapse))
+            # print()
 
             # for class "non-relapse"
             marker_evaluation_no_relapse = []
             for marker_evaluation_index in range(0, num_of_chunks):
                 if (chunk_list_no_relapse[marker_evaluation_index] is not feature_selection_no_relapse):
                     marker_evaluation_no_relapse.append(chunk_list_no_relapse[marker_evaluation_index])
-            print("marker_evaluation_no_relapse size : " + str(len(marker_evaluation_no_relapse)))
-            print("marker_evaluation_no_relapse : " + str(marker_evaluation_no_relapse))    
-            print()
+            # print("marker_evaluation_no_relapse size : " + str(len(marker_evaluation_no_relapse)))
+            # print("marker_evaluation_no_relapse : " + str(marker_evaluation_no_relapse))    
+            # print()
 
             # merge all samples in the same class
-            print("\n#### merge all samples in the same class to be used later ####")
+            # print("\n#### merge all samples in the same class to be used later ####")
 
             # for class "relapse"
             list_sample_relapse_marker_evaluation = []
             for i in range(0, len(marker_evaluation_relapse)):
                 list_sample_relapse_marker_evaluation.extend(marker_evaluation_relapse[i])
-            print("list_sample_relapse_marker_evaluation : " + str(list_sample_relapse_marker_evaluation))
+            print(" Samples in class relapse used as marker evaluation set : " + str(list_sample_relapse_marker_evaluation) + "\n")
 
             # for class "non-relapse"
             list_sample_no_relapse_marker_evaluation = []
             for i in range(0, len(marker_evaluation_no_relapse)):
                 list_sample_no_relapse_marker_evaluation.extend(marker_evaluation_no_relapse[i])
-            print("list_sample_no_relapse_marker_evaluation : " + str(list_sample_no_relapse_marker_evaluation))
+            print(" Samples in class non-relapse used as marker evaluation set : " + str(list_sample_no_relapse_marker_evaluation) + "\n")
 
             # get gene expression for each gene from samples with relapse
             # for class "relapse"
@@ -206,6 +310,7 @@ def main():
                     gene_expression_no_relapse.append(column)
                 list_gene_expression_no_relapse.append(gene_expression_no_relapse)
             
+            print(" # Process : Calculating t-score")
             # conducting t-test
             ttest_result = []
             for i in range(0, row_to_read_file_gene_first_dataset):      
@@ -231,10 +336,10 @@ def main():
             
             # show top ranked feature
             top_n_genes_name = []
-            print("#### t-test ranking ####")
+            print(" #### t-score ranking ####")
             for i in range(0, int(number_of_ranked_gene)):
                 top_n_genes_name.append(ranked_gene[i])
-                print(ranked_gene[i] + " => " + "t-test value : " + str(ttest_result[i][1]))
+                print(" " + str(ranked_gene[i]) + " => " + " t-score : " + str(ttest_result[i][1]))
             
             # rank gene id of each sample in training data
             # for class 'relapse'
@@ -331,6 +436,7 @@ def main():
                 list_top_n_gene_no_relapse_sorted.append(list_each_sample)
             list_top_n_gene_no_relapse_sorted = list(np.transpose(list_top_n_gene_no_relapse_sorted))
 
+            print(" # Process : Sequential Forward Selection (SFS)")
             # find set of genes to be used as a feature
             check_finish = False
             count_iteration = 1
@@ -410,17 +516,19 @@ def main():
         
         # conducting cross-validation on the second dataset
         # prepare data for cross-validation
-
+        print()
+        print(" # Conducting the cross-validation on the second dataset")
+        print()
         print(" Process : Cross validation ...")
         # split data into k parts
         chunk_relapse_size_cv = math.ceil(len(list_sample_relapse_second_dataset) / num_of_folds)
         chunk_no_relapse_size_cv = math.ceil(len(list_sample_no_relapse_second_dataset) / num_of_folds)
 
         chunk_list_relapse_cv = list(calculate.chunks(list_sample_relapse_second_dataset, chunk_relapse_size_cv))
-        print("number of chunks in chunk_list_relapse = " + str(len(chunk_list_relapse_cv)))
+        print(" Number of chunks in class relapse : " + str(len(chunk_list_relapse_cv)))
 
         chunk_list_no_relapse_cv = list(calculate.chunks(list_sample_no_relapse_second_dataset, chunk_no_relapse_size_cv))
-        print("number of in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse_cv)))
+        print(" Number of chunks in class non-relapse : " + str(len(chunk_list_no_relapse_cv)))
 
         check_valid_cv, num_of_chunks_cv = calculate.checkEqualListSize(chunk_list_relapse_cv, chunk_list_no_relapse_cv)
         
@@ -441,9 +549,9 @@ def main():
                 chunk_test_no_relapse = chunk_list_no_relapse_cv[chunk_test_index]
 
                 print("\n------------------------------------------ K : " + str(chunk_test_index + 1) + " --------------------------------")
-                print("chunk_test_relapse : " + str(chunk_test_relapse))
+                print(" Samples in class relapse used as testing data : " + str(chunk_test_relapse))
                 print()
-                print("chunk_test_no_relapse : " + str(chunk_test_no_relapse))
+                print(" Samples in class non-relapse used as testing data : " + str(chunk_test_no_relapse))
                 print()
 
                 # get training set in this fold
@@ -452,22 +560,22 @@ def main():
                 for chunk_train_relapse_index in range(0, num_of_chunks_cv):
                     if (chunk_list_relapse_cv[chunk_train_relapse_index] is not chunk_test_relapse):
                         chunk_train_relapse.append(chunk_list_relapse_cv[chunk_train_relapse_index])
-                print("chunk train relapse size = " + str(len(chunk_train_relapse)))
+                # print("chunk train relapse size = " + str(len(chunk_train_relapse)))
 
                 # for class "non-relapse"
                 chunk_train_no_relapse = []
                 for chunk_train_no_relapse_index in range(0, num_of_chunks_cv):
                     if (chunk_list_no_relapse_cv[chunk_train_no_relapse_index] is not chunk_test_no_relapse):
                         chunk_train_no_relapse.append(chunk_list_no_relapse_cv[chunk_train_no_relapse_index])
-                print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
+                # print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
 
                 # merge training data of each class
                 # for class "relapse"
                 list_train_relapse = []
                 for i in range(0, len(chunk_train_relapse)):
                     list_train_relapse.extend(chunk_train_relapse[i])
-                print("size of list_train_relapse : " + str(len(list_train_relapse)))
-                print("list_train_relapse : ")
+                # print("size of list_train_relapse : " + str(len(list_train_relapse)))
+                print(" Samples in class relapse used as training set " + "(" + str(len(list_train_relapse)) + " samples) : ")
                 print(list_train_relapse)
                 print()
 
@@ -475,8 +583,8 @@ def main():
                 list_train_no_relapse = []
                 for i in range(0, len(chunk_train_no_relapse)):
                     list_train_no_relapse.extend(chunk_train_no_relapse[i])
-                print("size of list_train_no_relapse : " + str(len(list_train_no_relapse)))
-                print("list_train_no_relapse : ")
+                # print("size of list_train_no_relapse : " + str(len(list_train_no_relapse)))
+                print(" Samplse in class non-relapse used as training set (" + str(len(list_train_no_relapse)) + " samples) : ")
                 print(list_train_no_relapse)
                 print()
 
@@ -600,10 +708,10 @@ def main():
                 list_auc_score.append(auc_score_for_eval)
 
                 print("#### Evaluation of " + str(chunk_test_index + 1) + " - fold ####")
-                print("Feature Set : " + str(feature_set_name))
-                print("Actual Output : " + str(list_actual_output_for_eval))
-                print("Desired Output : " + str(list_desired_output_for_eval))
-                print("AUC ROC score from testing : " + str(auc_score_for_eval))
+                print(" Feature Set : " + str(feature_set_name))
+                print(" Actual Output : " + str(list_actual_output_for_eval))
+                print(" Desired Output : " + str(list_desired_output_for_eval))
+                print(" AUC ROC score from testing : " + str(auc_score_for_eval))
 
                 # track feature set which gives maximum auc score
                 if (auc_score_for_eval > auc_score_max):
@@ -628,8 +736,8 @@ def main():
                 fold_elapse_time_second = end_fold_time - start_fold_time
                 fold_elapse_time_minute = fold_elapse_time_second / 60
                 fold_elapse_time_minute = round(fold_elapse_time_minute, 2)
-                print("fold_elapse_time : " + str(fold_elapse_time_minute) + " minutes")
-                result_file.write("fold elapse time : " + str(fold_elapse_time_minute) + " minutes \n")
+                print(" Fold elapse time : " + str(fold_elapse_time_minute) + " minutes")
+                result_file.write("Fold elapse time : " + str(fold_elapse_time_minute) + " minutes \n")
                 result_file.write("\n")
 
         end_time = time.time()
@@ -663,7 +771,7 @@ def main():
 
     # calculate mean over all epoch
     mean_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
-    print("Average AUC score over " + str(epoch) + " epoch : " + str(mean_over_all_epoch))
+    print(" Average AUC score over " + str(epoch) + " epoch : " + str(mean_over_all_epoch))
     result_file.write("Average AUC score over " + str(epoch) + " epoch : " + str(mean_over_all_epoch) + "\n")
 
     result_file.close()

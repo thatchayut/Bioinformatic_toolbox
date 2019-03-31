@@ -83,7 +83,7 @@ def findOutput(f1, f2):
             for col_index in range(0, (f1[element_index].shape[1])):
                 # print(f1[element_index][row_index, col_index])
                 list_f1.append(f1[element_index][row_index, col_index])
-    print("list_f1 : " + str(list_f1))
+    # print("list_f1 : " + str(list_f1))
 
     list_f2 = []
     for element_index  in range(0, len(f2)):
@@ -91,19 +91,7 @@ def findOutput(f1, f2):
             for col_index in range(0, (f1[element_index].shape[1])):
                 # print(f2[element_index][row_index, col_index])
                 list_f2.append(f2[element_index][row_index, col_index])
-    print("list_f2 : " + str(list_f2))
-    
-    # old version
-    # check which class is selected
-    # result =[]
-    # for element_index in range(0, len(list_f1)):
-    #     if(list_f1[element_index] > list_f2[element_index]):
-    #         result.append(1)
-    #     elif(list_f1[element_index] < list_f2[element_index]):
-    #         result.append(0)
-    #     else:
-    #         # result.append("*")
-    #         result.append(0.5)
+    # print("list_f2 : " + str(list_f2))
 
     # find confidence score
     result = []
@@ -128,7 +116,7 @@ def checkEqualListSize(list_1, list_2):
         check_valid = True
         num_of_chunks = len(list_1)
     else:
-        print("WARNING : # chunks in 1 st set is not equal to # chunks in 2nd")
+        print(" WARNING : Number of chunks in the first dataset is not equal to Number of chunks in the second dataset.")
     return check_valid, num_of_chunks
 
 # calculating discriminative function
@@ -208,7 +196,7 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
     count_not_found = 0
     # scan probe id by its entrez id
     list_entrez_id = []
-    print("Scanning in progress ...")
+    print(" # Process : mapping sample " + str(sample_id) + " to pathways")
     print()
     for index in range(0, num_of_probe_id):
         entrez_id = file_ref.loc[file_ref['From'].isin([list_probe_id[index]])]
@@ -258,33 +246,6 @@ def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id
                 if not list_gene_same_entrez:
                     list_gene_same_entrez.append(0.0)
 
-                # Old version
-                # print("list_gene_same_entrez : ")
-                # print(list_gene_same_entrez)
-                # print()
-                # print(" BEFORE : " + str(list_gene_same_entrez))
-                # if (method == "z_score"):
-                #     # convert to z-score before normalize further
-                #     for i in range(0 , len(list_gene_same_entrez)):
-                #         z_score = zscore(list_gene_same_entrez[i], mean_of_data, sd_of_data)
-                #         z_score = round(z_score, 6)
-                #         list_gene_same_entrez[i] = z_score
-                # elif (method == "narrow_scaling"):
-                #     for i in range(0 , len(list_gene_same_entrez)):
-                #         # If currnt value is 0, it can lead to negative result
-                #         if (list_gene_same_entrez[i] != 0):
-                #             score = ((list_gene_same_entrez[i] - min_of_data) / (max_of_data - min_of_data))
-                #             score = round(score, 6)
-                #             list_gene_same_entrez[i] = score
-                # elif (method == "wide_scaling"):
-                #     for i in range(0, len(list_gene_same_entrez)):
-                #         score = (((list_gene_same_entrez[i] - min_of_data) / (max_of_data - min_of_data)) * 2) - 1
-                #         score = round(score, 6)
-                #         if (score < -1):
-                #             score = -1
-                #         list_gene_same_entrez[i] = score
-                # # print(" AFTER : " + str(list_gene_same_entrez))
-
                 # calculate genes expression of the same entrez id by using their average
                 num_of_same_entrez = len(list_gene_same_entrez)
                 avg_gene_expression = (sum(list_gene_same_entrez) / num_of_same_entrez)
@@ -322,7 +283,7 @@ def getPathwayLLR(file_ref_name, file_to_convert_name, file_pathway_name, sample
     # scan probe id by its entrez id
     # find matching between probe id and entrez id
     list_entrez_id = []
-    print("Scanning in progress ...")
+    print(" # Process : mapping sample " + str(sample_id) + " to pathways")
     print()
     for index in range(0, num_of_probe_id):
         entrez_id = file_ref.loc[file_ref['From'].isin([list_probe_id[index]])]
@@ -410,12 +371,12 @@ def sd(list_input):
     return sd_of_list
 
 def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_relapse, samples_test):
-    print("list_pathway_name size : " + str(len(list_pathway_name)))
-    print("list_desired_output : " + str(len(list_desired_output)))
-    print("samples_relapse size : " + str(len(samples_relapse)))
-    print("samples_no_relapse size : " + str(len(samples_no_relapse)))
-    print("samples_test size : " + str(len(samples_test)))
-    print("\n")
+    # print("list_pathway_name size : " + str(len(list_pathway_name)))
+    # print("list_desired_output : " + str(len(list_desired_output)))
+    # print("samples_relapse size : " + str(len(samples_relapse)))
+    # print("samples_no_relapse size : " + str(len(samples_no_relapse)))
+    # print("samples_test size : " + str(len(samples_test)))
+    # print("\n")
 
     check_finish = False
     check_improve_auc = True
@@ -451,21 +412,8 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
                 
                 # original 
                 if (pathway_index not in list_pathway_selected):
-                # last_index_in_list_pathway_to_consider = len(list_pathway_selected) - 1
-                # if (pathway_index not in list_pathway_selected) and (pathway_index > list_pathway_selected[last_index_in_list_pathway_to_consider]):
                     list_pathway_to_consider.extend([pathway_index])
-
-                    # collect pathway activity of each class to be used in lda 
-                    # Original 
-                    # input_relapse_to_test = []
-                    # for sample_index in range(0, len(samples_relapse)):
-                    #     list_pathway_each_sample_to_test = []
-                    #     for pathway_index in range(0, len(samples_relapse[sample_index])):
-                    #         if (pathway_index in list_pathway_to_consider):
-                    #             pathway_activity_to_test = samples_relapse[sample_index][pathway_index]
-                    #             list_pathway_each_sample_to_test.append(pathway_activity_to_test)
-                    #     input_relapse_to_test.append(list_pathway_each_sample_to_test)
-
+                    
                     input_relapse_to_test = []
                     for sample_index in range(0, len(samples_relapse)):
                         list_pathway_each_sample_to_test = []
@@ -474,16 +422,6 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
                                 pathway_activity_to_test = samples_relapse[sample_index][pathway_index_relapse]
                                 list_pathway_each_sample_to_test.append(pathway_activity_to_test)
                         input_relapse_to_test.append(list_pathway_each_sample_to_test)
-
-                    # Original
-                    # input_no_relapse_to_test = []
-                    # for sample_index in range(0, len(samples_no_relapse)):
-                    #     list_pathway_each_sample_to_test = []
-                    #     for pathway_index in range(0, len(samples_no_relapse[sample_index])):
-                    #         if (pathway_index in list_pathway_to_consider):
-                    #             pathway_activity_to_test = samples_no_relapse[sample_index][pathway_index]
-                    #             list_pathway_each_sample_to_test.append(pathway_activity_to_test)
-                    #     input_no_relapse_to_test.append(list_pathway_each_sample_to_test)
 
                     input_no_relapse_to_test = []
                     for sample_index in range(0, len(samples_no_relapse)):
@@ -494,16 +432,6 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
                                 list_pathway_each_sample_to_test.append(pathway_activity_to_test)
                         input_no_relapse_to_test.append(list_pathway_each_sample_to_test)
                     
-                    # Original
-                    # input_test_to_test = []
-                    # for sample_index in range(0, len(samples_test)):
-                    #     list_pathway_each_sample_to_test = []
-                    #     for pathway_index in range(0, len(samples_test[sample_index])):
-                    #         if (pathway_index in list_pathway_to_consider):
-                    #             pathway_activity_to_test = samples_test[sample_index][pathway_index]
-                    #             list_pathway_each_sample_to_test.append(pathway_activity_to_test)
-                    #     input_test_to_test.append(list_pathway_each_sample_to_test)
-
                     input_test_to_test = []
                     for sample_index in range(0, len(samples_test)):
                         list_pathway_each_sample_to_test = []
@@ -516,24 +444,24 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
                     list_actual_output = lda(input_test_to_test, input_relapse_to_test, input_no_relapse_to_test)
                     auc_score = roc_auc_score(list_desired_output, list_actual_output)
 
-                    print("input_relapse_to_test size : " + str(len(input_relapse_to_test)))
-                    print("input_no_relapse_to_test size : " + str(len(input_no_relapse_to_test)))
-                    print("input_test_to_test : " + str(len(input_test_to_test)))
+                    # print("input_relapse_to_test size : " + str(len(input_relapse_to_test)))
+                    # print("input_no_relapse_to_test size : " + str(len(input_no_relapse_to_test)))
+                    # print("input_test_to_test : " + str(len(input_test_to_test)))
                     
                     list_actual_output = lda(input_test_to_test, input_relapse_to_test, input_no_relapse_to_test)
-                    print("list_actual_output size : " +str(len(list_actual_output)))
-                    print("list_desired_output size : " + str(len(list_desired_output)))
+                    print(" Number of actual outputs : " +str(len(list_actual_output)))
+                    print(" Number of desired outputs : " + str(len(list_desired_output)))
                     auc_score = roc_auc_score(list_desired_output, list_actual_output)
                     
-                    print(" list_actual_output : " + str(list_actual_output))
-                    print(" list_desired_output : " + str(list_desired_output))
+                    print(" List of actual outputs : " + str(list_actual_output))
+                    print(" List of desired outputs : " + str(list_desired_output))
                     print(" AUC score : " + str(auc_score))
 
                     if (auc_score >= max_auc_in_consider):
                         max_auc_in_consider = auc_score
                         list_pathway = deepcopy(list_pathway_to_consider)
-                    print("list_pathway_to_consider : " + str(list_pathway_to_consider))
-                    print("max_auc_in_consider : " + str(max_auc_in_consider))
+                    print(" List of pathways to be considered : " + str(list_pathway_to_consider))
+                    print(" Max AUC score of the list of pathways to be considered : " + str(max_auc_in_consider))
 
             if (max_auc_in_consider >= max_auc_score_over_all_features):
                 max_auc_score_over_all_features = max_auc_in_consider
@@ -557,12 +485,12 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
 
 def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, samples_no_relapse_input, samples_test_input, \
     top_rank = None, top_rank_percent = None):
-    print("list_pathway_name size : " + str(len(list_pathway_name)))
-    print("list_desired_output : " + str(len(list_desired_output)))
-    print("samples_relapse_input size : " + str(len(samples_relapse_input)))
-    print("samples_no_relapse_input size : " + str(len(samples_no_relapse_input)))
-    print("samples_test_input size : " + str(len(samples_test_input)))
-    print("\n")
+    # print("list_pathway_name size : " + str(len(list_pathway_name)))
+    # print("list_desired_output : " + str(len(list_desired_output)))
+    # print("samples_relapse_input size : " + str(len(samples_relapse_input)))
+    # print("samples_no_relapse_input size : " + str(len(samples_no_relapse_input)))
+    # print("samples_test_input size : " + str(len(samples_test_input)))
+    # print("\n")
 
     # sort pathways in each sample based on list_pathway_name
     # for class 'relapse'
@@ -604,12 +532,6 @@ def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, sa
                     sample.append(pathway_activity)
         samples_test.append(sample)
 
-    print()
-    print("list_pathway_name size : " + str(len(list_pathway_name)))
-    print("Number of pathway in samples_relapse[0] : " + str(samples_relapse[0]))
-    print("Number of pathway in samples_no_relapse[0] : " + str(samples_no_relapse[0]))
-    print("Number of pathway in samples_test[0] : " + str(samples_test[0]))
-    print()
 
     # preparing for feature selection
     check_finish = False
@@ -703,8 +625,8 @@ def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, sa
 
                     auc_score = roc_auc_score(list_desired_output, list_actual_output)
                     
-                    print(" list_actual_output : " + str(list_actual_output))
-                    print(" list_desired_output : " + str(list_desired_output))
+                    print(" List of actual outputs : " + str(list_actual_output))
+                    print(" List of desired outputs : " + str(list_desired_output))
                     print(" AUC score : " + str(auc_score))
 
                     if (auc_score >= max_auc_in_consider):

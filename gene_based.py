@@ -201,7 +201,7 @@ def main():
         list_feature_set_max_auc = []
         list_auc_score = []
 
-        print(" # Process : Conducting cross-validation")
+        print(" # Process : Cross-validation")
         # do only if number of chunks of both datasets are equal
         if (check_valid == True):
             for first_layer_test_index in range(0, num_of_chunks):
@@ -247,7 +247,7 @@ def main():
 
                 # splitting lists to use them as testing and training set
                 # given that we use 4-fold cross validation in this level
-                print(" Process : feature selection")
+                print(" Process : Feature selection")
                 print("\n #### divide training set into 3 parts (2/3 for marker evaluation and 1/3 for feature selection) ####")
                 second_num_of_fold = 3
                 second_chunk_relapse_size = math.ceil(len(second_list_sample_relapse) / second_num_of_fold)
@@ -320,7 +320,7 @@ def main():
                         list_gene_exp_no_relapse.append(gene_exp_no_relapse)
                     # print(list_gene_exp_no_relapse)
 
-                    print(" # Process : calculating t-score")
+                    print(" # Process : Calculating t-score")
                     # conducting t-test
                     ttest_result = []
                     for i in range(0, row_to_read):      
@@ -351,7 +351,7 @@ def main():
                     print(" #### t-score ranking ####")
                     for i in range(0, int(number_of_ranked_gene)):
                         top_n_genes_name.append(ranked_gene[i])
-                        print(" " + str(ranked_gene[i]) + " => " + "t-score : " + str(ttest_result[i][1]))
+                        print(" " + str(ranked_gene[i]) + " => " + " t-score : " + str(ttest_result[i][1]))
 
                     # rank gene id of each sample in training data
                     # print("\n#### sorting gene order by t-test ranking for each class ####")
@@ -462,6 +462,7 @@ def main():
                     list_top_n_gene_no_relapse_sorted = list(np.transpose(list_top_n_gene_no_relapse_sorted))
                     # print(list_top_n_gene_no_relapse_sorted)
 
+                    print(" # Process : Sequential Forward Selection (SFS)")
                     # find set of genes to be used as a feature
                     check_finish = False
                     count_iteration = 1
@@ -542,7 +543,7 @@ def main():
 
                 # preparing data for evaluation and creating classifier
                 # for class 'relapse'
-                print("#### class 'Relapse' for creating classifier ####")
+                print(" # Process : Preparing classifiers and testing data")
                 col_to_read_relapse_for_eval = ["ID_REF"]
                 # col_to_read_relapse_for_eval.extend(first_layer_test_relapse)
                 # col_to_read_relapse_for_eval.extend(first_layer_train_relapse[0])
@@ -561,7 +562,7 @@ def main():
                 print(top_n_genes_relapse_sorted_for_eval)
 
                 # for class 'no relapse'
-                print("#### class 'no Relapse' for creating classifier ####")
+                # print("#### class 'no Relapse' for creating classifier ####")
                 col_to_read_no_relapse_for_eval = ["ID_REF"]
                 # col_to_read_no_relapse_for_eval.extend(first_layer_test_no_relapse)
                 # col_to_read_no_relapse_for_eval.extend(first_layer_train_no_relapse[0])
@@ -579,7 +580,7 @@ def main():
                 top_n_genes_no_relapse_sorted_for_eval.drop(columns = 'ID_REF', inplace = True)
                 print(top_n_genes_no_relapse_sorted_for_eval)            
 
-                print("#### Testing data relapse & no-relapse for evaluation ####")
+                # print("#### Testing data relapse & no-relapse for evaluation ####")
                 first_layer_test_all = []
                 first_layer_test_all.extend(first_layer_test_relapse)
                 first_layer_test_all.extend(first_layer_test_no_relapse)  
@@ -675,10 +676,10 @@ def main():
                 list_auc_score.append(auc_score_for_eval)
 
                 print("#### Evaluation of " + str(first_layer_test_index + 1) + " - fold ####")
-                print("Feature Set : " + str(feature_set_name))
-                print("Actual Output : " + str(list_actual_output_for_eval))
-                print("Desired Output : " + str(list_desired_output_for_eval))
-                print("AUC ROC score = " + str(auc_score_for_eval))
+                print(" Feature Set : " + str(feature_set_name))
+                print(" Actual Output : " + str(list_actual_output_for_eval))
+                print(" Desired Output : " + str(list_desired_output_for_eval))
+                print(" AUC ROC score = " + str(auc_score_for_eval))
 
                 # track feature set which gives maximum auc score
                 if (auc_score_for_eval > auc_score_max):
@@ -713,12 +714,12 @@ def main():
         result_file.write(str(list_feature_set_max_auc))
         result_file.write("\n")
         result_file.write("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
-        print("Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
-        print("AUC score from feature selection in each fold  = " + str(list_max_auc))
+        print(" Time Elapse : " + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours)\n")
+        print(" AUC score from feature selection in each fold  = " + str(list_max_auc))
 
     # calculate mean over all epoch
     mean_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
-    print("Average AUC score over " + str(epoch) + " epoch : " + str(mean_over_all_epoch))
+    print(" Average AUC score over " + str(epoch) + " epoch : " + str(mean_over_all_epoch))
     result_file.write("\n")
     result_file.write("Average AUC score over " + str(epoch) + " epoch : " + str(mean_over_all_epoch) + "\n")
 
@@ -731,7 +732,7 @@ def main():
     time_elapse_minute = round(time_elapse_minute, 2)
     time_elapse_hour = round(time_elapse_hour, 2)
 
-    print("Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)")
+    print(" Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)")
     result_file.write("Total Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)\n")
 
     result_file.close()
