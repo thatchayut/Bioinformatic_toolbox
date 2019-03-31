@@ -176,7 +176,7 @@ def main():
         # these conditions are not available in mock-up
         elif(int(num_of_folds) > len(list_sample_relapse_second_dataset)):
             print("WARNING : Number of folds exceeds the size of samples in class relapse in the second dataset.")
-        elif(int(num_of_folds) > len(list_sample_relapse_second_dataset)):
+        elif(int(num_of_folds) > len(list_sample_no_relapse_second_dataset)):
             print("WARNING : Number of folds exceeds the size of samples in clss non-relapse in the second dataset.")
 
         elif(int(num_of_folds) <= 1):

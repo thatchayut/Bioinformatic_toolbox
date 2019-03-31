@@ -5,6 +5,7 @@ import math
 import calculate
 import time
 import xlsxwriter
+import add_ons
 from copy import deepcopy
 from sklearn.metrics import roc_auc_score
 
@@ -12,7 +13,7 @@ def main():
     # record start time
     start_time = time.time()
 
-     print()
+    print()
     print("------------------------------------------------------------------------------------------------------------------------")
     print(" # Method : Mean-Based Classification")
     print(" # Experiment : Within Dataset")
@@ -364,7 +365,7 @@ def main():
         chunk_no_relapse_size = math.ceil(len(list_index_samples_no_relapse) / num_of_folds)
 
         chunk_list_relapse = list(calculate.chunks(list_index_samples_relapse, chunk_relapse_size))
-        print(" Number of chunks in class relapse : " + str(len(chunk_list_relapse)) = "\n")
+        print(" Number of chunks in class relapse : " + str(len(chunk_list_relapse)) + "\n")
 
         chunk_list_no_relapse = list(calculate.chunks(list_index_samples_no_relapse, chunk_no_relapse_size))
         print(" Number of chunks in class non-relapse : " + str(len(chunk_list_no_relapse)) + "\n")
