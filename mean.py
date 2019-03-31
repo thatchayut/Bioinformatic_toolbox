@@ -383,7 +383,7 @@ def main():
                         gene_expression_by_probe_id = []              
                         list_gene_expression_same_probe_id = [] 
 
-                        for element in file_to_cal_gene_tscore_relapse.iloc[line_index, 1:last_index_to_read_file_to_cal_gene_tscore_relapse:
+                        for element in file_to_cal_gene_tscore_relapse.iloc[line_index, 1:last_index_to_read_file_to_cal_gene_tscore_relapse]:
                                 list_gene_expression_same_probe_id.append(element)  
 
                         gene_probe_id = file_to_cal_gene_tscore_relapse.iloc[line_index, 0]
