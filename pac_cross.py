@@ -4,6 +4,7 @@ import random
 import math
 import calculate
 import time
+import add_ons
 from copy import deepcopy
 from sklearn.metrics import roc_auc_score
 
@@ -69,6 +70,7 @@ def main():
             print(" WARNING : Number of rows cannot be lower than 1.")   
         else:
             break
+    row_to_read_file_gene_first_dataset = int(row_to_read_file_gene_first_dataset)
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class of the first dataset")
@@ -89,6 +91,7 @@ def main():
             print(" WARNING : Number of rows cannot be lower than 1.")
         else:
             break
+    row_to_read_file_gene_second_dataset = int(row_to_read_file_gene_second_dataset)
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class of the second dataset")
@@ -113,6 +116,7 @@ def main():
             print(" WARNING : Number of rows cannot be lower than 1.")
         else:
             break
+    rows_to_read_file_pathway = int(rows_to_read_file_pathway)
     print()
 
     # prepare data
@@ -201,9 +205,9 @@ def main():
         
         # these conditions are not available in mock-up
         elif(int(num_of_folds) > len(list_sample_relapse_second_dataset)):
-            print("WARNING : Number of folds exceeds the size of samples in class "relapse" in the second dataset.")
+            print("WARNING : Number of folds exceeds the size of samples in class relapse in the second dataset.")
         elif(int(num_of_folds) > len(list_sample_no_relapse_second_dataset)):
-            print("WARNING : Number of folds exceeds the size of samples in clss "non-relapse" in the second dataset.")
+            print("WARNING : Number of folds exceeds the size of samples in clss non-relapse in the second dataset.")
 
         elif(int(num_of_folds) <= 1):
             print(" WARNING : Number of folds cannot lower than or equal to 1")

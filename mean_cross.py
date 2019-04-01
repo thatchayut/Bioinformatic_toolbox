@@ -72,6 +72,7 @@ def main():
             print(" WARNING : Number of rows cannot be lower than 1.")
         else:
             break
+    row_to_read_file_gene_first_dataset = int(row_to_read_file_gene_first_dataset)     
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class of the first dataset")
@@ -92,6 +93,7 @@ def main():
             print(" WARNING : Number of rows cannot be lower than 1.") 
         else:
             break
+    row_to_read_file_gene_second_dataset = int(row_to_read_file_gene_second_dataset)
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class of the second dataset")
