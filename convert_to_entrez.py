@@ -1,8 +1,10 @@
-#!/usr/bin/python
 import xlwt
 import pandas as pd
 
 def main():
+    print()
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print(" # ")
     # ask for file name
     file_name = input("Enter file name : ")
 

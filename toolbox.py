@@ -1,11 +1,11 @@
-import gene_based_interface
-import gene_based_cross_interface
-import mean_interface
-import mean_cross_interface
-import pac_interface
-import pac_cross_interface
-import llr_interface
-import llr_cross_interface
+import gene_based
+import gene_based_cross
+import mean
+import mean_cross
+import pac
+import pac_cross
+import llr
+import llr_cross
 
 def main():
     print("########################################################################################################################")
@@ -40,27 +40,28 @@ def main():
 
     if (method_number == "1"):
         if (experiment_number == "1"):
-            gene_based_interface.main()
+            gene_based.main()
         elif (experiment_number == "2"):
-            gene_based_cross_interface.main()
+            gene_based_cross.main()
 
     elif (method_number == "2"):
         if (experiment_number == "1"):
-            mean_interface.main()
+            mean.main()
         elif (experiment_number == "2"):
-            mean_cross_interface.main()
+            mean_cross.main()
 
     elif (method_number == "3"):
         if (experiment_number == "1"):
-            pac_interface.main()
+            pac.main()
         elif (experiment_number == "2"):
-            pac_cross_interface.main()
+            pac_cross.main()
             
     elif (method_number == "4"):
         if (experiment_number == "1"):
-            llr_interface.main()
+            llr.main()
         elif (experiment_number == "2"):
-            llr_cross_interface.main()
+            llr_cross.main()
+
 
 if __name__ == "__main__":
     main()

@@ -5,6 +5,7 @@ import math
 import calculate
 import time
 import xlsxwriter
+import add_ons
 from copy import deepcopy
 from sklearn.metrics import roc_auc_score
 
@@ -12,18 +13,101 @@ def main():
     # record start time
     start_time = time.time()
 
+    print()
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print(" # Method : Mean-Based Classification")
+    print(" # Experiment : Within Dataset")
+    print(" # This method requires 2 datasets.")
+    print(" # You will be asked to provide related files and required information about them including ")
+    print(" #   [1] A file contains mapping between gene probe IDs and samples")
+    print(" #   [2] Number of rows of the file containing mapping between gene probe IDs and samples to be read")
+    print(" #   [3] A file contains mapping between samples and their class")  
+    print(" #   [4] A file contains mapping between gene probe IDs and gene entrez IDs")
+    print(" #   [5] A file contains pathways and their member genes")
+    print(" #   [6] number of rows of the file contaning pathways and their member genes")
+    print(" # These files must follow a required format shown in file_format.pdf")
+    print(" #")
+    print(" # You will be asked to provide required information to conduct an experiment including")
+    print(" #   [1] Number of epochs")
+    print(" #   [2] Number of folds")
+    print(" #   [3] Number of pathways to be used as feature set (%)")
+    print(" #")
+    print(" # You will be asked for the name of an output file.")
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print()
+
+    # prepare variables
+    file_training_input_name = None
+
+    row_to_read_file_input = None
+    
+    file_training_output_name = None
+
+    rows_to_read_file_pathway = None
+    file_ref_name = None
+    file_pathway_name = None
+
+    num_of_epochs = None
+    num_of_folds = None
+    num_of_pathways_percentage = None
+
+    file_name = None
+
+    print(" # Enter required information about the first dataset ")
+    print(" 1. Enter name of the file containing mapping between probes IDs and samples ")
+    file_training_input_name = add_ons.checkFileValid()
+    print()
+
+    print(" 2. Enter number of rows of this file to be read ")
+    while True:
+        row_to_read_file_input = input(" Number of rows : ")
+        if(row_to_read_file_input.isnumeric == False):
+            print(" WARNING : Number of rows must be numeric.")
+        elif (int(row_to_read_file_input) < 1):
+            print(" WARNING : Number of rows cannot be lower than 1.")   
+        else:
+            break
+    row_to_read_file_input = int(row_to_read_file_input)
+    print()
+
+    print(" 3. Enter name of a file containing mapping between samples and their class")
+    file_training_output_name = add_ons.checkFileValid()
+    print()
+
+    print(" # Enter required information about files related to pathway mapping")
+    print(" 1. Enter name of a file containing mapping between gene probe IDs and gene entrez IDs")
+    file_ref_name = add_ons.checkFileValid()
+    print()
+
+    print(" 2. Enter name of a file containing pathways and their member genes")
+    file_pathway_name = add_ons.checkFileValid()
+    print()
+
+    print(" 3. Enter number of rows of the file contaning pathways and their member genes")
+    while True:
+        rows_to_read_file_pathway = input(" Number of rows : ")
+        if(rows_to_read_file_pathway.isnumeric() == False):
+            print(" WARNING : Number of rows nust be numeric.")
+        elif (int(rows_to_read_file_pathway) < 1):
+            print(" WARNING : Number of rows cannot be lower than 1.")
+        else:
+            break
+    rows_to_read_file_pathway = int(rows_to_read_file_pathway)
+    print()
+
     # prepare data
     # default row_to_read = 22283
-    row_to_read_file_input = 22283
-    file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read_file_input)
-    file_training_output= pd.read_csv("mapping_sample_to_class_full.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
+    # row_to_read_file_input = 22283
+    file_training_input = pd.read_csv(file_training_input_name, nrows = row_to_read_file_input)
+    file_training_output= pd.read_csv(file_training_output_name, usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # files to be used to get pathways and their gene expression
     # default rows_to_read_file_pathway = 1329
-    rows_to_read_file_pathway = 1329
-    file_ref_name = "accession_number_to_entrez_id.csv"
-    file_to_convert_name = "GSE2034-22071 (edited).csv"
-    file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
+    # rows_to_read_file_pathway = 1329
+    # file_ref_name = "accession_number_to_entrez_id.csv"
+    # file_to_convert_name = "GSE2034-22071 (edited).csv"
+    file_to_convert_name = file_training_input_name
+    # file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # get gene order id with its name
@@ -56,56 +140,62 @@ def main():
     for element in sample_no_relapse.loc[:, 'GEO asscession number']:
         list_sample_no_relapse.append(element)
 
-    # shuffle data to make each chunk does not depend on sample order
-    # random.shuffle(list_sample_relapse)
-    # print("list_sample_relapse SIZE = " + str(len(list_sample_relapse)))
-    # random.shuffle(list_sample_no_relapse)
-    # print("list_sample_no_relapse SIZE = " + str(len(list_sample_no_relapse)))
-
-    # get number of folds
+    print(" # Enter required information to conduct an experiment")
+    print(" 1. Enter number of epochs ")
     while True:
-        num_of_folds = input("Number of folds: ")
-        if (num_of_folds.isnumeric() == False):
-            print("WARNING : Input must be numeric")
-        elif(int(num_of_folds) > len(list_sample_relapse)):
-            print("WARNING : Number of folds exceeds the size of the 1st dataset")
-        elif(int(num_of_folds) > len(list_sample_no_relapse)):
-            print("WARNING : Number of folds exceeds the size of the 2nd dataset")
-        elif(int(num_of_folds) <= 1):
-            print("WARNING : Number of folds cannot lower than or equal to 1")
-        else:
-            break
-    num_of_folds = int(num_of_folds)
+        num_of_epochs = input(" Epochs : ")
 
-    # get number of epochs
-    while True:
-        num_of_epochs = input("Number of epochs: ")
         if (num_of_epochs.isnumeric() == False):
-            print("WARNING : Input must be numeric")
-        elif(int(num_of_epochs) < 1):
-            print("WARNING : Number of folds cannot lower than 1")
+            print(" WARNING : Number of epochs must be numeric.")
+        elif (int(num_of_epochs) <= 0):
+            print(" WARINING : Number of epochs must be greater than 0.")
         else:
             break
     num_of_epochs = int(num_of_epochs)
+    print()
 
-    # get number of pathways
+    print(" 2. Enter number of folds ")
     while True:
-        num_of_pathways_percentage = input("Number of pathways to be used as feature set (%) : ")
+        num_of_folds = input(" Number of folds: ")
+        if (num_of_folds.isnumeric() == False):
+            print("WARNING : Number of folds must be numeric")
+        
+        # these conditions are not available in mock-up
+        elif(int(num_of_folds) > len(list_sample_relapse)):
+            print("WARNING : Number of folds exceeds the size of samples in class relapse")
+        elif(int(num_of_folds) > len(list_sample_no_relapse)):
+            print("WARNING : Number of folds exceeds the size of samples in class non-relapse")
+
+        elif(int(num_of_folds) <= 1):
+            print(" WARNING : Number of folds cannot lower than or equal to 1")
+        else:
+            break
+    num_of_folds = int(num_of_folds)    
+    print()
+
+    print(" 3. Enter number of pathways to be used as feature set (%)")
+    while True:
+        num_of_pathways_percentage = input(" Number of pathways to be used as feature set (%) : ")
         if (num_of_pathways_percentage.isnumeric() == False):
-            print("WARNING : Input must be numeric")
+            print(" WARNING : Input must be numeric")
         elif (int(num_of_pathways_percentage) <= 0):
-            print("WARNING : Percentage must greater than 0.")
+            print(" WARNING : Percentage must greater than 0.")
         elif (int(num_of_pathways_percentage) > 100):
-            print("WARNING : Percentage must lower than or equal to 100.")
+            print(" WARNING : Percentage must lower than or equal to 100.")
         else:
             break
     num_of_pathways_percentage = int(num_of_pathways_percentage)
+    print()
 
-    # get output file's name
-    file_name = input("Name of output file : ")
+    file_name = input(" # Enter name of an output file : ")
 
     # prepare text file for results to be written in
     result_file = open(str(file_name) + ".txt", "w+")
+
+    # record datasets
+    result_file.write("Dataset : " + str(file_training_input_name) + "\n")
+    result_file.write("Pathway reference : " + str(file_pathway_name) + "\n")
+    result_file.write("\n")
 
     # calculate number of pathways to be used
     num_of_ranked_pathways = (rows_to_read_file_pathway * (num_of_pathways_percentage / 100))
@@ -116,7 +206,7 @@ def main():
     list_all_samples.extend(list_sample_relapse)
     list_all_samples.extend(list_sample_no_relapse)
 
-    print("Process : Creating collection to collect samples and their genes' expression")
+    print(" # Process : Creating collection to collect samples and their genes' expression")
     # create dictionary used to collect pathways of each sample
     samples_relapse = {}
     samples_no_relapse = {}
@@ -150,7 +240,7 @@ def main():
         sample.append(pathways)
         samples_no_relapse[element_index] = sample
     
-    print("Process : Creating collections of samples with their pathways' activity ...")
+    print(" # Process : Creating collections of samples with their pathways' activity")
     # create collections of samples with their pathways
     # data will be collected in this format
     # { GSM1234, {0: ['KEGG_GLYCOLYSIS_GLUCONEOGENESIS', [[55902, 0.0], [2645, 0.0], ...}}
@@ -212,6 +302,8 @@ def main():
     print("Process : Conducting cross-validation ...")
     print()
     for epoch_count in range(0, num_of_epochs):
+        start_epoch_time = time.time()
+
         print("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
         result_file.write("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
 
@@ -234,10 +326,10 @@ def main():
         chunk_no_relapse_size = math.ceil(len(list_index_samples_no_relapse) / num_of_folds)
 
         chunk_list_relapse = list(calculate.chunks(list_index_samples_relapse, chunk_relapse_size))
-        print("number of chunks in chunk_list_relapse = " + str(len(chunk_list_relapse)))
+        print(" Number of chunks in class relapse : " + str(len(chunk_list_relapse)) + "\n")
 
         chunk_list_no_relapse = list(calculate.chunks(list_index_samples_no_relapse, chunk_no_relapse_size))
-        print("number of in chunk_list_no_relapse  = " + str(len(chunk_list_no_relapse)))
+        print(" Number of chunks in class non-relapse : " + str(len(chunk_list_no_relapse)) + "\n")
 
         check_valid, num_of_chunks = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
 
@@ -252,6 +344,8 @@ def main():
         # list to collect average absolte t-score of each fold
         # list_avg_abs_tscore_each_fold = []
 
+        print(" # Process : Cross-validation")
+        print()
         # do only if number of chunks of both datasets are equal
         if (check_valid == True):
             for chunk_test_index in range(0, num_of_chunks):
@@ -270,36 +364,37 @@ def main():
                 for chunk_train_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_relapse[chunk_train_relapse_index] is not chunk_test_relapse):
                         chunk_train_relapse.append(chunk_list_relapse[chunk_train_relapse_index])
-                print("chunk train relapse size = " + str(len(chunk_train_relapse)))
+                # print("chunk train relapse size = " + str(len(chunk_train_relapse)))
 
                 chunk_train_no_relapse = []
                 for chunk_train_no_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_no_relapse[chunk_train_no_relapse_index] is not chunk_test_no_relapse):
                         chunk_train_no_relapse.append(chunk_list_no_relapse[chunk_train_no_relapse_index])
-                print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
+                # print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
 
                 # merge training data of each class
                 list_train_relapse = []
                 for i in range(0, len(chunk_train_relapse)):
                     list_train_relapse.extend(chunk_train_relapse[i])
-                print("size of list_train_relapse : " + str(len(list_train_relapse)))
+                # print("size of list_train_relapse : " + str(len(list_train_relapse)))
+                print(" Samples in class relapse used as training set : " + str(list_train_relapse) + "\n")
 
                 list_train_no_relapse = []
                 for i in range(0, len(chunk_train_no_relapse)):
                     list_train_no_relapse.extend(chunk_train_no_relapse[i])
-                print("size of list_train_no_relapse : " + str(len(list_train_no_relapse)))
+                print(" Samples in class non-relapse used as training set : " + str(list_train_no_relapse) + "\n")
 
                 # splitting lists to use them as an evaluation set and feature selection set
                 # divided data into 3 parts (2/3 as a marker evaluation set, and 1/3 as a feature selection set)
-                print("\n#### divided data into 3 parts (2/3 as a marker evaluation set, and 1/3 as a feature selection set) ####")
+                print("\n#### divided data into 3 parts (2/3 as a marker evaluation set, and 1/3 as a feature selection set) ####\n")
                 second_num_of_fold = 3
                 second_chunk_relapse_size = math.ceil(len(list_train_relapse) / second_num_of_fold)
                 second_chunk_no_relapse_size = math.ceil(len(list_train_no_relapse) / second_num_of_fold)
 
                 second_chunk_list_relapse = list(calculate.chunks(list_train_relapse, second_chunk_relapse_size))
-                print("chunks in second_chunk_list_relapse size = " + str(len(second_chunk_list_relapse)))
+                # print("chunks in second_chunk_list_relapse size = " + str(len(second_chunk_list_relapse)))
                 second_chunk_list_no_relapse = list(calculate.chunks(list_train_no_relapse, second_chunk_no_relapse_size))
-                print("chunks in second_chunk_list_no_relapse size = " + str(len(second_chunk_list_no_relapse)))
+                # print("chunks in second_chunk_list_no_relapse size = " + str(len(second_chunk_list_no_relapse)))
 
                 # this is used to collect data used in calculating lda
                 # list_testing_relapse_pathway_expression = []
@@ -324,16 +419,16 @@ def main():
                     for index in range(0, second_num_of_chunks):
                         if (second_chunk_list_relapse[index] is not list_feature_selection_relapse):
                             chunk_marker_evaluation_relapse.append(second_chunk_list_relapse[index])
-                    print("chunk_marker_evaluation_relapse size = " + str(len(chunk_marker_evaluation_relapse)))
+                    # print("chunk_marker_evaluation_relapse size = " + str(len(chunk_marker_evaluation_relapse)))
 
                     chunk_marker_evaluation_no_relapse = []
                     for index in range(0, second_num_of_chunks):
                         if (second_chunk_list_no_relapse[index] is not list_feature_selection_no_relapse):
                             chunk_marker_evaluation_no_relapse.append(second_chunk_list_no_relapse[index])
-                    print("chunk_marker_evaluation_no_relapse size : " + str(len(chunk_marker_evaluation_no_relapse)))
+                    # print("chunk_marker_evaluation_no_relapse size : " + str(len(chunk_marker_evaluation_no_relapse)))
 
                     # merge all samples in the same class
-                    print("\n#### merge all samples in the same class ####")
+                    # print("\n#### merge all samples in the same class ####")
                     list_marker_evaluation_relapse = []
                     for i in range(0, len(chunk_marker_evaluation_relapse)):
                         list_marker_evaluation_relapse.extend(chunk_marker_evaluation_relapse[i])
@@ -343,6 +438,7 @@ def main():
                         sample_index_in_list = list_marker_evaluation_relapse[i]
                         sample_name = list_sample_relapse[sample_index_in_list]
                         list_marker_evaluation_relapse_name.append(sample_name)
+                    print(" Samples in class relapse used as marker evaluation set : " + str(list_marker_evaluation_relapse_name) + "\n")
 
                     list_marker_evaluation_no_relapse = []
                     for i in range(0, len(chunk_marker_evaluation_no_relapse)):
@@ -354,11 +450,14 @@ def main():
                         sample_index_in_list = list_marker_evaluation_no_relapse[i]
                         sample_name = list_sample_no_relapse[sample_index_in_list]
                         list_marker_evaluation_no_relapse_name.append(sample_name)
+                    print(" Samples in class non-relapse used as marker evaluation set : " + str(list_marker_evaluation_no_relapse_name) + "\n")
                     
                     # prepare file used to calculate t-score of each gene
                     # row_to_read_file_cal_gene_tscore = 22283
-                    file_to_cal_gene_tscore_name = "GSE2034-22071 (edited).csv"
-                    row_to_read_file_cal_gene_tscore = 22283
+                    # file_to_cal_gene_tscore_name = "GSE2034-22071 (edited).csv"
+                    # row_to_read_file_cal_gene_tscore = 22283
+                    file_to_cal_gene_tscore_name = file_training_input_name
+                    row_to_read_file_cal_gene_tscore = row_to_read_file_input
 
                     col_to_read_file_cal_gene_tscore = ["ID_REF"]
                     col_to_read_file_cal_gene_tscore.extend(list_sample_relapse)
@@ -366,7 +465,7 @@ def main():
 
                     col_to_read_file_cal_gene_tscore_relapse = ["ID_REF"]
                     col_to_read_file_cal_gene_tscore_relapse.extend(list_marker_evaluation_relapse_name)
-                    print("col_to_read_file_cal_gene_tscore_relapse : " + str(col_to_read_file_cal_gene_tscore_relapse))
+                    # print("col_to_read_file_cal_gene_tscore_relapse : " + str(col_to_read_file_cal_gene_tscore_relapse))
                     col_to_read_file_cal_gene_tscore_no_relapse = ["ID_REF"]
                     col_to_read_file_cal_gene_tscore_no_relapse.extend(list_marker_evaluation_no_relapse_name)
 
@@ -375,7 +474,7 @@ def main():
                     file_to_cal_gene_tscore_no_relapse = pd.read_csv(file_to_cal_gene_tscore_name, usecols = col_to_read_file_cal_gene_tscore_no_relapse, nrows = row_to_read_file_cal_gene_tscore)
 
                     print()
-                    print("Process : Gathering gene expression from file ...")
+                    print(" # Process : Gathering gene expression from file ...")
                     # get gene expression of class 'relapse'
                     genes_expression_relapse_from_file = {}
                     last_index_to_read_file_to_cal_gene_tscore_relapse = len(col_to_read_file_cal_gene_tscore_relapse)
@@ -408,7 +507,7 @@ def main():
 
                         genes_expression_no_relapse_from_file[line_index] = gene_expression_by_probe_id
 
-                    print("Process : Calculating t-score ...")
+                    print(" # Process : Calculating t-score ...")
                     # prepare list of gene expression used to calculate t-score
                     # for class "relapse"
                     list_gene_expression_relapse_from_file = []
@@ -448,7 +547,7 @@ def main():
                     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
                     # list all probe id
-                    print("Process : Creating a collection of pathways with their activity score ...")
+                    print(" # Process : Creating a collection of pathways with their activity score ...")
                     list_probe_id = []
                     for element in file_to_convert.loc[:, 'ID_REF']:
                         list_probe_id.append(element)
@@ -510,7 +609,7 @@ def main():
                         
                         pathways[key] = pathway
                     
-                    print("Process : Calculating pathway activity by averaging t-score of member genes")
+                    print(" # Process : Calculating pathway activity by averaging t-score of member genes")
                     list_pathway_activity = []
                     for pathway_index in range(0, len(pathways)):
                         list_gene_tscore_in_pathway = []
@@ -678,8 +777,8 @@ def main():
                     # list to collect auc score for the feature in each fold
                     list_max_auc.append(auc_score_feature_selection)
 
-                    print("feature_set_name : " + str(feature_set_name))
-                    print("auc_score_feature_selection : " + str(auc_score_feature_selection))
+                    print(" Feature set : " + str(feature_set_name))
+                    print(" AUC score from feature selection : " + str(auc_score_feature_selection))
                     print()
 
                     # result_file.write("feature_set_name : " + str(feature_set_name))
@@ -802,17 +901,17 @@ def main():
 
                 print()
                 print("#### Evaluation of " + str(chunk_test_index + 1) + " - fold ####")
-                print("Feature set : " + str(feature_set_name))
-                print("Size of feature set : " + str(len(feature_set_name)))
-                print("size of list_actual_outputs_testing : " + str(len(list_actual_outputs_testing)))
-                print("list_actual_outputs_testing : ")
+                print(" Feature set : " + str(feature_set_name))
+                print(" Number of features in feature set : " + str(len(feature_set_name)))
+                print(" Number of actual outputs : " + str(len(list_actual_outputs_testing)))
+                print(" Actual outputs : ")
                 print(list_actual_outputs_testing)
                 print()
-                print("size of list_desired_outputs_testing : " + str(len(list_desired_outputs_testing)))
-                print("list_desired_outputs_testing : ")
+                print(" Number of desired outputs : " + str(len(list_desired_outputs_testing)))
+                print(" Desired outputs : ")
                 print(list_desired_outputs_testing)
-                print("AUC score from feature selection : " + str(auc_score_feature_selection))
-                print("AUC score from testing : " + str(auc_score))
+                print(" AUC score from feature selection : " + str(auc_score_feature_selection))
+                print(" AUC score from testing : " + str(auc_score))
 
                 # track feature set which gives maximum auc score
                 if (auc_score > auc_score_max):
@@ -820,12 +919,11 @@ def main():
                     auc_score_max = auc_score
                 
                 result_file.write("Feature set : " + str(feature_set_name) + "\n")
-                result_file.write("Size of feature set : " + str(len(feature_set_name)) + "\n")
-                result_file.write("size of list_actual_outputs_testing : " + str(len(list_actual_outputs_testing)) + "\n")
-                result_file.write(str(list_actual_outputs_testing) + "\n")
-                result_file.write("\n")
-                result_file.write("size of list_desired_outputs_testing : " + str(len(list_desired_outputs_testing)) + "\n")
-                result_file.write(str(list_desired_outputs_testing) + "\n")
+                result_file.write("Number of features in feature set: " + str(len(feature_set_name)) + "\n")
+                result_file.write("Number of actual outputs : " + str(len(list_actual_outputs_testing)) + "\n")
+                result_file.write("Actual outputs : " + str(list_actual_outputs_testing) + "\n")
+                result_file.write("Number of desired outputs  : " + str(len(list_desired_outputs_testing)) + "\n")
+                result_file.write("Desired outputs" + str(list_desired_outputs_testing) + "\n")
                 result_file.write("AUC score from feature selection : " + str(auc_score_feature_selection) + "\n")
                 result_file.write("AUC score from testing : " + str(auc_score) + "\n")
                 result_file.write("\n")
@@ -837,30 +935,31 @@ def main():
                 fold_elapse_time_minute = fold_elapse_time_second / 60
                 fold_elapse_time_minute = round(fold_elapse_time_minute, 2)
 
-                print("fold_elapse_time : " + str(fold_elapse_time_minute) + " minutes")
+                print(" Fold elapse time : " + str(fold_elapse_time_minute) + " minutes")
 
-                result_file.write("fold elapse time : " + str(fold_elapse_time_minute) + " minutes \n")
+                result_file.write("Fold elapse time : " + str(fold_elapse_time_minute) + " minutes \n")
                 result_file.write("\n")
         
         # calculate time used in this epoch
-        end_time = time.time()
-        total_elapse_time_second = end_time - start_time
-        total_elapse_time_minute = total_elapse_time_second / 60
-        total_elapse_time_minute = round(total_elapse_time_minute, 2)
-        total_elapse_time_hour = total_elapse_time_minute / 60  
-        total_elapse_time_hour = round(total_elapse_time_minute / 60)
+        end_epoch_time = time.time()
+        time_elapse_epoch_second = end_epoch_time - start_epoch_time
+        time_elapse_epoch_minute = time_elapse_epoch_second / 60
+        time_elapse_epoch_hour = time_elapse_epoch_minute / 60
+
+        time_elapse_epoch_minute = round(time_elapse_epoch_minute, 2)
+        time_elapse_epoch_hour = round(time_elapse_epoch_hour, 2)
 
         # collect average auc score of this epoch for further use
         list_avg_auc_each_epoch.append(calculate.mean(list_auc_score))
 
         print()
         print("#### Summary ####")
-        print("Average AUC score : " + str(calculate.mean(list_auc_score)))
-        print("Maximum AUC score : " + str(auc_score_max))
-        print("Feature set which gives highest AUC score : ")
+        print(" Average AUC score : " + str(calculate.mean(list_auc_score)))
+        print(" Maximum AUC score : " + str(auc_score_max))
+        print(" Feature set which gives highest AUC score : ")
         print(list_feature_set_max_auc)
         print()
-        print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+        print(" Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
 
         result_file.write("\n#### Summary ####\n")
 
@@ -871,24 +970,37 @@ def main():
         result_file.write("Feature set which gives highest AUC score : " + "\n")
         result_file.write(str(list_feature_set_max_auc))
         result_file.write("\n")
-        result_file.write("Size of feature set : ")
+        result_file.write("Number of features in feature set: ")
         result_file.write(str(len(list_feature_set_max_auc)))
         result_file.write("\n")
         # result_file.write("Average absolute t-score : " + str(calculate.mean(list_avg_abs_tscore_each_fold)) + "\n")
-        result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+        result_file.write("Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
         result_file.write("\n")
 
         # list_avg_abs_tscore_each_epoch.append(calculate.mean(list_avg_abs_tscore_each_fold))
-    
+    end_time = time.time()
+
+    total_elapse_time_second = end_time - start_time
+
+    total_elapse_time_minute = total_elapse_time_second / 60
+    total_elapse_time_hour = total_elapse_time_minute / 60  
+
+    total_elapse_time_minute = round(total_elapse_time_minute, 2)
+    total_elapse_time_hour = round(total_elapse_time_hour , 2)
+
     # calculate mean over all epoch
     mean_auc_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
     # mean_avg_abs_tscore_over_all_epoch = calculate.mean(list_avg_abs_tscore_each_epoch)
 
-    print("Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch))
+    print(" Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch))
     # print("Average absolute t-score score over " + str(num_of_epochs) + " epoch : " + str(mean_avg_abs_tscore_over_all_epoch))
 
     result_file.write("\nAverage AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch) + "\n")
     # result_file.write("Average absolute t-score score over " + str(num_of_epochs) + " epoch : " + str(mean_avg_abs_tscore_over_all_epoch) + "\n")
+
+    print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+    result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+    result_file.write("\n")
 
     result_file.close()   
 
