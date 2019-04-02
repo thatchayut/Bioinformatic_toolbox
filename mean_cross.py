@@ -1,10 +1,11 @@
-from scipy import stats
 import pandas as pd
 import random
 import math
 import calculate
 import time
 import xlsxwriter
+import add_ons
+from scipy import stats
 from copy import deepcopy
 from sklearn.metrics import roc_auc_score
 
@@ -118,6 +119,7 @@ def main():
             print(" WARNING : Number of rows cannot be lower than 1.")
         else:
             break
+    rows_to_read_file_pathway = int(rows_to_read_file_pathway)
     print()
 
     # prepare data
@@ -205,6 +207,7 @@ def main():
             print(" WARINING : Number of epochs must be greater than 0.")
         else:
             break
+    num_of_epochs = int(num_of_epochs)
     print()
 
     print(" 2. Enter number of folds ")
@@ -244,6 +247,11 @@ def main():
 
     # prepare text file for results to be written in
     result_file = open(str(file_name) + ".txt", "w+")
+
+    # record dataset
+    result_file.write("The first dataset : " + str(file_gene_first_dataset_name) + "\n")
+    result_file.write("The second dataset : " + str(file_gene_second_dataset_name) + "\n")
+    result_file.write("Pathway reference : " + str(file_pathway_name) + "\n")
 
     # calculate number of pathways to be used
     num_of_ranked_pathways = (rows_to_read_file_pathway * (num_of_pathways_percentage / 100))
@@ -347,6 +355,8 @@ def main():
     list_avg_auc_each_epoch = []
 
     for epoch_count in range(0, num_of_epochs):
+        start_epoch_time = time.time()
+
         print("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
         result_file.write("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
 
@@ -1117,12 +1127,13 @@ def main():
                 result_file.write("\n")
         
         # calculate time used in this epoch
-        end_time = time.time()
-        total_elapse_time_second = end_time - start_time
-        total_elapse_time_minute = total_elapse_time_second / 60
-        total_elapse_time_minute = round(total_elapse_time_minute, 2)
-        total_elapse_time_hour = total_elapse_time_minute / 60  
-        total_elapse_time_hour = round(total_elapse_time_minute / 60)
+        end_epoch_time = time.time()
+        time_elapse_epoch_second = end_epoch_time - start_epoch_time
+        time_elapse_epoch_minute = time_elapse_epoch_second / 60
+        time_elapse_epoch_hour = time_elapse_epoch_minute / 60
+
+        time_elapse_epoch_minute = round(time_elapse_epoch_minute, 2)
+        time_elapse_epoch_hour = round(time_elapse_epoch_hour, 2)
 
         # collect average auc score of this epoch for further use
         list_avg_auc_each_epoch.append(calculate.mean(list_auc_score))
@@ -1134,7 +1145,7 @@ def main():
         print(" Feature set which gives highest AUC score : ")
         print(list_feature_set_max_auc)
         print()
-        print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+        print(" Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
 
         result_file.write("\n#### Summary ####\n")
 
@@ -1149,8 +1160,17 @@ def main():
         result_file.write(str(len(list_feature_set_max_auc)))
         result_file.write("\n")
         # result_file.write("Average absolute t-score : " + str(calculate.mean(list_avg_abs_tscore_each_fold)) + "\n")
-        result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+        result_file.write("Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
         result_file.write("\n")
+
+    end_time = time.time()
+    total_elapse_time_second = end_time - start_time
+
+    total_elapse_time_minute = total_elapse_time_second / 60
+    total_elapse_time_hour = total_elapse_time_minute / 60  
+
+    total_elapse_time_minute = round(total_elapse_time_minute, 2)
+    total_elapse_time_hour = round(total_elapse_time_hour, 2)
 
     # calculate mean over all epoch
     mean_auc_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
@@ -1162,19 +1182,11 @@ def main():
     result_file.write("\nAverage AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch) + "\n")
     # result_file.write("Average absolute t-score score over " + str(num_of_epochs) + " epoch : " + str(mean_avg_abs_tscore_over_all_epoch) + "\n")
 
+    print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+    result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+    result_file.write("\n")
+
     result_file.close()   
-
-                
-
-
-            
-
-
-                    
-                    
-            
-
-
 
 if __name__ == "__main__":
     main()

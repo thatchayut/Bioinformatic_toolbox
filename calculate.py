@@ -76,7 +76,7 @@ def findDiscriminative(matrix, avg_matrix, inversed_pool_covariance, prior_prob)
     return list_result
 
 def findOutput(f1, f2):
-    print("FIND OUTPUT ...")
+    # print("FIND OUTPUT ...")
     list_f1 = []
     for element_index  in range(0, len(f1)):
         for row_index in range(0, (f1[element_index].shape[0])):

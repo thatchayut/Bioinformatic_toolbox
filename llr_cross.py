@@ -71,6 +71,7 @@ def main():
             print(" WARNING : Number of rows must be numeric.")
         else:
             break
+    row_to_read_file_gene_first_dataset = int(row_to_read_file_gene_first_dataset)
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class of the first dataset")
@@ -91,6 +92,7 @@ def main():
             print(" WARNING : Number of rows must be numeric.")
         else:
             break
+    row_to_read_file_gene_second_dataset = int(row_to_read_file_gene_second_dataset)
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class of the second dataset")
@@ -115,6 +117,7 @@ def main():
             print(" WARNING : Number of rows must be numeric.")
         else:
             break
+    rows_to_read_file_pathway = int(rows_to_read_file_pathway)
     print()
 
     # prepare data
@@ -193,6 +196,7 @@ def main():
             print(" WARINING : Number of epochs must be greater than 0.")
         else:
             break
+    num_of_epochs = int(num_of_epochs)  
     print()
 
     print(" 2. Enter number of folds ")
@@ -219,10 +223,18 @@ def main():
     # prepare text file for results to be written in
     result_file = open(str(file_name) + ".txt", "w+")
 
+    # record dataset 
+    result_file.write("The first dataset : " + str(file_gene_first_dataset_name) + "\n")
+    result_file.write("The second dataset : " + str(file_gene_second_dataset_name) + "\n")
+    result_file.write("Pathway reference : " + str(file_pathway_name) + "\n")
+    result_file.write("\n")
+
     # list used to collect average auc score of each epoch
     list_avg_auc_each_epoch = []
 
     for epoch_count in range(0, num_of_epochs):
+        start_epoch_time = time.time()
+
         print("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
         result_file.write("######################################### epoch : " + str(epoch_count + 1) + "#########################################\n")
   
@@ -1760,12 +1772,13 @@ def main():
                 result_file.write("Fold elapse time : " + str(fold_elapse_time_minute) + " minutes \n")
                 result_file.write("\n")
 
-        end_time = time.time()
-        total_elapse_time_second = end_time - start_time
-        total_elapse_time_minute = total_elapse_time_second / 60
-        total_elapse_time_minute = round(total_elapse_time_minute, 2)
-        total_elapse_time_hour = total_elapse_time_minute / 60  
-        total_elapse_time_hour = round(total_elapse_time_minute / 60)
+        end_epoch_time = time.time()
+        time_elapse_epoch_second = end_epoch_time - start_epoch_time
+        time_elapse_epoch_minute = time_elapse_epoch_second / 60
+        time_elapse_epoch_hour = time_elapse_epoch_minute / 60
+
+        time_elapse_epoch_minute = round(time_elapse_epoch_minute, 2)
+        time_elapse_epoch_hour = round(time_elapse_epoch_hour, 2)
 
         list_avg_auc_each_epoch.append(calculate.mean(list_auc_score))   
 
@@ -1776,14 +1789,11 @@ def main():
         print(" Feature set which gives highest AUC score : ")
         print(list_feature_set_max_auc)
         print()
-        print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+        print(" Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
             
 
         result_file.write("\n#### Summary ####\n")
 
-        # result_file.write("Maximum AUC ROC score of feature from feature selection in each fold : \n")
-        # result_file.write(str(list_max_auc))
-        # result_file.write("\n")
 
         result_file.write("Average AUC score : " + str(calculate.mean(list_auc_score)) + "\n")
         result_file.write("Maximum AUC score : " + str(auc_score_max) + "\n")
@@ -1792,17 +1802,32 @@ def main():
         result_file.write("Feature set which gives the highest AUC score from testing : " + "\n")
         result_file.write(str(list_feature_set_max_auc))
         result_file.write("\n")
-        result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+        result_file.write("Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
         result_file.write("\n")
         result_file.write("\n")
 
 
         print("----------------------------------------------------------------------------------------------------")
     
+    end_time = time.time()
+    total_elapse_time_second = end_time - start_time
+
+    total_elapse_time_minute = total_elapse_time_second / 60
+    total_elapse_time_hour = total_elapse_time_minute / 60  
+
+    total_elapse_time_minute = round(total_elapse_time_minute, 2)
+    total_elapse_time_hour = round(total_elapse_time_hour, 60)
+
+
     # calculate mean over all epoch
     mean_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
     print(" Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_over_all_epoch))
     result_file.write("Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_over_all_epoch) + "\n")
+
+    print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+    result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+    result_file.write("\n")
+
 
     result_file.close()
                 

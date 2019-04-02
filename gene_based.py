@@ -11,6 +11,9 @@ from copy import deepcopy
 
 
 def main():
+    # record start time
+    start_time = time.time()
+
     print()
     print("------------------------------------------------------------------------------------------------------------------------")
     print(" # Method : Gene-Based Classification")
@@ -63,10 +66,6 @@ def main():
     print(" 3. Enter name of a file containing mapping between samples and their class")
     file_training_output_name = add_ons.checkFileValid()
     print()
-
-
-    # record start time
-    start_time = time.time()
 
     # prepare data
     # row_to_read = 22283
@@ -168,6 +167,10 @@ def main():
 
     # prepare text file for results to be written in
     result_file = open(str(file_name) + ".txt", "w+")
+
+    # record file name
+    result_file.write("Dataset : " + str(file_training_input_name) +"\n")
+    result_file.write("\n")
 
     print(" Number of samples in class relapse : " + str(len(list_sample_relapse)))
     print(" Number of samples in class non-relapse : " + str(len(list_sample_no_relapse)))
@@ -684,16 +687,7 @@ def main():
                 # track feature set which gives maximum auc score
                 if (auc_score_for_eval > auc_score_max):
                     list_feature_set_max_auc = deepcopy(feature_set_name)
-                    auc_score_max = auc_score
-
-                # record ending time of this iteration
-                end_epoch_time = time.time()
-                time_elapse_epoch_second = end_epoch_time - start_epoch_time
-                time_elapse_epoch_minute = time_elapse_epoch_second / 60
-                time_elapse_epoch_hour = time_elapse_epoch_minute / 60
-
-                time_elapse_epoch_minute = round(time_elapse_epoch_minute, 2)
-                time_elapse_epoch_hour = round(time_elapse_epoch_hour, 2)
+                    auc_score_max = auc_score         
 
                 # write output to an output file
                 result_file.write("Fold : " + str(first_layer_test_index + 1) + "\n")
@@ -704,6 +698,15 @@ def main():
                 result_file.write("\n")
         
         list_avg_auc_each_epoch.append(calculate.mean(list_auc_score))
+
+        # record ending time of this iteration
+        end_epoch_time = time.time()
+        time_elapse_epoch_second = end_epoch_time - start_epoch_time
+        time_elapse_epoch_minute = time_elapse_epoch_second / 60
+        time_elapse_epoch_hour = time_elapse_epoch_minute / 60
+
+        time_elapse_epoch_minute = round(time_elapse_epoch_minute, 2)
+        time_elapse_epoch_hour = round(time_elapse_epoch_hour, 2)
 
         result_file.write("\n#### Summary ####\n")
         result_file.write("Average AUC score : " + str(calculate.mean(list_auc_score)) + "\n")

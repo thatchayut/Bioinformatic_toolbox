@@ -67,6 +67,7 @@ def main():
             print(" WARNING : Number of rows cannot be lower than 1.")   
         else:
             break
+    row_to_read_file_input = int(row_to_read_file_input)
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class")
@@ -91,6 +92,7 @@ def main():
             print(" WARNING : Number of rows cannot be lower than 1.")
         else:
             break
+    rows_to_read_file_pathway = int(rows_to_read_file_pathway)
     print()
 
     # prepare data
@@ -138,55 +140,6 @@ def main():
     for element in sample_no_relapse.loc[:, 'GEO asscession number']:
         list_sample_no_relapse.append(element)
 
-    # shuffle data to make each chunk does not depend on sample order
-    # random.shuffle(list_sample_relapse)
-    # print("list_sample_relapse SIZE = " + str(len(list_sample_relapse)))
-    # random.shuffle(list_sample_no_relapse)
-    # print("list_sample_no_relapse SIZE = " + str(len(list_sample_no_relapse)))
-
-    # # get number of folds
-    # while True:
-    #     num_of_folds = input("Number of folds: ")
-    #     if (num_of_folds.isnumeric() == False):
-    #         print("WARNING : Input must be numeric")
-    #     elif(int(num_of_folds) > len(list_sample_relapse)):
-    #         print("WARNING : Number of folds exceeds the size of the 1st dataset")
-    #     elif(int(num_of_folds) > len(list_sample_no_relapse)):
-    #         print("WARNING : Number of folds exceeds the size of the 2nd dataset")
-    #     elif(int(num_of_folds) <= 1):
-    #         print("WARNING : Number of folds cannot lower than or equal to 1")
-    #     else:
-    #         break
-    # num_of_folds = int(num_of_folds)
-
-    # # get number of epochs
-    # while True:
-    #     num_of_epochs = input("Number of epochs: ")
-    #     if (num_of_epochs.isnumeric() == False):
-    #         print("WARNING : Input must be numeric")
-    #     elif(int(num_of_epochs) < 1):
-    #         print("WARNING : Number of folds cannot lower than 1")
-    #     else:
-    #         break
-    # num_of_epochs = int(num_of_epochs)
-
-    # # get number of pathways
-    # while True:
-    #     num_of_pathways_percentage = input("Number of pathways to be used as feature set (%) : ")
-    #     if (num_of_pathways_percentage.isnumeric() == False):
-    #         print("WARNING : Input must be numeric")
-    #     elif (int(num_of_pathways_percentage) <= 0):
-    #         print("WARNING : Percentage must greater than 0.")
-    #     elif (int(num_of_pathways_percentage) > 100):
-    #         print("WARNING : Percentage must lower than or equal to 100.")
-    #     else:
-    #         break
-    # num_of_pathways_percentage = int(num_of_pathways_percentage)
-
-    # # get output file's name
-    # file_name = input("Name of output file : ")
-
-
     print(" # Enter required information to conduct an experiment")
     print(" 1. Enter number of epochs ")
     while True:
@@ -198,6 +151,7 @@ def main():
             print(" WARINING : Number of epochs must be greater than 0.")
         else:
             break
+    num_of_epochs = int(num_of_epochs)
     print()
 
     print(" 2. Enter number of folds ")
@@ -237,6 +191,11 @@ def main():
 
     # prepare text file for results to be written in
     result_file = open(str(file_name) + ".txt", "w+")
+
+    # record datasets
+    result_file.write("Dataset : " + str(file_training_input_name) + "\n")
+    result_file.write("Pathway reference : " + str(file_pathway_name) + "\n")
+    result_file.write("\n")
 
     # calculate number of pathways to be used
     num_of_ranked_pathways = (rows_to_read_file_pathway * (num_of_pathways_percentage / 100))
@@ -343,6 +302,8 @@ def main():
     print("Process : Conducting cross-validation ...")
     print()
     for epoch_count in range(0, num_of_epochs):
+        start_epoch_time = time.time()
+
         print("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
         result_file.write("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
 
@@ -504,7 +465,7 @@ def main():
 
                     col_to_read_file_cal_gene_tscore_relapse = ["ID_REF"]
                     col_to_read_file_cal_gene_tscore_relapse.extend(list_marker_evaluation_relapse_name)
-                    print("col_to_read_file_cal_gene_tscore_relapse : " + str(col_to_read_file_cal_gene_tscore_relapse))
+                    # print("col_to_read_file_cal_gene_tscore_relapse : " + str(col_to_read_file_cal_gene_tscore_relapse))
                     col_to_read_file_cal_gene_tscore_no_relapse = ["ID_REF"]
                     col_to_read_file_cal_gene_tscore_no_relapse.extend(list_marker_evaluation_no_relapse_name)
 
@@ -949,8 +910,8 @@ def main():
                 print(" Number of desired outputs : " + str(len(list_desired_outputs_testing)))
                 print(" Desired outputs : ")
                 print(list_desired_outputs_testing)
-                print("AUC score from feature selection : " + str(auc_score_feature_selection))
-                print("AUC score from testing : " + str(auc_score))
+                print(" AUC score from feature selection : " + str(auc_score_feature_selection))
+                print(" AUC score from testing : " + str(auc_score))
 
                 # track feature set which gives maximum auc score
                 if (auc_score > auc_score_max):
@@ -980,12 +941,13 @@ def main():
                 result_file.write("\n")
         
         # calculate time used in this epoch
-        end_time = time.time()
-        total_elapse_time_second = end_time - start_time
-        total_elapse_time_minute = total_elapse_time_second / 60
-        total_elapse_time_minute = round(total_elapse_time_minute, 2)
-        total_elapse_time_hour = total_elapse_time_minute / 60  
-        total_elapse_time_hour = round(total_elapse_time_minute / 60)
+        end_epoch_time = time.time()
+        time_elapse_epoch_second = end_epoch_time - start_epoch_time
+        time_elapse_epoch_minute = time_elapse_epoch_second / 60
+        time_elapse_epoch_hour = time_elapse_epoch_minute / 60
+
+        time_elapse_epoch_minute = round(time_elapse_epoch_minute, 2)
+        time_elapse_epoch_hour = round(time_elapse_epoch_hour, 2)
 
         # collect average auc score of this epoch for further use
         list_avg_auc_each_epoch.append(calculate.mean(list_auc_score))
@@ -997,7 +959,7 @@ def main():
         print(" Feature set which gives highest AUC score : ")
         print(list_feature_set_max_auc)
         print()
-        print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+        print(" Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
 
         result_file.write("\n#### Summary ####\n")
 
@@ -1012,11 +974,20 @@ def main():
         result_file.write(str(len(list_feature_set_max_auc)))
         result_file.write("\n")
         # result_file.write("Average absolute t-score : " + str(calculate.mean(list_avg_abs_tscore_each_fold)) + "\n")
-        result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+        result_file.write("Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
         result_file.write("\n")
 
         # list_avg_abs_tscore_each_epoch.append(calculate.mean(list_avg_abs_tscore_each_fold))
-    
+    end_time = time.time()
+
+    total_elapse_time_second = end_time - start_time
+
+    total_elapse_time_minute = total_elapse_time_second / 60
+    total_elapse_time_hour = total_elapse_time_minute / 60  
+
+    total_elapse_time_minute = round(total_elapse_time_minute, 2)
+    total_elapse_time_hour = round(total_elapse_time_hour , 2)
+
     # calculate mean over all epoch
     mean_auc_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
     # mean_avg_abs_tscore_over_all_epoch = calculate.mean(list_avg_abs_tscore_each_epoch)
@@ -1026,6 +997,10 @@ def main():
 
     result_file.write("\nAverage AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch) + "\n")
     # result_file.write("Average absolute t-score score over " + str(num_of_epochs) + " epoch : " + str(mean_avg_abs_tscore_over_all_epoch) + "\n")
+
+    print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+    result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
+    result_file.write("\n")
 
     result_file.close()   
 
