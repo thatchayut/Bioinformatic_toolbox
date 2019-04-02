@@ -183,7 +183,7 @@ def main():
     result_file = open(str(file_name) + ".txt", "w+")
 
     # record dataset 
-    result_file.write("Dataset : " + str(file_training_input_name) = "\n")
+    result_file.write("Dataset : " + str(file_training_input_name) + "\n")
     result_file.write("Pathway reference : " + str(pathway_name) + "\n")
     result_file.write("\n")
 
