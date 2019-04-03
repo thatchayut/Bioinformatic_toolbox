@@ -96,18 +96,13 @@ def main():
     print()
 
     # prepare data
-    # default row_to_read = 22283
-    # row_to_read_file_input = 22283
+    # default row_to_read for "GSE2034-22071 (edited).csv" = 22283
     file_training_input = pd.read_csv(file_training_input_name, nrows = row_to_read_file_input)
     file_training_output= pd.read_csv(file_training_output_name, usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # files to be used to get pathways and their gene expression
-    # default rows_to_read_file_pathway = 1329
-    # rows_to_read_file_pathway = 1329
-    # file_ref_name = "accession_number_to_entrez_id.csv"
-    # file_to_convert_name = "GSE2034-22071 (edited).csv"
+    # default rows_to_read_file_pathway for "c2.cp.v6.2.entrez.gmt.csv" = 1329
     file_to_convert_name = file_training_input_name
-    # file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # get gene order id with its name
@@ -296,9 +291,6 @@ def main():
     # list used to collect average auc score of each epoch
     list_avg_auc_each_epoch = []
 
-    # list used to collect average absolute t-score of each epoch
-    # list_avg_abs_tscore_each_epoch = []
-
     print("Process : Conducting cross-validation ...")
     print()
     for epoch_count in range(0, num_of_epochs):
@@ -341,9 +333,6 @@ def main():
         # list to collect maximun AUC in each fold
         list_max_auc = []
 
-        # list to collect average absolte t-score of each fold
-        # list_avg_abs_tscore_each_fold = []
-
         print(" # Process : Cross-validation")
         print()
         # do only if number of chunks of both datasets are equal
@@ -364,19 +353,16 @@ def main():
                 for chunk_train_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_relapse[chunk_train_relapse_index] is not chunk_test_relapse):
                         chunk_train_relapse.append(chunk_list_relapse[chunk_train_relapse_index])
-                # print("chunk train relapse size = " + str(len(chunk_train_relapse)))
 
                 chunk_train_no_relapse = []
                 for chunk_train_no_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_no_relapse[chunk_train_no_relapse_index] is not chunk_test_no_relapse):
                         chunk_train_no_relapse.append(chunk_list_no_relapse[chunk_train_no_relapse_index])
-                # print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
 
                 # merge training data of each class
                 list_train_relapse = []
                 for i in range(0, len(chunk_train_relapse)):
                     list_train_relapse.extend(chunk_train_relapse[i])
-                # print("size of list_train_relapse : " + str(len(list_train_relapse)))
                 print(" Samples in class relapse used as training set : " + str(list_train_relapse) + "\n")
 
                 list_train_no_relapse = []
@@ -392,13 +378,9 @@ def main():
                 second_chunk_no_relapse_size = math.ceil(len(list_train_no_relapse) / second_num_of_fold)
 
                 second_chunk_list_relapse = list(calculate.chunks(list_train_relapse, second_chunk_relapse_size))
-                # print("chunks in second_chunk_list_relapse size = " + str(len(second_chunk_list_relapse)))
-                second_chunk_list_no_relapse = list(calculate.chunks(list_train_no_relapse, second_chunk_no_relapse_size))
-                # print("chunks in second_chunk_list_no_relapse size = " + str(len(second_chunk_list_no_relapse)))
 
-                # this is used to collect data used in calculating lda
-                # list_testing_relapse_pathway_expression = []
-                # list_testing_no_relapse_pathway_expression = []
+                second_chunk_list_no_relapse = list(calculate.chunks(list_train_no_relapse, second_chunk_no_relapse_size))
+
 
                 second_check_valid, second_num_of_chunks = calculate.checkEqualListSize(second_chunk_list_relapse, second_chunk_list_no_relapse)
 
@@ -419,16 +401,13 @@ def main():
                     for index in range(0, second_num_of_chunks):
                         if (second_chunk_list_relapse[index] is not list_feature_selection_relapse):
                             chunk_marker_evaluation_relapse.append(second_chunk_list_relapse[index])
-                    # print("chunk_marker_evaluation_relapse size = " + str(len(chunk_marker_evaluation_relapse)))
 
                     chunk_marker_evaluation_no_relapse = []
                     for index in range(0, second_num_of_chunks):
                         if (second_chunk_list_no_relapse[index] is not list_feature_selection_no_relapse):
                             chunk_marker_evaluation_no_relapse.append(second_chunk_list_no_relapse[index])
-                    # print("chunk_marker_evaluation_no_relapse size : " + str(len(chunk_marker_evaluation_no_relapse)))
 
                     # merge all samples in the same class
-                    # print("\n#### merge all samples in the same class ####")
                     list_marker_evaluation_relapse = []
                     for i in range(0, len(chunk_marker_evaluation_relapse)):
                         list_marker_evaluation_relapse.extend(chunk_marker_evaluation_relapse[i])
@@ -453,9 +432,6 @@ def main():
                     print(" Samples in class non-relapse used as marker evaluation set : " + str(list_marker_evaluation_no_relapse_name) + "\n")
                     
                     # prepare file used to calculate t-score of each gene
-                    # row_to_read_file_cal_gene_tscore = 22283
-                    # file_to_cal_gene_tscore_name = "GSE2034-22071 (edited).csv"
-                    # row_to_read_file_cal_gene_tscore = 22283
                     file_to_cal_gene_tscore_name = file_training_input_name
                     row_to_read_file_cal_gene_tscore = row_to_read_file_input
 
@@ -465,7 +441,7 @@ def main():
 
                     col_to_read_file_cal_gene_tscore_relapse = ["ID_REF"]
                     col_to_read_file_cal_gene_tscore_relapse.extend(list_marker_evaluation_relapse_name)
-                    # print("col_to_read_file_cal_gene_tscore_relapse : " + str(col_to_read_file_cal_gene_tscore_relapse))
+
                     col_to_read_file_cal_gene_tscore_no_relapse = ["ID_REF"]
                     col_to_read_file_cal_gene_tscore_no_relapse.extend(list_marker_evaluation_no_relapse_name)
 
@@ -532,7 +508,6 @@ def main():
                         gene_expression_no_relapse = list_gene_expression_no_relapse_from_file[gene_index]
 
                         tscore = stats.ttest_ind(gene_expression_relapse, gene_expression_no_relapse, equal_var = False)[0]
-                        # tscore = math.fabs(stats.ttest_ind(gene_expression_relapse, gene_expression_no_relapse, equal_var = False)[0]
 
                         gene_tscore.append(gene_name)
                         gene_tscore.append(tscore)
@@ -542,7 +517,6 @@ def main():
                     # create pathways with their activity score
                     # prepare files to be used
                     file_ref = pd.read_csv(file_ref_name)
-                    # For the last version, 'nrows' in file_to_convert has to be removed
                     file_to_convert = pd.read_csv(file_to_convert_name)
                     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
@@ -629,14 +603,6 @@ def main():
                 
                     # sort pathways using their pathway activity
                     list_pathway_activity.sort(key = lambda x : x[1], reverse = True)
-
-                    # # find average absolute t-score
-                    # average_absolute_tscore = 0
-                    # for index in range(0, len(list_pathway_activity)):
-                    #     average_absolute_tscore += math.fabs(list_pathway_activity[index][1])
-                    # average_absolute_tscore /= len(list_pathway_activity)
-
-                    # list_avg_abs_tscore_each_fold.append(average_absolute_tscore)
 
                     # get list of top-rank pathway
                     list_top_rank_pathway_activity = []
@@ -743,17 +709,11 @@ def main():
                     for index in range(0, len(list_feature_selection_relapse)):
                         sample_index_in_list = list_feature_selection_relapse[index]
                         list_sample_relapse_name_feature_selection.append(samples_relapse[sample_index_in_list][0])
-                    # print("list_sample_relapse_name_feature_selection : ")
-                    # print(list_sample_relapse_name_feature_selection)
-                    # print()
 
                     list_sample_no_relapse_name_feature_selection = []
                     for index in range(0, len(list_feature_selection_no_relapse)):
                         sample_index_in_list = list_feature_selection_no_relapse[index]
                         list_sample_no_relapse_name_feature_selection.append(samples_no_relapse[sample_index_in_list][0])
-                    # print("list_sample_no_relapse_name_feature_selection : ")
-                    # print(list_sample_no_relapse_name_feature_selection)
-                    # print()
 
                     # merge samples' name of both class
                     list_sample_name_feature_selection = []
@@ -781,11 +741,6 @@ def main():
                     print(" AUC score from feature selection : " + str(auc_score_feature_selection))
                     print()
 
-                    # result_file.write("feature_set_name : " + str(feature_set_name))
-                    # result_file.write("\n")
-                    # result_file.write("auc_score_feature_selection : " + str(auc_score_feature_selection))
-                    # result_file.write("\n")
-
                 # preparing data for evaluation and creating classifier
                 # prepare data for testing
                 # for classifier class 'relapse'
@@ -800,11 +755,8 @@ def main():
 
                             if (pathway_name == feature_set_name[feature_index]):
                                 pathway_activity = samples_relapse_pathway_activity[sample_index_in_list][1][pathway_index][1]
-                                list_pathway_activity.append(pathway_activity)
-                                # pathway.append(pathway_name)
-                                # pathway.append(pathway_activity)
 
-                                # list_pathway_activity.append(pathway)
+                                list_pathway_activity.append(pathway_activity)
                     list_sample_classifier_relapse_pathway.append(list_pathway_activity)
                 
                 # for classifier class 'non-relapse'
@@ -819,8 +771,6 @@ def main():
 
                             if (pathway_name == feature_set_name[feature_index]):
                                 pathway_activity = samples_no_relapse_pathway_activity[sample_index_in_list][1][pathway_index][1]
-                                # pathway.append(pathway_name)
-                                # pathway.append(pathway_activity)
 
                                 list_pathway_activity.append(pathway_activity)
                     list_sample_classifier_no_relapse_pathway.append(list_pathway_activity)
@@ -837,8 +787,6 @@ def main():
 
                             if (pathway_name == feature_set_name[feature_index]):
                                 pathway_activity = samples_relapse_pathway_activity[sample_index_in_list][1][pathway_index][1]
-                                # pathway.append(pathway_name)
-                                # pathway.append(pathway_activity)
 
                                 list_pathway_activity.append(pathway_activity)
                     list_sample_testing_relapse_pathway.append(list_pathway_activity)
@@ -855,8 +803,6 @@ def main():
 
                             if (pathway_name == feature_set_name[feature_index]):
                                 pathway_activity = samples_no_relapse_pathway_activity[sample_index_in_list][1][pathway_index][1]
-                                # pathway.append(pathway_name)
-                                # pathway.append(pathway_activity)
 
                                 list_pathway_activity.append(pathway_activity)
                     list_sample_testing_no_relapse_pathway.append(list_pathway_activity)
@@ -973,11 +919,9 @@ def main():
         result_file.write("Number of features in feature set: ")
         result_file.write(str(len(list_feature_set_max_auc)))
         result_file.write("\n")
-        # result_file.write("Average absolute t-score : " + str(calculate.mean(list_avg_abs_tscore_each_fold)) + "\n")
         result_file.write("Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
         result_file.write("\n")
 
-        # list_avg_abs_tscore_each_epoch.append(calculate.mean(list_avg_abs_tscore_each_fold))
     end_time = time.time()
 
     total_elapse_time_second = end_time - start_time
@@ -990,13 +934,10 @@ def main():
 
     # calculate mean over all epoch
     mean_auc_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
-    # mean_avg_abs_tscore_over_all_epoch = calculate.mean(list_avg_abs_tscore_each_epoch)
 
     print(" Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch))
-    # print("Average absolute t-score score over " + str(num_of_epochs) + " epoch : " + str(mean_avg_abs_tscore_over_all_epoch))
 
     result_file.write("\nAverage AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch) + "\n")
-    # result_file.write("Average absolute t-score score over " + str(num_of_epochs) + " epoch : " + str(mean_avg_abs_tscore_over_all_epoch) + "\n")
 
     print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
     result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")

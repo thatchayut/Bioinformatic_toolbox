@@ -95,17 +95,13 @@ def main():
     print()
 
     # prepare data
-    # default row_to_read = 22283
-    # row_to_read_file_input = 22283
+    # default row_to_read for "GSE2034-22071 (edited).csv" = 22283
     file_training_input = pd.read_csv(file_training_input_name, nrows = row_to_read_file_input)
     file_training_output= pd.read_csv(file_training_output_name, usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # files to be used to get pathways and their gene expression
-    # default rows_to_read_file_pathway = 1329
-    # rows_to_read_file_pathway = 1329
-    # file_ref_name = "accession_number_to_entrez_id.csv"
+    # default rows_to_read_file_pathway for "c2.cp.v6.2.entrez.gmt.csv" = 1329
     file_to_convert_name = file_training_input_name
-    # file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # get gene order id with its name
@@ -181,10 +177,6 @@ def main():
     result_file.write("Pathway reference : " +str(file_pathway_name) + "\n")
     result_file.write("\n")
 
-    # calculate number of pathways to be used
-    # num_of_ranked_pathways = (rows_to_read_file_pathway * (num_of_pathways_percentage / 100))
-    # num_of_ranked_pathways = math.ceil(num_of_ranked_pathways)
-
     # create list of all samples 
     list_all_samples = []
     list_all_samples.extend(list_sample_relapse)
@@ -249,11 +241,7 @@ def main():
                 chunk_test_no_relapse = chunk_list_no_relapse[chunk_test_index]
 
                 print("\n------------------------------------------ K : " + str(chunk_test_index + 1) + " --------------------------------")
-                # print("chunk_test_relapse : " + str(chunk_test_relapse))
-                # print()
-                # print("chunk_test_no_relapse : " + str(chunk_test_no_relapse))
-                # print()
-
+  
                 # get training set in this fold
                 chunk_train_relapse = []
                 for chunk_train_relapse_index in range(0, num_of_chunks):
@@ -271,18 +259,10 @@ def main():
                 list_train_relapse = []
                 for i in range(0, len(chunk_train_relapse)):
                     list_train_relapse.extend(chunk_train_relapse[i])
-                # print("size of list_train_relapse : " + str(len(list_train_relapse)))
-                # print("list_train_relapse : ")
-                # print(list_train_relapse)
-                # print()
 
                 list_train_no_relapse = []
                 for i in range(0, len(chunk_train_no_relapse)):
                     list_train_no_relapse.extend(chunk_train_no_relapse[i])
-                # print("size of list_train_no_relapse : " + str(len(list_train_no_relapse)))
-                # print("list_train_no_relapse : ")
-                # print(list_train_no_relapse)
-                # print()
 
                 # get sample name and add to a list to be used as column index
                 list_train_relapse_name = []
@@ -298,7 +278,6 @@ def main():
                 # find mean and sd of gene expression of each gene in each class
                 # prepare file to get gene expression
 
-                # default row_to_read_file_to_cal_mean_sd = 22283
                 row_to_read_file_to_cal_mean_sd = row_to_read_file_input
 
                 col_to_read_file_to_cal_mean_sd_relapse = ["ID_REF"]
@@ -373,7 +352,6 @@ def main():
                 print(" # Process : Calculate Log-likelihood ration of each gene")
                 # calculate gene lambda
                 # find mean and sd of gene expression in each class
-                # default row_to_read_file_to_get_lambda = 22283
                 row_to_read_file_to_get_lambda = row_to_read_file_input
 
                 col_to_read_file_to_get_lambda_relapse = ["ID_REF"]
@@ -435,23 +413,8 @@ def main():
                     for gene_expression_index in range(0, len(genes_expression_relapse[gene_index][1])):
                         gene_expression = genes_expression_relapse[gene_index][1][gene_expression_index]
 
-                        # gene_pdf_under_relapse = norm.pdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
-                        # gene_pdf_under_no_relapse = norm.pdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)
-
-                        # print("gene index : " + str(gene_index) + " of sample " + str(gene_expression_index + 1) + " from total " + str(len(genes_expression_relapse)) + " genes")
-                        # print("gene_pdf_under_relapse : " + str(gene_pdf_under_relapse))
-                        # print("gene_pdf_under_no_relapse : " + str(gene_pdf_under_no_relapse))
-                        # print()
-                        # log_gene_pdf_under_relapse = math.log10(gene_pdf_under_relapse)
-                        # log_gene_pdf_under_no_relapse = math.log10(gene_pdf_under_no_relapse)
-
-                        # print("gene index : " + str(gene_index) + " of sample " + str(gene_expression_index + 1) + " from total " + str(len(genes_expression_relapse)) + " genes")
                         log_gene_pdf_under_relapse = norm.logpdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
-                        log_gene_pdf_under_no_relapse = norm.logpdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)
-                        # print("log_gene_pdf_under_relapse : " + str(log_gene_pdf_under_relapse))
-                        # print("log_gene_pdf_under_no_relapse : " + str(log_gene_pdf_under_no_relapse))
-                        # print()
-                        
+                        log_gene_pdf_under_no_relapse = norm.logpdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)            
 
                         lambda_value = log_gene_pdf_under_relapse - log_gene_pdf_under_no_relapse
 
@@ -477,12 +440,6 @@ def main():
                     list_gene_lambda = []
                     for gene_expression_index in range(0, len(genes_expression_no_relapse[gene_index][1])):
                         gene_expression = genes_expression_no_relapse[gene_index][1][gene_expression_index]
-
-                        # gene_pdf_under_relapse = norm.pdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
-                        # gene_pdf_under_no_relapse = norm.pdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)
-
-                        # log_gene_pdf_under_relapse = math.log10(gene_pdf_under_relapse)
-                        # log_gene_pdf_under_no_relapse = math.log10(gene_pdf_under_no_relapse)
 
                         log_gene_pdf_under_relapse = norm.logpdf(gene_expression, gene_mean_relapse, gene_sd_relapse)
                         log_gene_pdf_under_no_relapse = norm.logpdf(gene_expression, gene_mean_no_relapse, gene_sd_no_relapse)
@@ -658,30 +615,20 @@ def main():
                     for marker_evaluation_index in range(0, second_num_of_chunks):
                         if (second_chunk_list_relapse[marker_evaluation_index] is not feature_selection_relapse):
                             marker_evaluation_relapse.append(second_chunk_list_relapse[marker_evaluation_index])
-                    # print("marker_evaluation_relapse size = " + str(len(marker_evaluation_relapse)))
-                    # print("marker_evaluation_relapse = " + str(marker_evaluation_relapse))
-                    # print()
 
                     marker_evaluation_no_relapse = []
                     for marker_evaluation_index in range(0, second_num_of_chunks):
                         if (second_chunk_list_no_relapse[marker_evaluation_index] is not feature_selection_no_relapse):
                             marker_evaluation_no_relapse.append(second_chunk_list_no_relapse[marker_evaluation_index])
-                    # print("marker_evaluation_no_relapse size : " + str(len(marker_evaluation_no_relapse)))
-                    # print("marker_evaluation_no_relapse : " + str(marker_evaluation_no_relapse))    
-                    # print()
                 
                     # merge all samples in the same class
-                    # print("\n#### merge all samples in the same class to be used later ####")
-
                     list_sample_relapse_marker_evaluation = []
                     for i in range(0, len(marker_evaluation_relapse)):
                         list_sample_relapse_marker_evaluation.extend(marker_evaluation_relapse[i])
-                    # print("list_sample_relapse_marker_evaluation : " + str(list_sample_relapse_marker_evaluation))
 
                     list_sample_no_relapse_marker_evaluation = []
                     for i in range(0, len(marker_evaluation_no_relapse)):
                         list_sample_no_relapse_marker_evaluation.extend(marker_evaluation_no_relapse[i])
-                    # print("list_sample_no_relapse_marker_evaluation : " + str(list_sample_no_relapse_marker_evaluation))
 
                     # create collection of samples used in feature selection
                     samples_relapse_marker_evaluation = {}
@@ -690,18 +637,10 @@ def main():
                     for sample_index in range(0, len(list_sample_relapse_marker_evaluation)):
                         index_samples_relapse = list_sample_relapse_marker_evaluation[sample_index]
                         samples_relapse_marker_evaluation[sample_index] = samples_relapse[index_samples_relapse]
-                    # print()
-                    # print("samples_relapse_marker_evaluation : ")
-                    # print(samples_relapse_marker_evaluation)
-                    # print()
 
                     for sample_index in range(0, len(list_sample_no_relapse_marker_evaluation)):
                         index_samples_no_relapse = list_sample_no_relapse_marker_evaluation[sample_index]
                         samples_no_relapse_marker_evaluation[sample_index] = samples_no_relapse[index_samples_no_relapse]
-                    # print()
-                    # print("samples_no_relapse_marker_evaluation : ")
-                    # print(samples_no_relapse_marker_evaluation)
-                    # print()
 
                     # create list contain pathway activity of each samples to be used in sfs
                     samples_relapse_marker_evaluation_pathway_activity = {}
@@ -845,7 +784,6 @@ def main():
                     for pathway_index in range(0, rows_to_read_file_pathway):
                         pathway_pvalue = []
                         pathway_name = list_pathway_name[pathway_index][1]
-                        # pvalue = stats.ttest_ind(list_sample_relapse_activity_score, list_sample_no_relapse_activity_score, equal_var = False)[1]
 
                         pvalue = stats.ttest_ind(list_relapse_pathway_activity_for_pvalue[pathway_index], list_no_relapse_pathway_activity_for_pvalue[pathway_index], equal_var = False)[1]
 
@@ -961,8 +899,6 @@ def main():
                     list_desired_outputs_feature_selection = []
                     for element in file_desired_outputs_feature_selection.loc[:, 'relapse (1=True)']:
                         list_desired_outputs_feature_selection.append(element)
-                    # print("list_desired_outputs_feature_selection : " + str(list_desired_outputs_feature_selection))
-                    # print()
 
                     # create list of pathway name in the same order as in each sample
                     list_pathway_name_feature_selection = []
@@ -987,10 +923,6 @@ def main():
                             list_pathway_activity.append(pathway)
                         list_sample_relapse_pathway_expression_marker_evaluation.append(list_pathway_activity)
                     
-                    # print("list_sample_relapse_pathway_expression_marker_evaluation : ")
-                    # print(list_sample_relapse_pathway_expression_marker_evaluation)
-                    # print()
-
                     # for marker evaluation class "non-relapse"
                     list_sample_no_relapse_pathway_expression_marker_evaluation = []
                     for sample_index in range(0, len(samples_no_relapse_marker_evaluation_pathway_activity_sorted)):
@@ -1005,10 +937,6 @@ def main():
                             pathway.append(pathway_activity)
                             list_pathway_activity.append(pathway)
                         list_sample_no_relapse_pathway_expression_marker_evaluation.append(list_pathway_activity)
-                    
-                    # print("list_sample_no_relapse_pathway_expression_marker_evaluation : ")
-                    # print(list_sample_no_relapse_pathway_expression_marker_evaluation)
-                    # print()
 
                     # for feature selection class "relapse"
                     list_sample_relapse_pathway_expression_feature_selection = []
@@ -1024,10 +952,6 @@ def main():
                             pathway.append(pathway_activity)
                             list_pathway_activity.append(pathway)
                         list_sample_relapse_pathway_expression_feature_selection.append(list_pathway_activity)
-                    
-                    # print("list_sample_relapse_pathway_expression_feature_selection : ")
-                    # print(list_sample_relapse_pathway_expression_feature_selection)
-                    # print()
 
                     # for feature selection class "non-relapse"
                     list_sample_no_relapse_pathway_expression_feature_selection = []
@@ -1044,17 +968,10 @@ def main():
                             list_pathway_activity.append(pathway)
                         list_sample_no_relapse_pathway_expression_feature_selection.append(list_pathway_activity)
                     
-                    # print("list_sample_no_relapse_pathway_expression_feature_selection : ")
-                    # print(list_sample_no_relapse_pathway_expression_feature_selection)
-                    # print()
-
                     # merge testing set for feature selection together
                     list_sample_all_pathway_expression_feature_selection = []
                     list_sample_all_pathway_expression_feature_selection.extend(list_sample_relapse_pathway_expression_feature_selection)
                     list_sample_all_pathway_expression_feature_selection.extend(list_sample_no_relapse_pathway_expression_feature_selection)
-                    # print("list_sample_all_pathway_expression_feature_selection size : " + str(len(list_sample_all_pathway_expression_feature_selection)))
-                    # print(list_sample_all_pathway_expression_feature_selection)
-                    # print()
 
                     print(" # Process : Sequential Forward Selection (SFS)")
                     # find feature set using sequential forward selection
@@ -1070,7 +987,6 @@ def main():
                     result_file.write("\n")
                     result_file.write("AUC score from feature selection : " + str(auc_score_feature_selection))
                     result_file.write("\n")
-                    # print("\n-------------------------------------------------------------------------------------------------------------\n")
 
                 print(" # Process : Evaluation")
                 # preparing data for evaluation and creating classifier
@@ -1215,10 +1131,7 @@ def main():
                             if (pathway_name == feature):
                                 list_pathway_activity.append(pathway_activity)
 
-                    list_classifier_relapse_pathway_expression.append(list_pathway_activity)
-                # print("list_classifier_relapse_pathway_expression : ")
-                # print(list_classifier_relapse_pathway_expression)
-                # print()    
+                    list_classifier_relapse_pathway_expression.append(list_pathway_activity)  
 
                 # for classifier class "non-relapse"
                 list_classifier_no_relapse_pathway_expression = []
@@ -1233,9 +1146,6 @@ def main():
                                 list_pathway_activity.append(pathway_activity)
 
                     list_classifier_no_relapse_pathway_expression.append(list_pathway_activity)
-                # print("list_classifier_no_relapse_pathway_expression : ")
-                # print(list_classifier_no_relapse_pathway_expression)
-                # print()   
 
                 # for testing data class "relapse"
                 list_testing_relapse_pathway_expression = []
@@ -1250,9 +1160,6 @@ def main():
                                 list_pathway_activity.append(pathway_activity)
 
                     list_testing_relapse_pathway_expression.append(list_pathway_activity)
-                # print("list_testing_relapse_pathway_expression : ")
-                # print(list_testing_relapse_pathway_expression)
-                # print()  
 
                 # for testing data class "non-relapse"
                 list_testing_no_relapse_pathway_expression = []
@@ -1267,9 +1174,6 @@ def main():
                                 list_pathway_activity.append(pathway_activity)
 
                     list_testing_no_relapse_pathway_expression.append(list_pathway_activity)
-                # print("list_testing_no_relapse_pathway_expression : ")
-                # print(list_testing_no_relapse_pathway_expression)
-                # print() 
 
                 # merge testing data of 2 class together
                 list_testing_all_pathway_expression = []
@@ -1281,24 +1185,15 @@ def main():
                 for index in range(0, len(chunk_test_relapse)):
                     index_samples_relapse = chunk_test_relapse[index]
                     list_chunk_test_relapse_name.append(samples_relapse[index_samples_relapse][0])
-                # print("list_chunk_test_relapse_name : ")
-                # print(list_chunk_test_relapse_name)
-                # print()
 
                 list_chunk_test_no_relapse_name = []
                 for index in range(0, len(chunk_test_no_relapse)):
                         index_samples_no_relapse = chunk_test_no_relapse[index]
                         list_chunk_test_no_relapse_name.append(samples_no_relapse[index_samples_no_relapse][0])
-                # print("list_chunk_test_no_relapse_name : ")
-                # print(list_chunk_test_no_relapse_name)
-                # print()
 
                 list_samples_name_testing_all = []
                 list_samples_name_testing_all.extend(list_chunk_test_relapse_name)
                 list_samples_name_testing_all.extend(list_chunk_test_no_relapse_name)
-                # print("list_samples_name_testing_all : ")
-                # print(list_samples_name_testing_all)
-                # print()
 
                 # create list of desired outputs
                 file_desired_outputs = file_training_output.loc[file_training_output['GEO asscession number'].isin(list_samples_name_testing_all)]
@@ -1320,7 +1215,6 @@ def main():
 
                 print()
                 print("#### Evaluation of " + str(chunk_test_index + 1) + " - fold ####")
-                # print("Feature set : " + str(list_top_ranked_pathways))
                 print(" Feature set : " + str(feature_set_name))
                 print(" Number of features in feature set: " + str(len(feature_set_name)))
                 print(" Number of actual outputs : " + str(len(list_actual_outputs)))

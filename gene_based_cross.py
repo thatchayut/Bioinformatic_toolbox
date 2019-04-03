@@ -100,21 +100,17 @@ def main():
 
     # prepare data
     # for 1st dataset
-    # default row_to_read_file_gene_first_dataset = 22283
-    # row_to_read_file_gene_first_dataset = 22283
-    # file_gene_first_dataset_name = "GSE2034-22071 (edited).csv"
+    # default row_to_read_file_gene_first_dataset for "GSE2034-22071 (edited).csv" = 22283
     file_gene_first_dataset = pd.read_csv(file_gene_first_dataset_name, nrows = row_to_read_file_gene_first_dataset)
 
-    # file_output_first_dataset_name = "mapping_sample_to_class_gse2034.csv"
+    # default file_output_first_dataset_name for "GSE2034-22071 (edited).csv" = "mapping_sample_to_class_gse2034.csv"
     file_output_first_dataset = pd.read_csv(file_output_first_dataset_name, usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # for 2nd dataset
-    # default row_to_read_file_second_dataset = 22283
-    # row_to_read_file_gene_second_dataset = 22283
-    # file_gene_second_dataset_name = "GSE3494_GPL96.csv"
+    # default row_to_read_file_second_dataset for "GSE3494_GPL96.csv" = 22283
     file_gene_second_dataset = pd.read_csv(file_gene_second_dataset_name, nrows = row_to_read_file_gene_second_dataset) 
 
-    # file_output_second_dataset_name = "mapping_sample_to_class_gse3494.csv"
+    # default file_output_second_dataset_name for "GSE3494_GPL96.csv" = "mapping_sample_to_class_gse3494.csv"
     file_output_second_dataset = pd.read_csv(file_output_second_dataset_name, usecols = ["GEO asscession number", "relapse (1=True)"])
 
     # get gene order id with its name
@@ -244,9 +240,6 @@ def main():
 
         check_valid, num_of_chunks = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
 
-        # # list to collect maximun AUC in each fold
-        # list_max_auc = []
-
         # variable to collect data from sfs
         feature_set = []
         feature_set_name = []
@@ -270,22 +263,14 @@ def main():
             for marker_evaluation_index in range(0, num_of_chunks):
                 if (chunk_list_relapse[marker_evaluation_index] is not feature_selection_relapse):
                     marker_evaluation_relapse.append(chunk_list_relapse[marker_evaluation_index])
-            # print("marker_evaluation_relapse size = " + str(len(marker_evaluation_relapse)))
-            # print("marker_evaluation_relapse = " + str(marker_evaluation_relapse))
-            # print()
 
             # for class "non-relapse"
             marker_evaluation_no_relapse = []
             for marker_evaluation_index in range(0, num_of_chunks):
                 if (chunk_list_no_relapse[marker_evaluation_index] is not feature_selection_no_relapse):
                     marker_evaluation_no_relapse.append(chunk_list_no_relapse[marker_evaluation_index])
-            # print("marker_evaluation_no_relapse size : " + str(len(marker_evaluation_no_relapse)))
-            # print("marker_evaluation_no_relapse : " + str(marker_evaluation_no_relapse))    
-            # print()
 
             # merge all samples in the same class
-            # print("\n#### merge all samples in the same class to be used later ####")
-
             # for class "relapse"
             list_sample_relapse_marker_evaluation = []
             for i in range(0, len(marker_evaluation_relapse)):
@@ -335,8 +320,6 @@ def main():
             ranked_gene = []
             for i in range(0, len(ttest_result)):
                 gene_order_id = ttest_result[i][0]
-                # print(gene_order_id)
-                # print(list_gene_name[gene_order_id][1])
                 ranked_gene.append(list_gene_name_first_dataset[gene_order_id][1])
             
             # show top ranked feature
@@ -403,8 +386,6 @@ def main():
                 list_each_sample = []
                 for element in top_n_test_sorted.iloc[column]:
                     list_each_sample.append(element)
-                    # list_each_sample = list(np.transpose(list_each_sample))
-                    # print(list_each_sample)
                 list_feature_selection_top_n_test_sorted.append(list_each_sample)
             list_feature_selection_top_n_test_sorted = list(np.transpose(list_feature_selection_top_n_test_sorted))
 
@@ -464,7 +445,6 @@ def main():
                                 if (element_id in gene_order_test):
                                     list_each_sample.append(list_top_n_gene_relapse_sorted[sample_index][element_id])
                             input_relapse.append(list_each_sample)
-                        # print(input_relapse)
 
                         input_no_relapse = []
                         for sample_index in range(0, len(list_top_n_gene_no_relapse_sorted)):
@@ -473,7 +453,6 @@ def main():
                                 if (element_id in gene_order_test):
                                     list_each_sample.append(list_top_n_gene_no_relapse_sorted[sample_index][element_id])
                             input_no_relapse.append(list_each_sample)
-                        # print(input_no_relapse)
 
                         input_testing_data = []
                         for sample_index in range(0, len(list_feature_selection_top_n_test_sorted)):
@@ -482,13 +461,8 @@ def main():
                                 if (element_id in gene_order_test):
                                     list_each_sample.append(list_feature_selection_top_n_test_sorted[sample_index][element_id])
                             input_testing_data.append(list_each_sample)
-                        # print(input_testing_data)
+
                         list_actual_output = calculate.lda(input_testing_data, input_relapse, input_no_relapse)
-                        # print("actual output : " + str(list_actual_output))
-                        # print(len(list_actual_output))
-                        # print("desired output : " + str(second_layer_test_output))
-                        # print("desired output : " + str(list_desired_output))
-                        # print(len(list_desired_output))
 
                         # calculate AUC score
                         auc_score = roc_auc_score(list_desired_output_feature_selection, list_actual_output)
@@ -497,22 +471,21 @@ def main():
                         if (auc_score > max_auc_score):
                             max_auc_score = auc_score
                             gene_index_in_list = i
-                            # print(max_auc_score)
+
                             if max_auc_score not in list_auc:
                                 list_auc.append(max_auc_score)
+
                     # do not add gene that already exists in a feature
                     if (gene_index_in_list not in gene_order):
                         gene_order.extend([gene_index_in_list])                       
                     count_iteration += 1  
-
-            # list_max_auc.append(max(list_auc))        
+   
             gene_order.sort()      
 
             # get gene_name
             gene_order_name = []
             for element in gene_order:
                 gene_order_name.append(top_n_genes_name[element])
-            # print("feature : " + str(gene_order_name))
 
             # copy required data to be used in evaluation
             top_n_genes_name_for_eval = deepcopy(top_n_genes_name)
@@ -565,21 +538,18 @@ def main():
                 for chunk_train_relapse_index in range(0, num_of_chunks_cv):
                     if (chunk_list_relapse_cv[chunk_train_relapse_index] is not chunk_test_relapse):
                         chunk_train_relapse.append(chunk_list_relapse_cv[chunk_train_relapse_index])
-                # print("chunk train relapse size = " + str(len(chunk_train_relapse)))
 
                 # for class "non-relapse"
                 chunk_train_no_relapse = []
                 for chunk_train_no_relapse_index in range(0, num_of_chunks_cv):
                     if (chunk_list_no_relapse_cv[chunk_train_no_relapse_index] is not chunk_test_no_relapse):
                         chunk_train_no_relapse.append(chunk_list_no_relapse_cv[chunk_train_no_relapse_index])
-                # print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
 
                 # merge training data of each class
                 # for class "relapse"
                 list_train_relapse = []
                 for i in range(0, len(chunk_train_relapse)):
                     list_train_relapse.extend(chunk_train_relapse[i])
-                # print("size of list_train_relapse : " + str(len(list_train_relapse)))
                 print(" Samples in class relapse used as training set " + "(" + str(len(list_train_relapse)) + " samples) : ")
                 print(list_train_relapse)
                 print()
@@ -588,7 +558,6 @@ def main():
                 list_train_no_relapse = []
                 for i in range(0, len(chunk_train_no_relapse)):
                     list_train_no_relapse.extend(chunk_train_no_relapse[i])
-                # print("size of list_train_no_relapse : " + str(len(list_train_no_relapse)))
                 print(" Samplse in class non-relapse used as training set (" + str(len(list_train_no_relapse)) + " samples) : ")
                 print(list_train_no_relapse)
                 print()
@@ -645,8 +614,6 @@ def main():
                     list_each_sample = []
                     for element in top_n_test_sorted_for_eval.iloc[column]:
                         list_each_sample.append(element)
-                        # list_each_sample = list(np.transpose(list_each_sample))
-                        # print(list_each_sample)
                     list_top_n_test_sorted.append(list_each_sample)
                 list_top_n_test_sorted = list(np.transpose(list_top_n_test_sorted)) 
 
