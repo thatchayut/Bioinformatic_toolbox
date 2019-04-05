@@ -55,7 +55,7 @@ def main():
 
     print(" # Enter required information about the first dataset ")
     print(" 1. Enter name of the file containing mapping between probes IDs and samples ")
-    file_training_input_name = add_ons.checkFileValid()
+    file_training_input_name = add_ons.getFile()
     print()
 
     print(" 2. Enter number of rows of this file to be read ")
@@ -71,16 +71,16 @@ def main():
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class")
-    file_training_output_name = add_ons.checkFileValid()
+    file_training_output_name = add_ons.getFile()
     print()
 
     print(" # Enter required information about files related to pathway mapping")
     print(" 1. Enter name of a file containing mapping between gene probe IDs and gene entrez IDs")
-    file_ref_name = add_ons.checkFileValid()
+    file_ref_name = add_ons.getFile()
     print()
 
     print(" 2. Enter name of a file containing pathways and their member genes")
-    file_pathway_name = add_ons.checkFileValid()
+    file_pathway_name = add_ons.getFile()
     print()
 
     print(" 3. Enter number of rows of the file contaning pathways and their member genes")
@@ -185,11 +185,14 @@ def main():
     file_name = input(" # Enter name of an output file : ")
 
     # prepare text file for results to be written in
-    result_file = open(str(file_name) + ".txt", "w+")
+    result_file = open("./result/" +str(file_name) + ".txt", "w+")
 
     # record datasets
     result_file.write("Dataset : " + str(file_training_input_name) + "\n")
     result_file.write("Pathway reference : " + str(file_pathway_name) + "\n")
+    result_file.write("Number of epochs : " + str(num_of_epochs) + "\n")
+    result_file.write("Number of folds : " + str(num_of_folds) + "\n")
+    result_file.write("Number of pathways to be used as feature set (%) : " + str(num_of_pathways_percentage) + "\n")
     result_file.write("\n")
 
     # calculate number of pathways to be used
@@ -291,7 +294,10 @@ def main():
     # list used to collect average auc score of each epoch
     list_avg_auc_each_epoch = []
 
-    print("Process : Conducting cross-validation ...")
+    # list to collect feature counter
+    list_feature_counter = []
+
+    print("Process : Cross-validation ...")
     print()
     for epoch_count in range(0, num_of_epochs):
         start_epoch_time = time.time()
@@ -741,6 +747,44 @@ def main():
                     print(" AUC score from feature selection : " + str(auc_score_feature_selection))
                     print()
 
+                # count feature frequence
+                for feature_index in range(0, len(feature_set_name)):
+                    # if list feature counter is empty
+                    if not list_feature_counter:
+                        feature_counter = []
+                        feature_name = feature_set_name[feature_index]
+                        feature_frequency = 1
+
+                        feature_counter.append(feature_name)
+                        feature_counter.append(feature_frequency)
+
+                        list_feature_counter.append(feature_counter)
+                    else:
+                        feature_name = feature_set_name[feature_index]
+
+                        # check if this feature exist in the feature counter list
+                        check_found = False
+                        for feature_counter_index in range(0, len(list_feature_counter)):
+                            feature_counter_name = list_feature_counter[feature_counter_index][0]
+
+                            if (feature_name == feature_counter_name):
+                                feature_frequency = list_feature_counter[feature_counter_index][1]
+                                feature_frequency += 1
+
+                                list_feature_counter[feature_counter_index][1] = feature_frequency
+                                check_found = True
+                        
+                        # if this feature is not exist in a list feature counter
+                        if (check_found == False):
+                            feature_counter = []
+                            feature_name = feature_set_name[feature_index]
+                            feature_frequency = 1
+
+                            feature_counter.append(feature_name)
+                            feature_counter.append(feature_frequency)
+
+                            list_feature_counter.append(feature_counter)
+
                 # preparing data for evaluation and creating classifier
                 # prepare data for testing
                 # for classifier class 'relapse'
@@ -938,6 +982,36 @@ def main():
     print(" Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch))
 
     result_file.write("\nAverage AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch) + "\n")
+    result_file.write("\n")
+
+    # rank feature frequency
+    if (len(list_feature_counter) < 10):
+        num_of_top_frequent_pathway = len(list_feature_counter)
+    else:
+        # default number of features to be shown is 10
+        num_of_top_frequent_pathway = 10
+    
+    # rank pathway frequency in descending order
+    list_feature_counter.sort(key=lambda x: x[1], reverse=True)
+
+    # add top pathways to a list to be shown
+    list_top_pathway_frequency = []
+    for top_pathway_index in range(0, num_of_top_frequent_pathway):
+        list_top_pathway_frequency.append(list_feature_counter[top_pathway_index])
+    
+    print()
+    print(" Feature frequency : ")
+    result_file.write("\n")
+    result_file.write("Feature frequency :\n")
+    for index in range(0, len(list_top_pathway_frequency)):
+        feature_name = list_top_pathway_frequency[index][0]
+        feature_frequency = list_top_pathway_frequency[index][1]
+
+        print(" " + str(index + 1) + ". " + str(feature_name) + " : " + str(feature_frequency))
+        result_file.write(str(index + 1) + ". " + str(feature_name) + " : " + str(feature_frequency) + "\n")
+
+    print()
+    result_file.write("\n")
 
     print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
     result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
