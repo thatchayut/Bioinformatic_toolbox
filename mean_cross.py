@@ -124,31 +124,23 @@ def main():
 
     # prepare data
     # for 1st dataset
-    # default row_to_read_file_gene_first_dataset = 22283
-    # row_to_read_file_gene_first_dataset = 22283
-    # file_gene_first_dataset_name = "GSE2034-22071 (edited).csv"
+    # default row_to_read_file_gene_first_dataset for "GSE2034-22071 (edited).csv"= 22283
     file_gene_first_dataset = pd.read_csv(file_gene_first_dataset_name, nrows = row_to_read_file_gene_first_dataset)
 
     # file_output_first_dataset_name = "mapping_sample_to_class_gse2034.csv"
     file_output_first_dataset = pd.read_csv(file_output_first_dataset_name, usecols = ['GEO asscession number', 'relapse (1=True)'])
 
     # for 2nd dataset
-    # default row_to_read_file_second_dataset = 22283
-    # row_to_read_file_gene_second_dataset = 22283
-    # file_gene_second_dataset_name = "GSE3494_GPL96.csv"
+    # default row_to_read_file_second_dataset for "GSE3494_GPL96.csv" = 22283
     file_gene_second_dataset = pd.read_csv(file_gene_second_dataset_name, nrows = row_to_read_file_gene_second_dataset) 
 
     # file_output_second_dataset_name = "mapping_sample_to_class_gse3494.csv"
     file_output_second_dataset = pd.read_csv(file_output_second_dataset_name, usecols = ["GEO asscession number", "relapse (1=True)"])
 
     # files to be used to get pathways and their gene expression
-    # default rows_to_read_file_pathway = 1329
-    # rows_to_read_file_pathway = 1329
-    # file_ref_name = "accession_number_to_entrez_id.csv"
-    # file_to_convert_name = "GSE2034-22071 (edited).csv"
+    # default rows_to_read_file_pathway for "c2.cp.v6.2.entrez.gmt.csv"= 1329
     file_to_convert_first_dataset_name = file_gene_first_dataset_name
     file_to_convert_second_dataset_name = file_gene_second_dataset_name
-    # file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
     file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
     # get gene order id with its name
@@ -409,9 +401,6 @@ def main():
         list_feature_set_max_auc = []
         list_auc_score = []
 
-        # # list to collect maximun AUC in each fold
-        # list_max_auc = []
-
         # variable to collect data from sfs
         feature_set_name = None
         auc_score_feature_selection = None
@@ -432,22 +421,14 @@ def main():
             for marker_evaluation_index in range(0, num_of_chunks):
                 if (chunk_list_relapse[marker_evaluation_index] is not feature_selection_relapse):
                     marker_evaluation_relapse.append(chunk_list_relapse[marker_evaluation_index])
-            # print("marker_evaluation_relapse size = " + str(len(marker_evaluation_relapse)))
-            # print("marker_evaluation_relapse = " + str(marker_evaluation_relapse))
-            # print()
 
             # for class "non-relapse"
             marker_evaluation_no_relapse = []
             for marker_evaluation_index in range(0, num_of_chunks):
                 if (chunk_list_no_relapse[marker_evaluation_index] is not feature_selection_no_relapse):
                     marker_evaluation_no_relapse.append(chunk_list_no_relapse[marker_evaluation_index])
-            # print("marker_evaluation_no_relapse size : " + str(len(marker_evaluation_no_relapse)))
-            # print("marker_evaluation_no_relapse : " + str(marker_evaluation_no_relapse))    
-            # print()
 
             # merge all samples in the same class
-            # print("\n#### merge all samples in the same class to be used later ####")
-
             # for class "relapse"
             list_sample_relapse_marker_evaluation = []
             for i in range(0, len(marker_evaluation_relapse)):
@@ -476,7 +457,6 @@ def main():
             print(" Samples in class non-relapse used as marker evaluation set : " + str(list_sample_no_relapse_marker_evaluation_name) + "\n")
             
             # prepare file used to calculate t-score of each gene
-            # row_to_read_file_cal_gene_tscore = 22283
             file_to_cal_gene_tscore_name = file_gene_first_dataset_name
             row_to_read_file_cal_gene_tscore = row_to_read_file_gene_first_dataset
 
@@ -556,7 +536,6 @@ def main():
                 gene_expression_no_relapse = list_gene_expression_no_relapse_first_dataset[gene_index]
 
                 tscore = stats.ttest_ind(gene_expression_relapse, gene_expression_no_relapse, equal_var = False)[0]
-                # tscore = math.fabs(stats.ttest_ind(gene_expression_relapse, gene_expression_no_relapse, equal_var = False)[0]
 
                 gene_tscore.append(gene_name)
                 gene_tscore.append(tscore)
@@ -568,7 +547,6 @@ def main():
             # create pathways with their activity score
             # prepare files to be used
             file_ref = pd.read_csv(file_ref_name)
-            # For the last version, 'nrows' in file_to_convert has to be removed
             file_to_convert = pd.read_csv(file_to_convert_first_dataset_name)
             file_pathway = pd.read_csv(file_pathway_name, nrows = rows_to_read_file_pathway)
 
@@ -789,14 +767,6 @@ def main():
             # find feature set using sequential forward selection
             feature_set_name, auc_score_feature_selection = calculate.sfsAdvance(list_top_rank_pathway_name, list_desired_outputs_feature_selection, list_sample_relapse_pathway_activity_marker_evaluation_set, \
                         list_sample_no_relapse_pathway_activity_marker_evaluation_set, list_sample_all_pathway_activity_feature_selection_set)
-            
-            # # list to collect auc score for the feature in each fold
-            # list_max_auc.append(auc_score_feature_selection)
-
-            # print("feature_set_name : " + str(feature_set_name))
-            # print("auc_score_feature_selection : " + str(auc_score_feature_selection))
-            # print()
-
         
         # conducting cross-validation on the second dataset
         # prepare data for cross-validation
@@ -829,7 +799,6 @@ def main():
         print(" Number of chunks in class non-relapse : " + str(len(chunk_list_no_relapse_cv)) + "\n")
 
         check_valid_cv, num_of_chunks_cv = calculate.checkEqualListSize(chunk_list_relapse_cv, chunk_list_no_relapse_cv)
-        # print("num_of_chunks_cv : "  +str(num_of_chunks_cv))
 
         # create samples with their pathways and member genes
         # for class "relapse"
@@ -951,21 +920,18 @@ def main():
                 for chunk_train_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_relapse_cv[chunk_train_relapse_index] is not chunk_test_relapse):
                         chunk_train_relapse.append(chunk_list_relapse_cv[chunk_train_relapse_index])
-                # print("chunk train relapse size = " + str(len(chunk_train_relapse)))
 
                 # for class "non-relapse"
                 chunk_train_no_relapse = []
                 for chunk_train_no_relapse_index in range(0, num_of_chunks):
                     if (chunk_list_no_relapse_cv[chunk_train_no_relapse_index] is not chunk_test_no_relapse):
                         chunk_train_no_relapse.append(chunk_list_no_relapse_cv[chunk_train_no_relapse_index])
-                # print("chunk train no relapse size = " + str(len(chunk_train_no_relapse)))
 
                 # merge training data of each class
                 # for class "relapse"
                 list_train_relapse = []
                 for i in range(0, len(chunk_train_relapse)):
                     list_train_relapse.extend(chunk_train_relapse[i])
-                # print("size of list_train_relapse : " + str(len(list_train_relapse)))
                 print(" Samples in class relapse used as training set : ")
                 print(list_train_relapse)
                 print()
@@ -974,7 +940,6 @@ def main():
                 list_train_no_relapse = []
                 for i in range(0, len(chunk_train_no_relapse)):
                     list_train_no_relapse.extend(chunk_train_no_relapse[i])
-                # print("size of list_train_no_relapse : " + str(len(list_train_no_relapse)))
                 print(" Samples in class non-relapse used as training set : ")
                 print(list_train_no_relapse)
                 print()
@@ -1009,9 +974,6 @@ def main():
 
                             if (pathway_name == feature_set_name[feature_index]):
                                 pathway_activity = samples_no_relapse_pathway_activity_second_dataset[sample_index_in_list][1][pathway_index][1]
-                                # pathway.append(pathway_name)
-                                # pathway.append(pathway_activity)
-
                                 list_pathway_activity.append(pathway_activity)
                     list_classifier_no_relapse_pathway_expression.append(list_pathway_activity)
                 
@@ -1148,9 +1110,6 @@ def main():
         print(" Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
 
         result_file.write("\n#### Summary ####\n")
-
-        # result_file.write("Maximum AUC ROC score of feature in each fold = " + str(list_max_auc) + "\n")
-
         result_file.write("Average AUC score : " + str(calculate.mean(list_auc_score)) + "\n")
         result_file.write("Maximum AUC score : " + str(auc_score_max) + "\n")
         result_file.write("Feature set which gives highest AUC score : " + "\n")
@@ -1159,7 +1118,6 @@ def main():
         result_file.write("Number of features in feature set : ")
         result_file.write(str(len(list_feature_set_max_auc)))
         result_file.write("\n")
-        # result_file.write("Average absolute t-score : " + str(calculate.mean(list_avg_abs_tscore_each_fold)) + "\n")
         result_file.write("Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
         result_file.write("\n")
 
@@ -1174,13 +1132,10 @@ def main():
 
     # calculate mean over all epoch
     mean_auc_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
-    # mean_avg_abs_tscore_over_all_epoch = calculate.mean(list_avg_abs_tscore_each_epoch)
 
     print(" Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch))
-    # print("Average absolute t-score score over " + str(num_of_epochs) + " epoch : " + str(mean_avg_abs_tscore_over_all_epoch))
 
     result_file.write("\nAverage AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch) + "\n")
-    # result_file.write("Average absolute t-score score over " + str(num_of_epochs) + " epoch : " + str(mean_avg_abs_tscore_over_all_epoch) + "\n")
 
     print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
     result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")

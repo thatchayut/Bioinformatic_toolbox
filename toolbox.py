@@ -9,10 +9,23 @@ import llr_cross
 
 def main():
     print("########################################################################################################################")
+    print("########################################                                 ###############################################")
+    print("######################################   TOOLBOX FOR BIOINFORMATIC TOOLS   #############################################")
+    print("########################################                                 ###############################################")
+    print("########################################################################################################################")
     print("#                                                                                                                      #")
+    print("# This toolbox includes 4 classification methods including                                                             #")
+    print("#    [1] Gene-Based Classification                                                                                     #")
+    print("#    [2] Pathway-Based Classification Based on                                                                         #")
+    print("#        [2.1] Mean                                                                                                    #")
+    print("#        [2.2] Condition-Responsive Genes (CORGs)                                                                      #")
+    print("#        [2.3] Log-Likelihood Ratio                                                                                    #")
     print("#                                                                                                                      #")
+    print("# Each of these methods is divided into 2 types of the experiment which are                                            #")
+    print("#    [1] Within Dataset Experiment                                                                                     #")
+    print("#    [2] Cross-Dataset Experiment                                                                                      #")
     print("#                                                                                                                      #")
-    print("#                                                                                                                      #")
+    print("# All files provided to this toolbox must strictly follow the format shown in file_format.pdf.                         #")
     print("#                                                                                                                      #")
     print("########################################################################################################################")
     print()
@@ -25,7 +38,7 @@ def main():
         if (method_number in list_available_method_number):
             break
         else:
-            print(" WARNING : Available choices are " + str(list_available_method_number[0] + " to " + str(list_available_method_number[len(list_available_method_number) - 1]) + "."))
+            print(" WARNING : Available choices are from " + str(list_available_method_number[0] + " to " + str(list_available_method_number[len(list_available_method_number) - 1]) + "."))
     
     print()
     print(" 2. Select Type of Experiment [1] Within Dataset Experiment [2] Cross-Dataset Experiment")
@@ -36,7 +49,7 @@ def main():
         if (experiment_number in list_available_experiment_number):
             break
         else:
-            print(" WARNING : Available choices are " + str(list_available_experiment_number[0] + " to " + str(list_available_experiment_number[len(list_available_experiment_number) - 1]) + "."))
+            print(" WARNING : Available choices are from " + str(list_available_experiment_number[0] + " to " + str(list_available_experiment_number[len(list_available_experiment_number) - 1]) + "."))
 
     if (method_number == "1"):
         if (experiment_number == "1"):

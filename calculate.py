@@ -173,9 +173,6 @@ def lda(list_all_input, list_part_1, list_part_2):
 
     return actual_output
 
-# Old version
-# def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, mean_of_data = 0, sd_of_data= 0, \
-#                 max_of_data = 0, min_of_data = 0, method = "z_score"):
 # function to create pathway of a given sample
 def getPathway(file_ref_name, file_to_convert_name, file_pathway_name, sample_id, rows_to_read_file_pathway, list_mean_sd_gene_expression_by_probe_id = None, normalize = True):
 
@@ -371,12 +368,6 @@ def sd(list_input):
     return sd_of_list
 
 def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_relapse, samples_test):
-    # print("list_pathway_name size : " + str(len(list_pathway_name)))
-    # print("list_desired_output : " + str(len(list_desired_output)))
-    # print("samples_relapse size : " + str(len(samples_relapse)))
-    # print("samples_no_relapse size : " + str(len(samples_no_relapse)))
-    # print("samples_test size : " + str(len(samples_test)))
-    # print("\n")
 
     check_finish = False
     check_improve_auc = True
@@ -449,19 +440,19 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
                     # print("input_test_to_test : " + str(len(input_test_to_test)))
                     
                     list_actual_output = lda(input_test_to_test, input_relapse_to_test, input_no_relapse_to_test)
-                    print(" Number of actual outputs : " +str(len(list_actual_output)))
-                    print(" Number of desired outputs : " + str(len(list_desired_output)))
+                    # print(" Number of actual outputs : " +str(len(list_actual_output)))
+                    # print(" Number of desired outputs : " + str(len(list_desired_output)))
                     auc_score = roc_auc_score(list_desired_output, list_actual_output)
                     
-                    print(" List of actual outputs : " + str(list_actual_output))
-                    print(" List of desired outputs : " + str(list_desired_output))
-                    print(" AUC score : " + str(auc_score))
+                    # print(" List of actual outputs : " + str(list_actual_output))
+                    # print(" List of desired outputs : " + str(list_desired_output))
+                    # print(" AUC score : " + str(auc_score))
 
                     if (auc_score >= max_auc_in_consider):
                         max_auc_in_consider = auc_score
                         list_pathway = deepcopy(list_pathway_to_consider)
-                    print(" List of pathways to be considered : " + str(list_pathway_to_consider))
-                    print(" Max AUC score of the list of pathways to be considered : " + str(max_auc_in_consider))
+                    # print(" List of pathways to be considered : " + str(list_pathway_to_consider))
+                    # print(" Max AUC score of the list of pathways to be considered : " + str(max_auc_in_consider))
 
             if (max_auc_in_consider >= max_auc_score_over_all_features):
                 max_auc_score_over_all_features = max_auc_in_consider
@@ -485,12 +476,6 @@ def sfs(list_pathway_name, list_desired_output, samples_relapse, samples_no_rela
 
 def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, samples_no_relapse_input, samples_test_input, \
     top_rank = None, top_rank_percent = None):
-    # print("list_pathway_name size : " + str(len(list_pathway_name)))
-    # print("list_desired_output : " + str(len(list_desired_output)))
-    # print("samples_relapse_input size : " + str(len(samples_relapse_input)))
-    # print("samples_no_relapse_input size : " + str(len(samples_no_relapse_input)))
-    # print("samples_test_input size : " + str(len(samples_test_input)))
-    # print("\n")
 
     # sort pathways in each sample based on list_pathway_name
     # for class 'relapse'
@@ -585,10 +570,7 @@ def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, sa
             for pathway_index in range(0, num_of_pathways):
                 list_pathway_to_consider = deepcopy(list_pathway_selected)
                 
-                # original 
                 if (pathway_index not in list_pathway_selected):
-                # last_index_in_list_pathway_to_consider = len(list_pathway_selected) - 1
-                # if (pathway_index not in list_pathway_selected) and (pathway_index > list_pathway_selected[last_index_in_list_pathway_to_consider]):
                     list_pathway_to_consider.extend([pathway_index])
 
                     input_relapse_to_test = []
@@ -625,9 +607,9 @@ def sfsAdvance(list_pathway_name, list_desired_output, samples_relapse_input, sa
 
                     auc_score = roc_auc_score(list_desired_output, list_actual_output)
                     
-                    print(" List of actual outputs : " + str(list_actual_output))
-                    print(" List of desired outputs : " + str(list_desired_output))
-                    print(" AUC score : " + str(auc_score))
+                    # print(" List of actual outputs : " + str(list_actual_output))
+                    # print(" List of desired outputs : " + str(list_desired_output))
+                    # print(" AUC score : " + str(auc_score))
 
                     if (auc_score >= max_auc_in_consider):
                         max_auc_in_consider = auc_score
