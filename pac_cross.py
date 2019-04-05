@@ -223,6 +223,9 @@ def main():
     # list used to collect average auc score of each epoch
     list_avg_auc_each_epoch = []
 
+    # list to collect feature counter
+    list_feature_counter = []
+
     for epoch_count in range(0, num_of_epochs):
         start_epoch_time = time.time()
 
@@ -947,6 +950,83 @@ def main():
             result_file.write("\n")
             result_file.write("AUC score from feature selection : " + str(auc_score_feature_selection))
             result_file.write("\n")
+        
+        # record feature frequency only when number of epochs is more than 1
+        # (the feature selection is conducted once per epoch)
+        if (num_of_epochs > 1):
+            # count feature frequence
+            for feature_index in range(0, len(feature_set_name)):
+                # if list feature counter is empty
+                if not list_feature_counter:
+                    feature_counter = []
+                    feature_name = feature_set_name[feature_index]
+                    feature_frequency = 1
+
+                    feature_counter.append(feature_name)
+                    feature_counter.append(feature_frequency)
+
+                    feature_corg = None
+                    # get corg of this feature 
+                    # get index of this pathway in relation to th order of pathway in an input file
+                    # for feature_index in range(0, len(feature_set_name)):
+                    for pathway_index in range(0, len(list_pathway_name)):
+                        # feature = feature_set_name[feature_index]
+                        pathway = list_pathway_name[pathway_index][1]
+
+                        # map index of members in feature set to index of CORG 
+                        if (feature_name == pathway):
+                            index_feature_in_list_pathway = list_pathway_name[pathway_index][0]
+                            # list_index_feature_set_this_pathway.append(index_feature_in_list_pathway)
+                            corg_this_feature = list_corg_all_pathway[index_feature_in_list_pathway]
+
+                            feature_corg = corg_this_feature
+
+                    feature_counter.append(feature_corg)
+
+                    list_feature_counter.append(feature_counter)
+                else:
+                    feature_name = feature_set_name[feature_index]
+
+                    # check if this feature exist in the feature counter list
+                    check_found = False
+                    for feature_counter_index in range(0, len(list_feature_counter)):
+                        feature_counter_name = list_feature_counter[feature_counter_index][0]
+
+                        if (feature_name == feature_counter_name):
+                            feature_frequency = list_feature_counter[feature_counter_index][1]
+                            feature_frequency += 1
+
+                            list_feature_counter[feature_counter_index][1] = feature_frequency
+                            check_found = True
+                    
+                    # if this feature is not exist in a list feature counter
+                    if (check_found == False):
+                        feature_counter = []
+                        feature_name = feature_set_name[feature_index]
+                        feature_frequency = 1
+
+                        feature_counter.append(feature_name)
+                        feature_counter.append(feature_frequency)
+
+                        feature_corg = None
+                        # get corg of this feature 
+                        # get index of this pathway in relation to th order of pathway in an input file
+                        # for feature_index in range(0, len(feature_set_name)):
+                        for pathway_index in range(0, len(list_pathway_name)):
+                            # feature = feature_set_name[feature_index]
+                            pathway = list_pathway_name[pathway_index][1]
+
+                            # map index of members in feature set to index of CORG 
+                            if (feature_name == pathway):
+                                index_feature_in_list_pathway = list_pathway_name[pathway_index][0]
+                                # list_index_feature_set_this_pathway.append(index_feature_in_list_pathway)
+                                corg_this_feature = list_corg_all_pathway[index_feature_in_list_pathway]
+
+                                feature_corg = corg_this_feature
+
+                        feature_counter.append(feature_corg)
+
+                        list_feature_counter.append(feature_counter)
 
         # conducting cross-validation on the second dataset
         # prepare data for cross-validation
@@ -1402,7 +1482,6 @@ def main():
                     list_corg_in_feature_set_max_auc = deepcopy(list_corg_feature_set)
                     auc_score_max = auc_score
                 
-                result_file.write("Feature set : " + str(feature_set_name) + "\n")
                 result_file.write("CORG of each feature in feature set : \n")
                 result_file.write(str(list_corg_feature_set) + "\n")
                 result_file.write("Number of features in feature set : " + str(len(feature_set_name)) + "\n")
@@ -1461,8 +1540,6 @@ def main():
         result_file.write("Time elapse : "  + str(time_elapse_epoch_minute) + " minutes (" + str(time_elapse_epoch_hour) + " hours) ")
         result_file.write("\n")
         result_file.write("\n")
-
-        print("----------------------------------------------------------------------------------------------------")
     
     end_time = time.time()
     total_elapse_time_second = end_time - start_time
@@ -1477,6 +1554,36 @@ def main():
     mean_over_all_epoch = calculate.mean(list_avg_auc_each_epoch)
     print(" Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_over_all_epoch))
     result_file.write("Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_over_all_epoch) + "\n")
+
+    if (num_of_epochs > 1):
+        # rank feature frequency
+        if (len(list_feature_counter) < 10):
+            num_of_top_frequent_pathway = len(list_feature_counter)
+        else:
+            # default number of features to be shown is 10
+            num_of_top_frequent_pathway = 10
+        
+        # rank pathway frequency in descending order
+        list_feature_counter.sort(key=lambda x: x[1], reverse=True)
+
+        # add top pathways to a list to be shown
+        list_top_pathway_frequency = []
+        for top_pathway_index in range(0, num_of_top_frequent_pathway):
+            list_top_pathway_frequency.append(list_feature_counter[top_pathway_index])
+        
+        print(" Feature frequency : ")
+        result_file.write("\n")
+        result_file.write("Feature frequency :\n")
+        for index in range(0, len(list_top_pathway_frequency)):
+            feature_name = list_top_pathway_frequency[index][0]
+            feature_frequency = list_top_pathway_frequency[index][1]
+            feature_corg = list_top_pathway_frequency[index][2]
+
+            print(" " + str(index + 1) + ". " + str(feature_name) + " (CORGs : " + str(feature_corg) + ") : " + str(feature_frequency))
+            result_file.write(str(index + 1) + ". " + str(feature_name) + " (CORGs : " + str(feature_corg) + ") : " + str(feature_frequency) + "\n")
+
+        print()
+        result_file.write("\n")
 
     print(" Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")
     result_file.write("Total elapse time : "  + str(total_elapse_time_minute) + " minutes (" + str(total_elapse_time_hour) + " hours) ")

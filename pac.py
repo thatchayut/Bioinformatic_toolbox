@@ -966,7 +966,7 @@ def main():
                     print()
                     result_file.write("Feature set : " + str(feature_set_name))
                     result_file.write("\n")
-                    result_file.write("AUC score of the feature set : " + str(auc_score_feature_selection))
+                    result_file.write("AUC score of the feature selection : " + str(auc_score_feature_selection))
                     result_file.write("\n")
                     print("\n-------------------------------------------------------------------------------------------------------------\n")
                 
@@ -980,6 +980,24 @@ def main():
 
                         feature_counter.append(feature_name)
                         feature_counter.append(feature_frequency)
+
+                        feature_corg = None
+                        # get corg of this feature 
+                        # get index of this pathway in relation to th order of pathway in an input file
+                        # for feature_index in range(0, len(feature_set_name)):
+                        for pathway_index in range(0, len(list_pathway_name)):
+                            # feature = feature_set_name[feature_index]
+                            pathway = list_pathway_name[pathway_index][1]
+
+                            # map index of members in feature set to index of CORG 
+                            if (feature_name == pathway):
+                                index_feature_in_list_pathway = list_pathway_name[pathway_index][0]
+                                # list_index_feature_set_this_pathway.append(index_feature_in_list_pathway)
+                                corg_this_feature = list_corg_all_pathway[index_feature_in_list_pathway]
+
+                                feature_corg = corg_this_feature
+
+                        feature_counter.append(feature_corg)
 
                         list_feature_counter.append(feature_counter)
                     else:
@@ -1005,6 +1023,24 @@ def main():
 
                             feature_counter.append(feature_name)
                             feature_counter.append(feature_frequency)
+
+                            feature_corg = None
+                            # get corg of this feature 
+                            # get index of this pathway in relation to th order of pathway in an input file
+                            # for feature_index in range(0, len(feature_set_name)):
+                            for pathway_index in range(0, len(list_pathway_name)):
+                                # feature = feature_set_name[feature_index]
+                                pathway = list_pathway_name[pathway_index][1]
+
+                                # map index of members in feature set to index of CORG 
+                                if (feature_name == pathway):
+                                    index_feature_in_list_pathway = list_pathway_name[pathway_index][0]
+                                    # list_index_feature_set_this_pathway.append(index_feature_in_list_pathway)
+                                    corg_this_feature = list_corg_all_pathway[index_feature_in_list_pathway]
+
+                                    feature_corg = corg_this_feature
+
+                            feature_counter.append(feature_corg)
 
                             list_feature_counter.append(feature_counter)
 
@@ -1275,13 +1311,12 @@ def main():
                 print(" AUC score from feature selection : " + str(auc_score_feature_selection))
                 print(" AUC score from testing : " + str(auc_score))
 
-                 # track feature set which gives maximum auc score
+                # track feature set which gives maximum auc score
                 if (auc_score > auc_score_max):
                     list_feature_set_max_auc = deepcopy(feature_set_name)
                     list_corg_in_feature_set_max_auc = deepcopy(list_corg_feature_set)
                     auc_score_max = auc_score
                 
-                result_file.write("Feature set : " + str(feature_set_name) + "\n")
                 result_file.write("CORG of each feature in feature set : \n")
                 result_file.write(str(list_corg_feature_set) + "\n")
                 result_file.write("Number of features in feature set : " + str(len(feature_set_name)) + "\n")
@@ -1381,9 +1416,10 @@ def main():
     for index in range(0, len(list_top_pathway_frequency)):
         feature_name = list_top_pathway_frequency[index][0]
         feature_frequency = list_top_pathway_frequency[index][1]
+        feature_corg = list_top_pathway_frequency[index][2]
 
-        print(" " + str(index + 1) + ". " + str(feature_name) + " : " + str(feature_frequency))
-        result_file.write(str(index + 1) + ". " + str(feature_name) + " : " + str(feature_frequency) + "\n")
+        print(" " + str(index + 1) + ". " + str(feature_name) + " (CORGs : " + str(feature_corg) + ") : " + str(feature_frequency))
+        result_file.write(str(index + 1) + ". " + str(feature_name) + " (CORGs : " + str(feature_corg) + ") : " + str(feature_frequency) + "\n")
 
     print()
     result_file.write("\n")

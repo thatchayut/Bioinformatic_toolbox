@@ -982,6 +982,7 @@ def main():
     print(" Average AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch))
 
     result_file.write("\nAverage AUC score over " + str(num_of_epochs) + " epoch : " + str(mean_auc_over_all_epoch) + "\n")
+    result_file.write("\n")
 
     # rank feature frequency
     if (len(list_feature_counter) < 10):
