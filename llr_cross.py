@@ -59,7 +59,7 @@ def main():
 
     print(" # Enter required information about the first dataset ")
     print(" 1. Enter name of the file containing mapping between probes IDs and samples of the first dataset ")
-    file_gene_first_dataset_name = add_ons.checkFileValid()
+    file_gene_first_dataset_name = add_ons.getFile()
     print()
 
     print(" 2. Enter number of rows of this file to be read ")
@@ -75,12 +75,12 @@ def main():
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class of the first dataset")
-    file_output_first_dataset_name = add_ons.checkFileValid()
+    file_output_first_dataset_name = add_ons.getFile()
     print()
 
     print(" # Enter required information about the second dataset ")
     print(" 1. Enter name of the file containing mapping between probes IDs and samples of the second dataset ")
-    file_gene_second_dataset_name = add_ons.checkFileValid()
+    file_gene_second_dataset_name = add_ons.getFile()
     print()
 
     print(" 2. Enter number of rows of this file to be read ")
@@ -96,16 +96,16 @@ def main():
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class of the second dataset")
-    file_output_second_dataset_name = add_ons.checkFileValid()
+    file_output_second_dataset_name = add_ons.getFile()
     print()
 
     print(" # Enter required information about files related to pathway mapping")
     print(" 1. Enter name of a file containing mapping between gene probe IDs and gene entrez IDs")
-    file_ref_name = add_ons.checkFileValid()
+    file_ref_name = add_ons.getFile()
     print()
 
     print(" 2. Enter name of a file containing pathways and their member genes")
-    file_pathway_name = add_ons.checkFileValid()
+    file_pathway_name = add_ons.getFile()
     print()
 
     print(" 3. Enter number of rows of the file contaning pathways and their member genes")

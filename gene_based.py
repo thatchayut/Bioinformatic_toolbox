@@ -48,7 +48,7 @@ def main():
 
     print(" # Enter required information about the first dataset ")
     print(" 1. Enter name of a file containing mapping between probes IDs and samples ")
-    file_training_input_name = add_ons.checkFileValid()
+    file_training_input_name = add_ons.getFile()
     print()
 
     print(" 2. Enter number of rows of this file to be read ")
@@ -64,7 +64,7 @@ def main():
     print()
 
     print(" 3. Enter name of a file containing mapping between samples and their class")
-    file_training_output_name = add_ons.checkFileValid()
+    file_training_output_name = add_ons.getFile()
     print()
 
     # prepare data
@@ -713,13 +713,13 @@ def main():
     
     print(" Feature frequency : ")
     result_file.write("\n")
-    result_file.write("Feature frequency :")
+    result_file.write("Feature frequency :\n")
     for index in range(0, len(list_top_pathway_frequency)):
         feature_name = list_top_pathway_frequency[index][0]
         feature_frequency = list_top_pathway_frequency[index][1]
 
-        print(" " + str(index + 1) + " " + str(feature_name) + " : " + str(feature_frequency))
-        result_file.write(str(index + 1)  + str(feature_name) + " : " + str(feature_frequency) + "\n")
+        print(" " + str(index + 1) + ". " + str(feature_name) + " : " + str(feature_frequency))
+        result_file.write(str(index + 1) + ". " + str(feature_name) + " : " + str(feature_frequency) + "\n")
 
     print()
     result_file.write("\n")

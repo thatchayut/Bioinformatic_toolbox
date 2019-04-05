@@ -84,7 +84,8 @@ Time Elapse : 3.52 minutes (0.06 hours)
 
 Average AUC score over 2 epoch : 0.495904
 
-Feature frequency :1211779_x_at : 3
+Feature frequency :
+1211779_x_at : 3
 2209862_s_at : 2
 3221651_x_at : 2
 4217485_x_at : 2
