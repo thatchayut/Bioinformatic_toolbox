@@ -337,7 +337,7 @@ def main():
         for element_index in range(0, len(list_sample_relapse_first_dataset)):
             print()
             print(" Creating pathways for sample " + str(element_index + 1) + " relapse is in progress ...")
-            print(str(len(list_sample_relapse_first_dataset) - (element_index + 1)) + " samples left")
+            print(" " + str(len(list_sample_relapse_first_dataset) - (element_index + 1)) + " samples left")
             print()
 
             sample = []
@@ -354,7 +354,7 @@ def main():
         for element_index in range(0, len(list_sample_no_relapse_first_dataset)):
             print()
             print(" Creating pathways for sample " + str(element_index + 1) + " non-relapse is in progress ...")
-            print(str(len(list_sample_no_relapse_first_dataset) - (element_index + 1)) + " samples left")
+            print(" " + str(len(list_sample_no_relapse_first_dataset) - (element_index + 1)) + " samples left")
             print()
 
             sample = []

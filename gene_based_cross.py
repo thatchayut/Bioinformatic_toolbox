@@ -568,7 +568,7 @@ def main():
                 col_to_read_relapse_for_eval.extend(list_train_relapse)
                 file_training_input_relapse_for_eval = pd.read_csv(file_gene_second_dataset_name, nrows = row_to_read_file_gene_second_dataset, usecols = col_to_read_relapse_for_eval)
                 
-                top_n_genes_relapse_for_eval = file_training_input_relapse.loc[file_training_input_relapse['ID_REF'].isin(feature_set_name)]
+                top_n_genes_relapse_for_eval = file_training_input_relapse_for_eval.loc[file_training_input_relapse_for_eval['ID_REF'].isin(feature_set_name)]
                 top_n_genes_relapse_for_eval['gene_id'] = top_n_genes_relapse_for_eval['ID_REF'].apply(lambda name: feature_set_name.index(name))
                 
                 top_n_genes_relapse_sorted_for_eval  = top_n_genes_relapse_for_eval.sort_values(by = ['gene_id'])
@@ -688,7 +688,7 @@ def main():
                 # track feature set which gives maximum auc score
                 if (auc_score_for_eval > auc_score_max):
                     list_feature_set_max_auc = deepcopy(feature_set_name)
-                    auc_score_max = auc_score
+                    auc_score_max = auc_score_for_eval
 
                 # record ending time of this iteration
                 end_epoch_time = time.time()
