@@ -160,10 +160,13 @@ def main():
     file_name = input(" # Enter name of an output file : ")
 
     # prepare text file for results to be written in
-    result_file = open(str(file_name) + ".txt", "w+")
+    result_file = open("./result/" +str(file_name) + ".txt", "w+")
 
     # record file name
     result_file.write("Dataset : " + str(file_training_input_name) +"\n")
+    result_file.write("Number of epochs : " + str(epoch) + "\n")
+    result_file.write("Number of folds : " + str(num_of_folds) + "\n")
+    result_file.write("Number of top-ranked features : " + str(number_of_ranked_gene) + "\n")
     result_file.write("\n")
 
     print(" Number of samples in class relapse : " + str(len(list_sample_relapse)))
@@ -171,6 +174,9 @@ def main():
 
     # list used to collect average auc score of each epoch
     list_avg_auc_each_epoch = []
+
+    # list to collect feature counter
+    list_feature_counter = []
 
     for epoch_count in range(0, int(epoch)):
         start_epoch_time = time.time()
@@ -257,7 +263,6 @@ def main():
                     # keep testing data from eacch class
                     second_layer_test_relapse =  second_chunk_list_relapse[second_layer_test_index]
                     second_layer_test_no_relapse = second_chunk_list_no_relapse[second_layer_test_index]
-                    print("\n------------------------------------------ L : " + str(second_layer_test_index + 1) + " --------------------------------")
                     print(" Samples in class relapse used as feature selection set : " + str(second_layer_test_relapse) + "\n")
                     print(" Samples in class non-relapse used as feature selection set : " + str(second_layer_test_no_relapse))
                     print()
@@ -329,6 +334,7 @@ def main():
                     for i in range(0, int(number_of_ranked_gene)):
                         top_n_genes_name.append(ranked_gene[i])
                         print(" " + str(ranked_gene[i]) + " => " + " t-score : " + str(ttest_result[i][1]))
+                    print()
 
                     # rank gene id of each sample in training data
                     # for class 'relapse'
@@ -487,10 +493,49 @@ def main():
                     top_n_genes_name_for_eval = deepcopy(top_n_genes_name)
                     feature_set  = deepcopy(gene_order)
                     feature_set_name = deepcopy(gene_order_name)
+                
+                # count feature frequency
+                if (int(epoch) > 1):
+                    for feature_index in range(0, len(feature_set_name)):
+                        # if list feature counter is empty
+                        if not list_feature_counter:
+                            feature_counter = []
+                            feature_name = feature_set_name[feature_index]
+                            feature_frequency = 1
+
+                            feature_counter.append(feature_name)
+                            feature_counter.append(feature_frequency)
+
+                            list_feature_counter.append(feature_counter)
+                        else:
+                            feature_name = feature_set_name[feature_index]
+
+                            # check if this feature exist in the feature counter list
+                            check_found = False
+                            for feature_counter_index in range(0, len(list_feature_counter)):
+                                feature_counter_name = list_feature_counter[feature_counter_index][0]
+
+                                if (feature_name == feature_counter_name):
+                                    feature_frequency = list_feature_counter[feature_counter_index][1]
+                                    feature_frequency += 1
+
+                                    list_feature_counter[feature_counter_index][1] = feature_frequency
+                                    check_found = True
+                            
+                            # if this feature is not exist in a list feature counter
+                            if (check_found == False):
+                                feature_counter = []
+                                feature_name = feature_set_name[feature_index]
+                                feature_frequency = 1
+
+                                feature_counter.append(feature_name)
+                                feature_counter.append(feature_frequency)
+
+                                list_feature_counter.append(feature_counter)
 
                 # preparing data for evaluation and creating classifier
                 # for class 'relapse'
-                print(" # Process : Preparing classifiers and testing data")
+                print(" # Process : Prepare classifiers and testing data")
                 col_to_read_relapse_for_eval = ["ID_REF"]
                 col_to_read_relapse_for_eval.extend(second_list_sample_relapse)
                 file_training_input_relapse_for_eval = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_relapse_for_eval)
@@ -499,7 +544,7 @@ def main():
                 top_n_genes_relapse_sorted_for_eval  = top_n_genes_relapse_for_eval.sort_values(by = ['gene_id'])
                 top_n_genes_relapse_sorted_for_eval.drop(columns = 'gene_id', inplace = True)
                 top_n_genes_relapse_sorted_for_eval.drop(columns = 'ID_REF', inplace = True)
-                print(top_n_genes_relapse_sorted_for_eval)
+                # print(top_n_genes_relapse_sorted_for_eval)
 
                 # for class 'no relapse'
                 col_to_read_no_relapse_for_eval = ["ID_REF"]
@@ -510,12 +555,12 @@ def main():
                 top_n_genes_no_relapse_sorted_for_eval  = top_n_genes_no_relapse_for_eval.sort_values(by = ['gene_id'])
                 top_n_genes_no_relapse_sorted_for_eval.drop(columns = 'gene_id', inplace = True)
                 top_n_genes_no_relapse_sorted_for_eval.drop(columns = 'ID_REF', inplace = True)
-                print(top_n_genes_no_relapse_sorted_for_eval)            
+                # print(top_n_genes_no_relapse_sorted_for_eval)            
 
                 first_layer_test_all = []
                 first_layer_test_all.extend(first_layer_test_relapse)
                 first_layer_test_all.extend(first_layer_test_no_relapse)  
-                print(first_layer_test_all)
+                # print(first_layer_test_all)
 
                 col_to_read_first_layer_test_gene = ["ID_REF"]
                 col_to_read_first_layer_test_gene.extend(first_layer_test_all)
@@ -651,6 +696,34 @@ def main():
     result_file.write("\n")
     result_file.write("Average AUC score over " + str(epoch) + " epoch : " + str(mean_over_all_epoch) + "\n")
 
+    # rank feature frequency
+    if (len(list_feature_counter) < 10):
+        num_of_top_frequent_pathway = len(list_feature_counter)
+    else:
+        # default number of features to be shown is 10
+        num_of_top_frequent_pathway = 10
+    
+    # rank pathway frequency in descending order
+    list_feature_counter.sort(key=lambda x: x[1], reverse=True)
+
+    # add top pathways to a list to be shown
+    list_top_pathway_frequency = []
+    for top_pathway_index in range(0, num_of_top_frequent_pathway):
+        list_top_pathway_frequency.append(list_feature_counter[top_pathway_index])
+    
+    print(" Feature frequency : ")
+    result_file.write("\n")
+    result_file.write("Feature frequency :")
+    for index in range(0, len(list_top_pathway_frequency)):
+        feature_name = list_top_pathway_frequency[index][0]
+        feature_frequency = list_top_pathway_frequency[index][1]
+
+        print(" " + str(index + 1) + " " + str(feature_name) + " : " + str(feature_frequency))
+        result_file.write(str(index + 1)  + str(feature_name) + " : " + str(feature_frequency) + "\n")
+
+    print()
+    result_file.write("\n")
+
     # record end time
     end_time = time.time()
     time_elapse_second = end_time - start_time
@@ -660,7 +733,7 @@ def main():
     time_elapse_minute = round(time_elapse_minute, 2)
     time_elapse_hour = round(time_elapse_hour, 2)
 
-    print(" Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)")
+    print(" Total Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)")
     result_file.write("Total Time Elapse : " + str(time_elapse_minute) + " minutes (" + str(time_elapse_hour) + " hours)\n")
 
     result_file.close()

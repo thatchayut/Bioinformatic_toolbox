@@ -25,5 +25,10 @@ def main():
     print("########################################################################################################################")
     print()
 
+    filename = input(" Test file name : ") 
+
+    result_file = open("./result/" +str(filename) + ".txt", "w+")
+    result_file.write("testestestestes")
+
 if __name__ == "__main__":
     main()

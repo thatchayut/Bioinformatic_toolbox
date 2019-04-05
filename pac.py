@@ -174,11 +174,13 @@ def main():
     file_name = input(" # Enter name of an output file : ")
 
     # prepare text file for results to be written in
-    result_file = open(str(file_name) + ".txt", "w+")
+    result_file = open("./result/" +str(file_name) + ".txt", "w+")
 
     # record dataset 
     result_file.write("Dataset : " + str(file_training_input_name) + "\n")
     result_file.write("Pathway reference : " + str(pathway_name) + "\n")
+    result_file.write("Number of epochs : " + str(num_of_epochs) + "\n")
+    result_file.write("Number of folds : " + str(num_of_folds)+ "\n")
     result_file.write("\n")
 
     # list used to collect average auc score of each epoch

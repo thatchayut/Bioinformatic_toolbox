@@ -201,11 +201,14 @@ def main():
     file_name = input(" # Enter name of an output file : ")
 
     # prepare text file for results to be written in
-    result_file = open(str(file_name) + ".txt", "w+")
+    result_file = open("./result/" +str(file_name) + ".txt", "w+")
 
     # record dataset
     result_file.write(" The first dataset : " + str(file_gene_first_dataset_name) + "\n")
     result_file.write(" The second dataset : " + str(file_gene_second_dataset_name) + "\n")
+    result_file.write("Number of epochs : " + str(epoch) + "\n")
+    result_file.write("Number of folds : " + str(num_of_folds) + "\n")
+    result_file.write("Number of top-ranked features : " + str(number_of_ranked_gene) + "\n")
     result_file.write("\n")
     
     # list used to collect average auc score of each epoch
