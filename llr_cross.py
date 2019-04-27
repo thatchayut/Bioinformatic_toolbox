@@ -581,7 +581,7 @@ def main():
         # for class "non-relapse"
         for sample_index in range(0, len(list_sample_no_relapse_first_dataset)):
             print()
-            print("Creating pathways for sample " + str(sample_index + 1) + " non-relapse is in progress ...")
+            print(" Creating pathways for sample " + str(sample_index + 1) + " non-relapse is in progress ...")
             print(" " + str(len(list_sample_no_relapse_first_dataset) - (sample_index + 1)) + " samples left")
             print()
 

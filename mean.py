@@ -212,8 +212,8 @@ def main():
     # get all pathways of all samples in class 'relapse'
     for element_index in range(0, len(list_sample_relapse)):
         print()
-        print("Creating pathways for sample " + str(element_index + 1) + " relapse is in progress ...")
-        print(str(len(list_sample_relapse) - (element_index + 1)) + " samples left")
+        print(" Creating pathways for sample " + str(element_index + 1) + " relapse is in progress ...")
+        print(" " + str(len(list_sample_relapse) - (element_index + 1)) + " samples left")
         print()
 
         sample = []
@@ -226,8 +226,8 @@ def main():
     
     for element_index in range(0, len(list_sample_no_relapse)):
         print()
-        print("Creating pathways for sample " + str(element_index + 1) + " non-relapse is in progress ...")
-        print(str(len(list_sample_no_relapse) - (element_index + 1)) + " samples left")
+        print(" Creating pathways for sample " + str(element_index + 1) + " non-relapse is in progress ...")
+        print(" " + str(len(list_sample_no_relapse) - (element_index + 1)) + " samples left")
         print()
 
         sample = []
