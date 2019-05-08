@@ -1,4 +1,4 @@
-import xlsxwriter
+import collections
 import pandas as pd
 
 def main():
@@ -13,6 +13,10 @@ def main():
     print(" #   [3] A file contains mapping between gene probe IDs and gene entrez IDs")  
     print(" #   [4] Feature set to be extracted")
     print(" # These files must follow a required format shown in file_format.pdf")
+    print(" #")
+    print(" # You will be asked to provide required information to extract genes from feature set")
+    print(" #   [1] Format of genes")
+    print(" #   [2] All genes or intersect genes")
     print(" #")
     print(" # You will be asked for the name of an output file.")
     print(" # An output file will be created in directory 'result'.")
@@ -50,7 +54,11 @@ def main():
 
     # select option :
     print(" # Extract to [1] Gene entrez id [2] Gene Probe id : ")
-    extrct_choice = input(" Enter your choice : ")
+    extract_choice = input(" Enter your choice : ")
+    print()
+
+    print(" # Get [1] All genes [2] Intersect genes : ")
+    intersect_choice = input(" Enter your choice : ")
     print()
 
     # get proper format of feature set
@@ -70,47 +78,98 @@ def main():
     list_gene_entrez_id = []
     list_gene_probe_id = []
 
-    for feature_index in range(0, len(feature_set)):
-        feature = feature_set[feature_index]
+    if (intersect_choice == "1"):
+        for feature_index in range(0, len(feature_set)):
+            feature = feature_set[feature_index]
 
-        for pathway_index in range(0, rows_to_read_file_pathway):
-            pathway_name = file_pathway.iloc[pathway_index, 0]
-            
-            if (pathway_name == feature):
-                # get gene entrez id of genes in this pathway
-                for element in file_pathway.iloc[pathway_index, 2:-1]:
-                    if (str(element).isnumeric()):
-                        if (str(element) not in list_gene_entrez_id):
+            for pathway_index in range(0, rows_to_read_file_pathway):
+                pathway_name = file_pathway.iloc[pathway_index, 0]
+                
+                if (pathway_name == feature):
+                    # get gene entrez id of genes in this pathway
+                    for element in file_pathway.iloc[pathway_index, 2:-1]:
+                        if (str(element).isnumeric()):
+                            if (str(element) not in list_gene_entrez_id):
+                                list_gene_entrez_id.append(str(element))
+
+        if (extract_choice == "2"):        
+            # mapping gene entrez id to gene probe id 
+            for gene_entrez_index in range(0, len(list_gene_entrez_id)):
+                gene_entrez_id = list_gene_entrez_id[gene_entrez_index]
+
+                gene_probe_id_dataframe = file_ref.loc[file_ref['To'].isin([gene_entrez_id])]
+                
+                for index, row in gene_probe_id_dataframe.iterrows():
+                    gene_probe_id = row['From']
+                    if (gene_probe_id not in list_gene_probe_id):
+                        list_gene_probe_id.append(gene_probe_id)
+
+        # write to file
+        print(" Process : Write to an output file ...")
+        result_file.write("Gene probe ids from feature set : \n")
+        result_file.write(str(feature_set) + "\n")
+        result_file.write("\n")
+
+        if (extract_choice == "1"):
+            result_file.write("Gene entrez id : \n")
+            for element in list_gene_entrez_id:
+                result_file.write(str(element) + "\n")
+
+        elif (extract_choice == "2"):
+            result_file.write("Gene probe id : \n")
+            for element in list_gene_probe_id:
+                result_file.write(str(element) + "\n")
+        print(" Process : Done ...")
+    
+    elif (intersect_choice == "2"):
+        for feature_index in range(0, len(feature_set)):
+            feature = feature_set[feature_index]
+
+            for pathway_index in range(0, rows_to_read_file_pathway):
+                pathway_name = file_pathway.iloc[pathway_index, 0]
+                
+                if (pathway_name == feature):
+                    # get gene entrez id of genes in this pathway
+                    for element in file_pathway.iloc[pathway_index, 2:-1]:
+                        if (str(element).isnumeric()):
                             list_gene_entrez_id.append(str(element))
 
-    if (extrct_choice == "2"):        
-        # mapping gene entrez id to gene probe id 
-        for gene_entrez_index in range(0, len(list_gene_entrez_id)):
-            gene_entrez_id = list_gene_entrez_id[gene_entrez_index]
+        if (extract_choice == "2"):        
+            # mapping gene entrez id to gene probe id 
+            for gene_entrez_index in range(0, len(list_gene_entrez_id)):
+                gene_entrez_id = list_gene_entrez_id[gene_entrez_index]
 
-            gene_probe_id_dataframe = file_ref.loc[file_ref['To'].isin([gene_entrez_id])]
-            
-            for index, row in gene_probe_id_dataframe.iterrows():
-                gene_probe_id = row['From']
-                if (gene_probe_id not in list_gene_probe_id):
+                gene_probe_id_dataframe = file_ref.loc[file_ref['To'].isin([gene_entrez_id])]
+                
+                for index, row in gene_probe_id_dataframe.iterrows():
+                    gene_probe_id = row['From']
                     list_gene_probe_id.append(gene_probe_id)
 
-    # write to file
-    print(" Process : Write to an output file ...")
-    result_file.write("Gene probe ids from feature set : \n")
-    result_file.write(str(feature_set) + "\n")
-    result_file.write("\n")
+        # get intersect genes
+        intersect_gene = None
+        if (extract_choice == "1"):
+            dupes = [x for n, x in enumerate(list_gene_entrez_id) if x in list_gene_entrez_id[:n]]
+            intersect_gene = dupes
+        elif(extract_choice == "2"):
+            dupes = [x for n, x in enumerate(list_gene_probe_id) if x in list_gene_probe_id[:n]]
+            intersect_gene = dupes
 
-    if (extrct_choice == "1"):
-        result_file.write("Gene entrez id : \n")
-        for element in list_gene_entrez_id:
-            result_file.write(str(element) + "\n")
+        # write to file
+        print(" Process : Write to an output file ...")
+        result_file.write("Gene probe ids from feature set : \n")
+        result_file.write(str(feature_set) + "\n")
+        result_file.write("\n")
 
-    elif (extrct_choice == "2"):
-        result_file.write("Gene probe id : \n")
-        for element in list_gene_probe_id:
-            result_file.write(str(element) + "\n")
-    print(" Process : Done ...")
+        if (extract_choice == "1"):
+            result_file.write("Gene entrez id : \n")
+            for element in intersect_gene:
+                result_file.write(str(element) + "\n")
+
+        elif (extract_choice == "2"):
+            result_file.write("Gene probe id : \n")
+            for element in intersect_gene:
+                result_file.write(str(element) + "\n")
+        print(" Process : Done ...")        
 
 if __name__ == "__main__":
     main()
