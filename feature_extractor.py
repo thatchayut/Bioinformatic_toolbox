@@ -25,20 +25,17 @@ def main():
 
     # get a pathway reference file
     print(" # Enter a pathway reference file : ")
-    # file_pathway_name = input(" Enter file : ")
-    file_pathway_name = "c2.cp.v6.2.entrez.gmt.csv"
+    file_pathway_name = input(" Enter file : ")
     print()
 
     print(" # Enter number of rows of this file to be read : ")
-    # rows_to_read_file_pathway = input(" Number of rows : ")
-    # rows_to_read_file_pathway = int(rows_to_read_file_pathway)
-    rows_to_read_file_pathway = 1329
+    rows_to_read_file_pathway = input(" Number of rows : ")
+    rows_to_read_file_pathway = int(rows_to_read_file_pathway)
     print()
 
     # get file mapping between gene entrez id and gene probe id
     file_ref_name = (" # Enter a file mapping between gene entrez id and gene probe id : ")
-    # file_ref_name = input(" Enter file : ")
-    file_ref_name = "accession_number_to_entrez_id.csv"
+    file_ref_name = input(" Enter file : ")
 
     # get feature set to extract
     print(" # Enter a feature set to be extracted : ")
