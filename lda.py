@@ -3,6 +3,21 @@ import numpy as np
 import calculate 
 
 def main():
+    print()
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print(" # Linear Discrimination Analysis")
+    print(" # Purpose : This program is created as a prototype to be used as one of important functions in a toolbox.")
+    print(" # You have to manually configure in lda.py as follows ")
+    print(" #   [1] cols_to_read : columns in a file contains mapping between samples and their gene expression to be read")
+    print(" #   [2] file_training_input: A file contains mapping between samples and their gene expression to be read")  
+    print(" #   [3] file_training_output : A file contains mapping between samples and their healt statu")  
+    print(" # These files must follow a required format shown in file_format.pdf")
+    print(" #")
+    print(" # You will be asked for the name of an output file.")
+    print(" # An output file will be created in directory 'result'.")
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print()
+
     cols_to_read = ['GSM36778','GSM36784', 'GSM36789', 'GSM36792', 'GSM36797', 'GSM36811', 'GSM36814']
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", usecols = cols_to_read, nrows = 10)
     file_training_output = pd.read_csv("mapping_sample_to_class_relapse.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])

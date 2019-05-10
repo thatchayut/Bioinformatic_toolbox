@@ -9,6 +9,26 @@ from copy import deepcopy
 from sklearn.metrics import roc_auc_score
 
 def main(): 
+    print()
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print(" # Feature Tester")
+    print(" # Purpose : This program is used to test generated feature set.")
+    print(" # You have to manually configure in feature_tester.py as follows")
+    print(" #   [1] list_feature : Feature to be tested")
+    print(" #   [2] row_to_read_file_input : Number of rows in the file mapping between samples and their gene expression to be read")  
+    print(" #   [3] file_training_input : A file contains mapping between samples and their gene expression") 
+    print(" #   [4] file_training_output : A file contains mapping between samples and their healt status")  
+    print(" #   [5] rows_to_read_file_pathway : Number of rows in the file mapping between pathways and their member genes to be read")  
+    print(" #   [6] file_ref_name : A file mapping between gene probe id and gene entrez id")  
+    print(" #   [7] file_to_convert_name : A file contains mapping between samples and their gene expression")  
+    print(" #   [8] file_pathway_name : A file mapping between pathways and their member genes") 
+    print(" # These files must follow a required format shown in file_format.pdf")
+    print(" #")
+    print(" # You will be asked for the name of an output file.")
+    print(" # An output file will be created in directory 'result'.")
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print()
+
     # list of feature to be tested 
     # example : epoch 7 in mean_no_normalize_10_10_10
     list_feature = ['BIOCARTA_INTRINSIC_PATHWAY', 'REACTOME_REGULATION_OF_MRNA_STABILITY_BY_PROTEINS_THAT_BIND_AU_RICH_ELEMENTS', 'PID_SMAD2_3NUCLEAR_PATHWAY', 'REACTOME_G1_S_SPECIFIC_TRANSCRIPTION', 'REACTOME_RESOLUTION_OF_AP_SITES_VIA_THE_SINGLE_NUCLEOTIDE_REPLACEMENT_PATHWAY', 'KEGG_BASAL_TRANSCRIPTION_FACTORS', 'REACTOME_EXTENSION_OF_TELOMERES', 'PID_A6B1_A6B4_INTEGRIN_PATHWAY', 'REACTOME_LIPID_DIGESTION_MOBILIZATION_AND_TRANSPORT', 'REACTOME_BASE_FREE_SUGAR_PHOSPHATE_REMOVAL_VIA_THE_SINGLE_NUCLEOTIDE_REPLACEMENT_PATHWAY', 'REACTOME_ABC_FAMILY_PROTEINS_MEDIATED_TRANSPORT', 'PID_MET_PATHWAY', 'KEGG_SPLICEOSOME', 'BIOCARTA_TOLL_PATHWAY', 'PID_AVB3_OPN_PATHWAY', 'REACTOME_CELL_CYCLE_MITOTIC', 'REACTOME_FORMATION_OF_THE_HIV1_EARLY_ELONGATION_COMPLEX', 'REACTOME_DNA_STRAND_ELONGATION', 'REACTOME_CYCLIN_E_ASSOCIATED_EVENTS_DURING_G1_S_TRANSITION_', 'BIOCARTA_SPPA_PATHWAY', 'REACTOME_APC_CDC20_MEDIATED_DEGRADATION_OF_NEK2A', 'REACTOME_INHIBITION_OF_THE_PROTEOLYTIC_ACTIVITY_OF_APC_C_REQUIRED_FOR_THE_ONSET_OF_ANAPHASE_BY_MITOTIC_SPINDLE_CHECKPOINT_COMPONENTS', 'PID_HIF1A_PATHWAY', 'BIOCARTA_PTEN_PATHWAY', 'REACTOME_GRB2_SOS_PROVIDES_LINKAGE_TO_MAPK_SIGNALING_FOR_INTERGRINS_', 'PID_RETINOIC_ACID_PATHWAY']

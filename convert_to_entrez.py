@@ -4,7 +4,18 @@ import pandas as pd
 def main():
     print()
     print("------------------------------------------------------------------------------------------------------------------------")
-    print(" # ")
+    print(" # Gene Probe Ids to Gene Entrez IDs Convertor")
+    print(" # Purpose : This program is used to convert gene probe id to gene entrez id")
+    print(" # You will be asked to provide related files and required information about them including ")
+    print(" #   [1] A file contains pathways and their member genes")
+    print(" #   [2] A file contains mapping between gene probe IDs and gene entrez IDs")  
+    print(" #   [3] A file contains mapping between samples and their gene expression")  
+    print(" # These files must follow a required format shown in file_format.pdf")
+    print(" #")
+    print(" # You will be asked for the name of an output file.")
+    print(" # An output file will be created in directory 'result'.")
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print()
     # ask for file name
     file_name = input("Enter file name : ")
 
@@ -12,11 +23,20 @@ def main():
     workbook = xlwt.Workbook()
     worksheet = workbook.add_sheet('worksheet')
     style = xlwt.easyxf("align : horiz right")
-    
+
+    # get file mapping between gene probe id  and gene entrez id
+    file_ref_name = (" # Enter a file mapping between gene probe id and gene entrez id : ")
+    file_ref_name = input(" Enter file : ")
+
+    # get file mapping between samples and their gene expression
+    file_to_convert_name = (" # Enter a file mapping between samples and their gene expression : ")
+    file_to_convert_name = input(" Enter file : ")
+
     # prepare files to be used
     cols_to_read = ["ID_REF"]
-    file_ref = pd.read_csv("accession_number_to_entrez_id.csv")
-    file_to_convert = pd.read_csv("GSE2034-22071 (edited).csv", usecols = cols_to_read)
+    file_ref = pd.read_csv(file_ref_name)
+    file_to_convert = pd.read_csv(file_to_convert_name, usecols = cols_to_read)
+
 
     # list all probe id
     list_probe_id = []
