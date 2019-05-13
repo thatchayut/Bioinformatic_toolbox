@@ -17,12 +17,15 @@ def main():
     print(" #   [1] list_feature : Feature to be tested")
     print(" #   [2] row_to_read_file_input : Number of rows in the file mapping between samples and their gene expression to be read")  
     print(" #   [3] file_training_input : A file contains mapping between samples and their gene expression") 
-    print(" #   [4] file_training_output : A file contains mapping between samples and their healt status")  
+    print(" #   [4] file_training_output : A file contains mapping between samples and their health status")  
     print(" #   [5] rows_to_read_file_pathway : Number of rows in the file mapping between pathways and their member genes to be read")  
     print(" #   [6] file_ref_name : A file mapping between gene probe id and gene entrez id")  
     print(" #   [7] file_to_convert_name : A file contains mapping between samples and their gene expression")  
     print(" #   [8] file_pathway_name : A file mapping between pathways and their member genes") 
     print(" # These files must follow a required format shown in file_format.pdf")
+    print(" #")
+    print(" # You will be asked to provide related files and required information about them including ")
+    print(" #   [1] Number of folds")
     print(" #")
     print(" # You will be asked for the name of an output file.")
     print(" # An output file will be created in directory 'result'.")
@@ -191,10 +194,6 @@ def main():
         sample.append(list_pathway)
         samples_no_relapse_pathway_activity[samples_index] = sample
     
-    for epoch_count in range(0, num_of_epochs):
-        print("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
-        result_file.write("######################################### epoch : " + str(epoch_count + 1) + "#########################################")
-
     # create list of indexes used to indicate the position in the list
     list_index_samples_relapse = []
     list_index_samples_no_relapse = []
