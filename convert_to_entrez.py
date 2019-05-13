@@ -4,7 +4,7 @@ import pandas as pd
 def main():
     print()
     print("------------------------------------------------------------------------------------------------------------------------")
-    print(" # Gene Probe Ids to Gene Entrez IDs Convertor")
+    print(" # Gene Probe Ids to Gene Entrez IDs Converter")
     print(" # Purpose : This program is used to convert gene probe id to gene entrez id")
     print(" # You will be asked to provide related files and required information about them including ")
     print(" #   [1] A file contains pathways and their member genes")
