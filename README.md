@@ -15,6 +15,8 @@ Other basic tools are also provided in this toolbox. These tools can be used to 
   - This program is used to extract features into member genes.
 - Linear Discrimination Analysis
   - This program is created as a prototype to be used as one of important functions in a toolbox.
+- GSE3494 Sample to Class Mapper
+  - This program is used to match samples of dataset *[GSE3494](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=gse3494)* with their class.
 
 ## Prerequisite 
 These libraries are required for using this toolbox.
@@ -32,22 +34,77 @@ These libraries are required for using other basic tools.
 - collections
 - xlwt
 
+All required files must be prepared as shown in *file_format.pdf*
+
 ## Get Started 
-
-To use the **Bioinformatic Toolbox**
-
 1. Clone this project
 ```
 git clone https://github.com/thatchayut/Bioinformatic_toolbox.git
 ```
 2. Move into this project's direcory
-3. Install all required libraries as shown in the prerequisite.
-4. Execute the toolbox
+3. Install all required libraries as shown in the prerequisite
+
+**_Note_ :** *All files asked by this toolbox **must** be moved into the project's directory.* 
+
+### To use the *Bioinformatic Toolbox*
+1. Execute this program
 ```
 python toolbox.py
 ```
-**_Note_ :** *All files asked by this toolbox **must** be moved into the project's directory.* 
-5. Answer all questions asked by the toolbox on your terminal
-6. Wating for the result. This step might take a lot of time depending on the classification method.
+2. Answer all questions asked by the toolbox on your terminal
+3. Waiting for the result. This step might take various ranges of time depending on the classification method.
+
+### To use the *Gene Probe IDs to Gene Entrez IDs Converter*
+1. Execute this program
+```
+python convert_to_entrez.py
+```
+2. Answer all questions asked by the toolbox on your terminal
+3. Waiting for the result
+
+### To use the *Feature Tester*
+1. Execute this program
+```
+python feature_tester.py
+```
+2. This program requires manually configuration in feature_tester.py. Follow instructions provided by this program 
+on your terminal.
+3. Execute this program again
+4. Answer all questions asked by the toolbox on your terminal
+5. Waiting for the result
+
+### To use the *Feature Extractor*
+1. Execute this program
+```
+python feature_extractor.py
+```
+2. Answer all questions asked by the toolbox on your terminal
+3. Waiting for the result
+
+### To use the *Linear Discrimination Analysis*
+1. Execute this program
+```
+python lda.py
+```
+2. This program requires manually configuration in feature_tester.py. Follow instructions provided by this program 
+on your terminal.
+3. Execute this program again
+4. Waiting for the result
+
+### To use the *GSE3494 Sample to Class Mapper*
+1. Execute this program
+```
+python gse3494_sample_to_class_mapper.py
+```
+2. This program requires manually configuration in feature_tester.py. Follow instructions provided by this program 
+on your terminal.
+3. Execute this program again
+4. Answer all questions asked by the toolbox on your terminal
+5. Waiting for the result
+
+
+
+
+
 
   
