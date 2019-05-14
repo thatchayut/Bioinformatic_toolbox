@@ -42,6 +42,9 @@ All required files must be prepared as shown in *file_format.pdf*
 git clone https://github.com/thatchayut/Bioinformatic_toolbox.git
 ```
 2. Move into this project's direcory
+```
+cd Bioinformatic_toolbox
+```
 3. Install all required libraries as shown in the prerequisite
 
 **_Note_ :** *All files asked by this toolbox **must** be moved into the project's directory.* 
