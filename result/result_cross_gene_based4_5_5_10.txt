@@ -1,5 +1,5 @@
- The first dataset : GSE3494_GPL96.csv
- The second dataset : GSE2034-22071 (edited).csv
+The first dataset : GSE3494_GPL96.csv
+The second dataset : GSE2034-22071 (edited).csv
 Number of epochs : 5
 Number of folds : 5
 Number of top-ranked features : 10

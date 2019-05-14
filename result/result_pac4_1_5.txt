@@ -1,5 +1,5 @@
 Dataset : GSE2034-22071 (edited).csv
-Pathway reference : [1328, 'NABA_MATRISOME']
+Pathway reference : c2.cp.v6.2.entrez.gmt.csv
 Number of epochs : 1
 Number of folds : 5
 

@@ -13,7 +13,6 @@ def main():
     print(" # These files must follow a required format shown in file_format.pdf")
     print(" #")
     print(" # You will be asked for the name of an output file.")
-    print(" # An output file will be created in directory 'result'.")
     print("------------------------------------------------------------------------------------------------------------------------")
     print()
     # ask for file name
