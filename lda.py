@@ -1,16 +1,26 @@
-#!/usr/bin/python
 import pandas as pd
 import numpy as np
 import calculate 
 
 def main():
-    # these column names can be retrieved by <code> list(my_dataframe.columns.values) </code>
+    print()
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print(" # Linear Discrimination Analysis")
+    print(" # Purpose : This program is created as a prototype to be used as one of important functions in a toolbox.")
+    print(" # You have to manually configure in lda.py as follows ")
+    print(" #   [1] cols_to_read : columns in a file contains mapping between samples and their gene expression to be read")
+    print(" #   [2] cols_to_read : number of rows in a file contains mapping between samples and their gene expression to be read")
+    print(" #   [3] file_training_input: A file contains mapping between samples and their gene expression to be read")  
+    print(" #   [4] file_training_output : A file contains mapping between samples and their health status")  
+    print(" # These files must follow a required format shown in file_format.pdf")
+    print(" #")
+    print("------------------------------------------------------------------------------------------------------------------------")
+    print()
+
     cols_to_read = ['GSM36778','GSM36784', 'GSM36789', 'GSM36792', 'GSM36797', 'GSM36811', 'GSM36814']
     file_training_input = pd.read_csv("GSE2034-22071 (edited).csv", usecols = cols_to_read, nrows = 10)
-    file_training_output = pd.read_csv("mapping_sample_to_class_relapse.csv", usecols = ['GEO asscession number', 'relapses within 5 years (1 = yes, 0=no)'])
+    file_training_output = pd.read_csv("mapping_sample_to_class_relapse.csv", usecols = ['GEO asscession number', 'relapse (1=True)'])
     
-    # file_training_output.set_index("GEO asscession number", inplace=True)
-    # data = data.loc['GSM36778']
     training_input = file_training_input
     training_output = file_training_output.loc[file_training_output['GEO asscession number'].isin(cols_to_read)]
     print("-------------------------Data to be used------------------------")
@@ -21,7 +31,7 @@ def main():
     # create list preparing for creating matrix
     # create list of output classes
     list_training_output = []
-    for element in training_output.loc[:, 'relapses within 5 years (1 = yes, 0=no)']:
+    for element in training_output.loc[:, 'relapse (1=True)']:
         list_training_output.append(element)
 
     # create list of input classes
@@ -53,9 +63,9 @@ def main():
     print("-------------- List of Gene expression of all input -------------")
     print(list_training_input)
     print("------------- List of Gene expression of each class -------------")
-    print("Relapse within 5 years ...")
+    print("Relapse")
     print(list_training_relapse)
-    print("NO relapse within 5 years")
+    print("Non-Relapse")
     print(list_training_no_relapse)
     print("--------------------- List of output class ----------------------")
     print(list_training_output)
@@ -72,9 +82,9 @@ def main():
     print("---------------------- Matrix for all input ---------------------")
     print(matrix_training_input)
     print("-------------------- Matrix for each feature --------------------")
-    print("Relapse within 5 years ... ")
+    print("Relapse ")
     print(matrix_training_relapse)
-    print("NO relapse within 5 years")
+    print("Non-Relapse")
     print(matrix_training_no_relapse)
     print("-------------------- Matrix for output class --------------------")
     print(matrix_training_output)
