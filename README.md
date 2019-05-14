@@ -16,7 +16,7 @@ Other basic tools are also provided in this toolbox. These tools can be used to 
 - Linear Discrimination Analysis
   - This program is created as a prototype to be used as one of important functions in a toolbox.
 
-## Prerequisite ##
+## Prerequisite 
 These libraries are required for using this toolbox.
 - pandas
 - random
@@ -32,7 +32,7 @@ These libraries are required for using other basic tools.
 - collections
 - xlwt
 
-# Get Started
+## Get Started 
 
 To use the **Bioinformatic Toolbox**
 
