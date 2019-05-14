@@ -178,7 +178,7 @@ def main():
 
     # record dataset 
     result_file.write("Dataset : " + str(file_training_input_name) + "\n")
-    result_file.write("Pathway reference : " + str(pathway_name) + "\n")
+    result_file.write("Pathway reference : " + str(file_pathway_name) + "\n")
     result_file.write("Number of epochs : " + str(num_of_epochs) + "\n")
     result_file.write("Number of folds : " + str(num_of_folds)+ "\n")
     result_file.write("\n")

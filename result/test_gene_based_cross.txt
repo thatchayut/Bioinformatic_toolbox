@@ -1,0 +1,7 @@
+ The first dataset : GSE2034-22071 (edited).csv
+ The second dataset : GSE3494_GPL96.csv
+Number of epochs : 1
+Number of folds : 5
+Number of top-ranked features : 10
+
+#################################### Epoch : 1 ####################################
