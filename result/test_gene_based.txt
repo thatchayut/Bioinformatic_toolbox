@@ -1,6 +1,0 @@
-Dataset : GSE2034-22071 (edited).csv
-Number of epochs : 1
-Number of folds : 5
-Number of top-ranked features : 10
-
-#################################### Epoch : 1 ####################################

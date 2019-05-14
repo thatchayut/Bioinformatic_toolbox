@@ -1,6 +1,0 @@
-Dataset : GSE2034-22071 (edited).csv
-Pathway reference : c2.cp.v6.2.entrez.gmt.csv
-Number of epochs : 1
-Number of folds : 5
-Number of pathways to be used as feature set (%) : 10
-

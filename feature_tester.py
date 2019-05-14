@@ -28,7 +28,6 @@ def main():
     print(" #   [1] Number of folds")
     print(" #")
     print(" # You will be asked for the name of an output file.")
-    print(" # An output file will be created in directory 'result'.")
     print("------------------------------------------------------------------------------------------------------------------------")
     print()
 
