@@ -98,7 +98,7 @@ on your terminal.
 ```
 python gse3494_sample_to_class_mapper.py
 ```
-2. This program requires manually configuration in feature_tester.py. Follow instructions provided by this program 
+2. This program requires manually configuration in gse3494_sample_to_class_mapper.py. Follow instructions provided by this program 
 on your terminal.
 3. Execute this program again
 4. Answer all questions asked by the toolbox on your terminal
