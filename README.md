@@ -46,8 +46,7 @@ git clone https://github.com/thatchayut/Bioinformatic_toolbox.git
 cd Bioinformatic_toolbox
 ```
 3. Install all required libraries as shown in the prerequisite
-
-**_Note_ :** *All files asked by this toolbox **must** be moved into the project's directory.* 
+4. Place all required files in the **same** directory as the project's directory
 
 ### To use the *Bioinformatic Toolbox*
 1. Execute this program
