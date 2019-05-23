@@ -17,6 +17,10 @@ Other basic tools are also provided in this toolbox. These tools can be used to 
   - This program is created as a prototype to be used as one of important functions in a toolbox.
 - GSE3494 Sample to Class Mapper
   - This program is used to match samples of dataset *[GSE3494](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=gse3494)* with their class.
+- calculate.py
+  - This is a file containing a bundle of functions used in calaulation processes.
+- add_ons.py
+  - This is a file containing functions which are used to deal with input data. 
 
 ## Prerequisite 
 These libraries are required for using this toolbox.
