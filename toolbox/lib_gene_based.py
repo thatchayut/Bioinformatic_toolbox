@@ -361,5 +361,229 @@ def gene_based():
                 list_top_n_gene_no_relapse_sorted.append(list_each_sample)
             list_top_n_gene_no_relapse_sorted = list(np.transpose(list_top_n_gene_no_relapse_sorted))
 
-            
+            # find set of genes to be used as a feature using sequential feature selection
+            print(" # Process : Sequential Forward Selection (SFS)")
+            check_finish = False
+            count_iteration = 1
+            gene_order = [0]
+            list_auc = []
+            while (check_finish == False):
+                if (count_iteration >= int(number_of_ranked_gene)):
+                    check_finish = True
+                else:
+                    max_auc_score = 0
+                    gene_index_in_list = None
+                    for i in range(0, int(number_of_ranked_gene)):
+                        gene_order_test = deepcopy(gene_order)
+                        gene_order_test.extend([i])
+
+                        # select gene to be used in lda                       
+                        input_relapse = []
+                        for sample_index in range(0, len(list_top_n_gene_relapse_sorted)):
+                            list_each_sample = []
+                            for element_id in range(0, len(list_top_n_gene_relapse_sorted[sample_index])):
+                                if (element_id in gene_order_test):
+                                    list_each_sample.append(list_top_n_gene_relapse_sorted[sample_index][element_id])
+                            input_relapse.append(list_each_sample)
+
+                        input_no_relapse = []
+                        for sample_index in range(0, len(list_top_n_gene_no_relapse_sorted)):
+                            list_each_sample = []
+                            for element_id in range(0, len(list_top_n_gene_no_relapse_sorted[sample_index])):
+                                if (element_id in gene_order_test):
+                                    list_each_sample.append(list_top_n_gene_no_relapse_sorted[sample_index][element_id])
+                            input_no_relapse.append(list_each_sample)
+
+                        input_testing_data = []
+                        for sample_index in range(0, len(list_second_layer_top_n_test_sorted)):
+                            list_each_sample = []
+                            for element_id in range(0, len(list_second_layer_top_n_test_sorted[sample_index])):
+                                if (element_id in gene_order_test):
+                                    list_each_sample.append(list_second_layer_top_n_test_sorted[sample_index][element_id])
+                            input_testing_data.append(list_each_sample)
+
+                        list_actual_output = calculate.lda(input_testing_data, input_relapse, input_no_relapse)
+
+                        # calculate AUC score
+                        auc_score = roc_auc_score(list_desired_output, list_actual_output)
+
+                        if (auc_score > max_auc_score):
+                            max_auc_score = auc_score
+                            gene_index_in_list = i
+                            if max_auc_score not in list_auc:
+                                list_auc.append(max_auc_score)
+
+                    # do not add gene that already exists in a feature
+                    if (gene_index_in_list not in gene_order):
+                        gene_order.extend([gene_index_in_list])                       
+                    count_iteration += 1  
+
+            list_max_auc.append(max(list_auc))        
+            gene_order.sort()       
+
+            # get gene_name
+            gene_order_name = []
+            for element in gene_order:
+                gene_order_name.append(top_n_genes_name[element])
+
+            # copy required data to be used in evaluation
+            top_n_genes_name_for_eval = deepcopy(top_n_genes_name)
+            feature_set  = deepcopy(gene_order)
+            feature_set_name = deepcopy(gene_order_name)
+
+        # count feature frequency
+        if (int(epochs) > 1):
+            for feature_index in range(0, len(feature_set_name)):
+                # if list feature counter is empty
+                if not list_feature_counter:
+                    feature_counter = []
+                    feature_name = feature_set_name[feature_index]
+                    feature_frequency = 1
+
+                    feature_counter.append(feature_name)
+                    feature_counter.append(feature_frequency)
+
+                    list_feature_counter.append(feature_counter)
+                else:
+                    feature_name = feature_set_name[feature_index]
+
+                    # check if this feature exist in the feature counter list
+                    check_found = False
+                    for feature_counter_index in range(0, len(list_feature_counter)):
+                        feature_counter_name = list_feature_counter[feature_counter_index][0]
+
+                        if (feature_name == feature_counter_name):
+                            feature_frequency = list_feature_counter[feature_counter_index][1]
+                            feature_frequency += 1
+
+                            list_feature_counter[feature_counter_index][1] = feature_frequency
+                            check_found = True
+                    
+                    # if this feature is not exist in a list feature counter
+                    if (check_found == False):
+                        feature_counter = []
+                        feature_name = feature_set_name[feature_index]
+                        feature_frequency = 1
+
+                        feature_counter.append(feature_name)
+                        feature_counter.append(feature_frequency)
+
+                        list_feature_counter.append(feature_counter)
+
+        # preparing data for evaluation and creating classifier
+        print(" # Process : Prepare classifiers and testing data")
+
+        # for class 'relapse'
+        col_to_read_relapse_for_eval = ["ID_REF"]
+        col_to_read_relapse_for_eval.extend(second_list_sample_relapse)
+        file_training_input_relapse_for_eval = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_relapse_for_eval)
+        top_n_genes_relapse_for_eval = file_training_input_relapse.loc[file_training_input_relapse['ID_REF'].isin(feature_set_name)]
+        top_n_genes_relapse_for_eval['gene_id'] = top_n_genes_relapse_for_eval['ID_REF'].apply(lambda name: feature_set_name.index(name))
+        top_n_genes_relapse_sorted_for_eval  = top_n_genes_relapse_for_eval.sort_values(by = ['gene_id'])
+        top_n_genes_relapse_sorted_for_eval.drop(columns = 'gene_id', inplace = True)
+        top_n_genes_relapse_sorted_for_eval.drop(columns = 'ID_REF', inplace = True)
+
+        # for class 'no relapse'
+        col_to_read_no_relapse_for_eval = ["ID_REF"]
+        col_to_read_no_relapse_for_eval.extend(second_list_sample_no_relapse)
+        file_training_input_no_relapse_for_eval = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_no_relapse_for_eval)
+        top_n_genes_no_relapse_for_eval = file_training_input_no_relapse_for_eval.loc[file_training_input_no_relapse_for_eval['ID_REF'].isin(feature_set_name)]
+        top_n_genes_no_relapse_for_eval['gene_id'] = top_n_genes_no_relapse_for_eval['ID_REF'].apply(lambda name: feature_set_name.index(name))
+        top_n_genes_no_relapse_sorted_for_eval  = top_n_genes_no_relapse_for_eval.sort_values(by = ['gene_id'])
+        top_n_genes_no_relapse_sorted_for_eval.drop(columns = 'gene_id', inplace = True)
+        top_n_genes_no_relapse_sorted_for_eval.drop(columns = 'ID_REF', inplace = True)
+
+        # get all testing data
+        first_layer_test_all = []
+        first_layer_test_all.extend(first_layer_test_relapse)
+        first_layer_test_all.extend(first_layer_test_no_relapse)  
+
+        # get only genes which are in a feature set
+        col_to_read_first_layer_test_gene = ["ID_REF"]
+        col_to_read_first_layer_test_gene.extend(first_layer_test_all)
+        first_layer_test_gene = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_first_layer_test_gene)
+        first_layer_top_n_test = first_layer_test_gene.loc[first_layer_test_gene['ID_REF'].isin(feature_set_name)]
+        first_layer_top_n_test['gene_id'] = first_layer_top_n_test['ID_REF'].apply(lambda name: feature_set_name.index(name))   
+        first_layer_top_n_test_sorted = first_layer_top_n_test.sort_values(by = ['gene_id'])
+        first_layer_top_n_test_sorted.drop(columns = 'gene_id', inplace = True)
+
+        top_n_test_sorted_for_eval = first_layer_top_n_test_sorted
+        top_n_test_sorted_for_eval.drop(columns = 'ID_REF', inplace = True)
+
+        # prepare list for input 
+        # list of all input data (testing data)
+        list_first_layer_top_n_test_sorted = []
+            for column in range(0, len(top_n_test_sorted_for_eval)):
+                list_each_sample = []
+                for element in top_n_test_sorted_for_eval.iloc[column]:
+                    list_each_sample.append(element)
+
+                list_first_layer_top_n_test_sorted.append(list_each_sample)
+            list_first_layer_top_n_test_sorted = list(np.transpose(list_first_layer_top_n_test_sorted))
+        
+        # desired output for testing data
+        first_layer_test_output = training_output.loc[training_output['GEO asscession number'].isin(first_layer_test_all)]
+
+        # sorting data according to its order in testing data
+        list_sample_to_read_for_eval = list(first_layer_top_n_test_sorted.columns.values)
+        first_layer_test_output['sample_id'] = first_layer_test_output['GEO asscession number'].apply(lambda name: list_sample_to_read_for_eval.index(name))
+        first_layer_test_output = first_layer_test_output.sort_values(by = ['sample_id'])
+        first_layer_test_output.drop(columns = 'sample_id', inplace = True)
+
+        # create list of desired output
+        list_desired_output_for_eval = []
+        for element in first_layer_test_output.loc[:, 'relapse (1=True)']:
+            list_desired_output_for_eval.append(element)
+
+        # list of gene expression and sample of class 'relapse' for evaluation
+        list_top_n_gene_relapse_sorted_for_eval = []
+        for column in range(0, len(top_n_genes_relapse_sorted_for_eval)):
+            list_each_sample = []
+            for element in top_n_genes_relapse_sorted_for_eval.iloc[column]:
+                list_each_sample.append(element)
+            list_top_n_gene_relapse_sorted_for_eval.append(list_each_sample)
+        list_top_n_gene_relapse_sorted_for_eval = list(np.transpose(list_top_n_gene_relapse_sorted_for_eval))
+
+        # list of gene expression and sample of class 'no relapse' for evaluation
+        list_top_n_gene_no_relapse_sorted_for_eval = []
+        for column in range(0, len(top_n_genes_no_relapse_sorted_for_eval)):
+            list_each_sample = []
+            for element in top_n_genes_no_relapse_sorted_for_eval.iloc[column]:
+                list_each_sample.append(element)
+            list_top_n_gene_no_relapse_sorted_for_eval.append(list_each_sample)
+        list_top_n_gene_no_relapse_sorted_for_eval = list(np.transpose(list_top_n_gene_no_relapse_sorted_for_eval))    
+
+        # calculate lda to get actual output
+        input_relapse_for_eval = []
+        for sample_index in range(0, len(list_top_n_gene_relapse_sorted_for_eval)):
+            list_each_sample = []
+            for element_id in range(0, len(list_top_n_gene_relapse_sorted_for_eval[sample_index])):
+                if (element_id in feature_set):
+                    list_each_sample.append(list_top_n_gene_relapse_sorted_for_eval[sample_index][element_id])
+            input_relapse_for_eval.append(list_each_sample)
+        
+        input_no_relapse_for_eval = []
+        for sample_index in range(0, len(list_top_n_gene_no_relapse_sorted_for_eval)):
+            list_each_sample = []
+            for element_id in range(0, len(list_top_n_gene_no_relapse_sorted_for_eval[sample_index])):
+                if (element_id in feature_set):
+                    list_each_sample.append(list_top_n_gene_no_relapse_sorted_for_eval[sample_index][element_id])
+            input_no_relapse_for_eval.append(list_each_sample)
+        
+        input_testing_data_for_eval = []
+        for sample_index in range(0, len(list_first_layer_top_n_test_sorted)):
+            list_each_sample = []
+            for element_id in range(0, len(list_first_layer_top_n_test_sorted[sample_index])):
+                if (element_id in feature_set):
+                    list_each_sample.append(list_first_layer_top_n_test_sorted[sample_index][element_id])
+            input_testing_data_for_eval.append(list_each_sample)
+
+        list_actual_output_for_eval = calculate.lda(input_testing_data_for_eval, input_relapse_for_eval, input_no_relapse_for_eval)
+
+        
+
+
+
+
+
 
