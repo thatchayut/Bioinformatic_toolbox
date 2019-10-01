@@ -260,7 +260,7 @@ def main():
                 if (second_check_valid == True):
                     second_layer_test_index = random.randint(0, second_num_of_chunks - 1)
 
-                    # keep testing data from eacch class
+                    # keep testing data from each class
                     second_layer_test_relapse =  second_chunk_list_relapse[second_layer_test_index]
                     second_layer_test_no_relapse = second_chunk_list_no_relapse[second_layer_test_index]
                     print(" Samples in class relapse used as feature selection set : " + str(second_layer_test_relapse) + "\n")
