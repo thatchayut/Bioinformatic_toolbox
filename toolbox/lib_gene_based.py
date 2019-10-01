@@ -13,12 +13,14 @@ import sys
 
 import config as cf
 
+def test():
+    print("testestest")
+
 def gene_based():
     # record start time
     start_time = time.time()
 
     # acquire required files
-
     # a file containing mapping between probes IDs and sample
     file_training_input_name = cf.gene_based["file_training_input_name"]
     # check whether this file is valid
@@ -43,3 +45,4 @@ def gene_based():
 
     # number of top-ranked features
     number_of_ranked_gene = cf.gene_based["number_of_ranked_gene"]
+

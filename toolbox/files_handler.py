@@ -59,5 +59,3 @@ def validateFile(file_name):
         print(" WARNING : " + str(file_name) + " is not found in this directory.") 
         print(" Provide correct file information config.py ...")    
         return False 
-
-

@@ -2,6 +2,7 @@ import os
 import config as cf
 import sys
 import files_handler
+import lib_gene_based
 
 def main():
 
@@ -14,10 +15,11 @@ def main():
     
     # print("aaaa")
 
-    file_training_input_name = cf.gene_based["file_training_input_name"]
+    lib_gene_based.gene_based()
+   
 
-    flag = files_handler.validateFile(file_training_input_name)
-    print(flag)
+    # flag = files_handler.validateFile(file_training_input_name)
+    # print(flag)
 
 if __name__ == "__main__":
     main()
