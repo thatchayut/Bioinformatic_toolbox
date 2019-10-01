@@ -72,14 +72,51 @@ def validateRowToRead(row_to_read):
     else:
         return True
 
-def validateEpoch(epoch):
-    if (epoch.isnumeric() == False):
+def validateEpochs(epochs):
+    if (epochs.isnumeric() == False):
         print(" WARNING : Number of epochs must be numeric.")
         print(" Provide correct data in config.py ...") 
         return False 
-    elif (int(epoch) <= 0):
+    elif (int(epochs) <= 0):
         print(" WARINING : Number of epochs must be greater than 0.")
         print(" Provide correct data in config.py ...") 
         return False 
+    else:
+        return True
+
+def validateNumofFolds(num_of_folds, list_sample_relapse, list_sample_no_relapse):
+    if (num_of_folds.isnumeric() == False):
+        print(" WARNING : Number of folds must be numeric")
+        print(" Provide correct data in config.py ...") 
+        return False
+    elif(int(num_of_folds) > len(list_sample_relapse)):
+        print("WARNING : Number of folds exceeds the size of samples in class relapse")
+        print(" Provide correct data in config.py ...") 
+        return False
+    elif(int(num_of_folds) > len(list_sample_no_relapse)):
+        print("WARNING : Number of folds exceeds the size of samples in class non-relapse")
+        print(" Provide correct data in config.py ...") 
+        return False
+
+    elif(int(num_of_folds) <= 1):
+        print(" WARNING : Number of folds cannot lower than or equal to 1")
+        print(" Provide correct data in config.py ...") 
+        return False
+    else:
+        return True
+
+def validateNumofRankedGenes(num_of_ranked_genes, row_to_read):
+    if (num_of_ranked_genes.isnumeric() == False):
+        print(" WARNING : Number of top-ranked features must be numeric.")
+        print(" Provide correct data in config.py ...")
+        return False
+    elif(int(num_of_ranked_genes) > row_to_read):
+        print(" WARINING : Number of top-ranked features must not exceed available genes from the first file.")
+        print(" Provide correct data in config.py ...")
+        return False
+    elif (int(num_of_ranked_genes) <= 0):
+        print(" WARNING : Number of top-ranked features must not be lower than or equal to 0.")    
+        print(" Provide correct data in config.py ...")
+        return False
     else:
         return True
