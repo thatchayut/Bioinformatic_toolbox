@@ -301,4 +301,65 @@ def gene_based():
             top_n_genes_no_relapse_sorted_train.drop(columns = 'ID_REF', inplace = True)
 
             # Preparing testing data for feature selection
+            second_layer_test_all = []
+            second_layer_test_all.extend(second_layer_test_relapse)
+            second_layer_test_all.extend(second_layer_test_no_relapse)  
+
+            # prepare expect output for testing data
+            # sort gene order of testing data
+            col_to_read_second_layer_test_gene = ["ID_REF"]
+            col_to_read_second_layer_test_gene.extend(second_layer_test_all)
+            second_layer_test_gene = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_second_layer_test_gene)
+            second_layer_top_n_test = second_layer_test_gene.loc[second_layer_test_gene['ID_REF'].isin(top_n_genes_name)]
+            second_layer_top_n_test['gene_id'] = second_layer_top_n_test['ID_REF'].apply(lambda name: top_n_genes_name.index(name))   
+            second_layer_top_n_test_sorted = second_layer_top_n_test.sort_values(by = ['gene_id'])
+            second_layer_top_n_test_sorted.drop(columns = 'gene_id', inplace = True)
+
+            top_n_test_sorted = second_layer_top_n_test_sorted
+            top_n_test_sorted.drop(columns = 'ID_REF', inplace = True)
+
+            # use top-rank feature as the first feature in lda classifier
+            # prepare list for input 
+            # list of all input data (testing data)
+            list_second_layer_top_n_test_sorted = []
+            for column in range(0, len(top_n_test_sorted)):
+                list_each_sample = []
+                for element in top_n_test_sorted.iloc[column]:
+                    list_each_sample.append(element)
+                list_second_layer_top_n_test_sorted.append(list_each_sample)
+            list_second_layer_top_n_test_sorted = list(np.transpose(list_second_layer_top_n_test_sorted))
+
+            # desired output for testing data
+            second_layer_test_output = training_output.loc[training_output['GEO asscession number'].isin(second_layer_test_all)]
+            # sorting data according to its order in testing data
+            list_sample_to_read = list(second_layer_top_n_test_sorted.columns.values)
+
+            second_layer_test_output['sample_id'] = second_layer_test_output['GEO asscession number'].apply(lambda name: list_sample_to_read.index(name))
+            second_layer_test_output = second_layer_test_output.sort_values(by = ['sample_id'])
+            second_layer_test_output.drop(columns = 'sample_id', inplace = True)
+
+            # create list of desired output
+            list_desired_output = []
+            for element in second_layer_test_output.loc[:, 'relapse (1=True)']:
+                list_desired_output.append(element)
+
+            # list of gene expression and sample of class 'relapse'
+            list_top_n_gene_relapse_sorted = []
+            for column in range(0, len(top_n_genes_relapse_sorted_train)):
+                list_each_sample = []
+                for element in top_n_genes_relapse_sorted_train.iloc[column]:
+                    list_each_sample.append(element)
+                list_top_n_gene_relapse_sorted.append(list_each_sample)
+            list_top_n_gene_relapse_sorted = list(np.transpose(list_top_n_gene_relapse_sorted))
+
+            # list of gene expression and sample of class 'no relapse'
+            list_top_n_gene_no_relapse_sorted = []
+            for column in range(0, len(top_n_genes_no_relapse_sorted_train)):
+                list_each_sample = []
+                for element in top_n_genes_no_relapse_sorted_train.iloc[column]:
+                    list_each_sample.append(element)
+                list_top_n_gene_no_relapse_sorted.append(list_each_sample)
+            list_top_n_gene_no_relapse_sorted = list(np.transpose(list_top_n_gene_no_relapse_sorted))
+
             
+
