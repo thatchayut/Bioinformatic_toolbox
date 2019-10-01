@@ -13,11 +13,14 @@ gene_based = {
 
     # required information to conduct an experiment
     # number of epochs
-    "epoch" : "5",
+    "epochs" : "5",
 
     # number of folds
     "num_of_folds" : "10",
 
     # number of top-ranked features
-    "number_of_ranked_gene" : "10"
+    "num_of_ranked_genes" : "10",
+
+    # name of an output file
+    "output_file_name" : ""
 }
