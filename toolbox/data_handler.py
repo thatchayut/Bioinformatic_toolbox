@@ -53,9 +53,33 @@ def validateFile(file_name):
             else:
                 return True 
         else : 
-            print(" Provide correct file information config.py ...")    
+            print(" Provide a correct file in config.py ...")    
             return False 
     except OSError:
         print(" WARNING : " + str(file_name) + " is not found in this directory.") 
-        print(" Provide correct file information config.py ...")    
+        print(" Provide a correct file in config.py ...")    
         return False 
+
+def validateRowToRead(row_to_read):
+    if(row_to_read.isnumeric() == False):
+        print(" WARNING : Number of rows must be numeric.")
+        print(" Provide correct data in config.py ...")   
+        return False
+    elif (int(row_to_read) < 1):
+        print(" WARNING : Number of rows cannot be lower than 1.")
+        print(" Provide correct data in config.py ...")   
+        return False
+    else:
+        return True
+
+def validateEpoch(epoch):
+    if (epoch.isnumeric() == False):
+        print(" WARNING : Number of epochs must be numeric.")
+        print(" Provide correct data in config.py ...") 
+        return False 
+    elif (int(epoch) <= 0):
+        print(" WARINING : Number of epochs must be greater than 0.")
+        print(" Provide correct data in config.py ...") 
+        return False 
+    else:
+        return True

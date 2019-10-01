@@ -1,7 +1,7 @@
 import os
 import config as cf
 import sys
-import files_handler
+import data_handler
 import lib_gene_based
 
 def main():
@@ -18,7 +18,7 @@ def main():
     lib_gene_based.gene_based()
    
 
-    # flag = files_handler.validateFile(file_training_input_name)
+    # flag = data_handler.validateFile(file_training_input_name)
     # print(flag)
 
 if __name__ == "__main__":
