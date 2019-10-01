@@ -1,8 +1,9 @@
+# data required for using gene_based.py
 gene_based = {
 
     # required information about the first dataset
     # a file containing mapping between probes IDs and sample
-    "file_training_input_name" : "GSE2034-22071 (edited).csv",
+    "file_training_input_name" : "GSE2034-220712 (edited).csv",
 
     # number of rows of this file to be read
     "row_to_read" : "22071", 
