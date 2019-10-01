@@ -142,6 +142,7 @@ def gene_based():
         # check if number of chunks is valid
         check_valid_num_of_chunks, num_of_chunks = calculate.checkEqualListSize(chunk_list_relapse, chunk_list_no_relapse)
         if check_valid_num_of_chunks is False:
+            print(" WARNING : Number of chunks in both classes must be the same")
             sys.exit(0)
 
         # list to collect maximun AUC in each fold
@@ -188,3 +189,116 @@ def gene_based():
                 second_list_sample_no_relapse.extend(first_layer_train_no_relapse[i])
             print(" Samples in class non-relapse used as training set : " + str(second_list_sample_no_relapse) + "\n")
 
+            # splitting lists to use them as marker evaluation set and feature selection set
+            # given that we separate it into 3 parts
+            # divide training set into 3 parts (2/3 for marker evaluation and 1/3 for feature selection)
+            print(" Process : Feature selection")
+            second_num_of_fold = 3
+            second_chunk_relapse_size = math.ceil(len(second_list_sample_relapse) / second_num_of_fold)
+            second_chunk_no_relapse_size = math.ceil(len(second_list_sample_no_relapse) / second_num_of_fold)
+
+            second_chunk_list_relapse = list(calculate.chunks(second_list_sample_relapse, second_chunk_relapse_size))
+            second_chunk_list_no_relapse = list(calculate.chunks(second_list_sample_no_relapse, second_chunk_no_relapse_size))
+
+            # check if number of chunks is valid
+            second_check_valid_num_of_chunks, second_num_of_chunks = calculate.checkEqualListSize(second_chunk_list_relapse, second_chunk_list_no_relapse)
+            if second_check_valid_num_of_chunks is False:
+                print(" WARNING : Number of chunks in both classes must be the same")
+                sys.exit(0)
+
+            # do only if number of chunks of both datasets are equal
+            # if (second_check_valid == True):
+            second_layer_test_index = random.randint(0, second_num_of_chunks - 1)
+
+            # get testing data from each class
+            second_layer_test_relapse =  second_chunk_list_relapse[second_layer_test_index]
+            second_layer_test_no_relapse = second_chunk_list_no_relapse[second_layer_test_index]
+            
+            # separate training dataset from testing dataset to use in t-test ranking
+            second_layer_train_relapse = []
+            for second_layer_train_index in range(0, second_num_of_chunks):
+                if (second_chunk_list_relapse[second_layer_train_index] is not second_layer_test_relapse):
+                    second_layer_train_relapse.append(second_chunk_list_relapse[second_layer_train_index])
+            
+            second_layer_train_no_relapse = []
+            for second_layer_train_index in range(0, second_num_of_chunks):
+                if (second_chunk_list_no_relapse[second_layer_train_index] is not second_layer_test_no_relapse):
+                    second_layer_train_no_relapse.append(second_chunk_list_no_relapse[second_layer_train_index])
+
+            # prepare dataset for conducting t-test
+            # merge all samples in the same class
+            # samples in class relapse used as marker evaluation set
+            ttest_list_sample_relapse = []
+            for i in range(0, len(second_layer_train_relapse)):
+                ttest_list_sample_relapse.extend(second_layer_train_relapse[i])
+
+            # samples in class non-relapse used as marker evaluation set
+            ttest_list_sample_no_relapse = []
+            for i in range(0, len(second_layer_train_no_relapse)):
+                ttest_list_sample_no_relapse.extend(second_layer_train_no_relapse[i])
+
+            # get gene expression for each gene from samples with relapse
+            list_gene_exp_relapse = []
+            for i in range(0, row_to_read):
+                gene_exp_relapse = []
+                for column in  file_training_input.loc[i, ttest_list_sample_relapse]:
+                    gene_exp_relapse.append(column)
+                list_gene_exp_relapse.append(gene_exp_relapse)
+            
+            # get gene expression for each gene from samples with no relapse
+            list_gene_exp_no_relapse = []
+            for i in range(0, row_to_read):
+                gene_exp_no_relapse = []
+                for column in  file_training_input.loc[i, ttest_list_sample_no_relapse]:
+                    gene_exp_no_relapse.append(column)
+                list_gene_exp_no_relapse.append(gene_exp_no_relapse)
+            
+            # conducting t-test
+            print(" # Process : Calculating t-score")
+            ttest_result = []
+            for i in range(0, row_to_read):      
+                score = []
+                # get absolute magnitude of t-test value
+                abs_ttest_value = math.fabs(stats.ttest_ind(list_gene_exp_relapse[i], list_gene_exp_no_relapse[i], equal_var = False)[0])
+                p_value = stats.ttest_ind(list_gene_exp_relapse[i], list_gene_exp_no_relapse[i], equal_var = False)[1]
+                # add element with this format (gene_order_id, ttest_value)
+                score.append(i)
+                score.append(abs_ttest_value)
+                ttest_result.append(score)
+            # ranking elements using their t-test value in descending order
+            ttest_result.sort(key=lambda x: x[1], reverse=True)
+
+            # create list of ranked gene
+            ranked_gene = []
+            for i in range(0, len(ttest_result)):
+                gene_order_id = ttest_result[i][0]
+
+                ranked_gene.append(list_gene_name[gene_order_id][1])
+            
+            # rank gene id of each sample in training data
+            # for class 'relapse'
+            col_to_read_relapse = ["ID_REF"]
+            col_to_read_relapse.extend(ttest_list_sample_relapse)
+            file_training_input_relapse = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_relapse)
+            top_n_genes_relapse = file_training_input_relapse.loc[file_training_input_relapse['ID_REF'].isin(top_n_genes_name)]
+            top_n_genes_relapse['gene_id'] = top_n_genes_relapse['ID_REF'].apply(lambda name: top_n_genes_name.index(name))
+            top_n_genes_relapse_sorted  = top_n_genes_relapse.sort_values(by = ['gene_id'])
+            top_n_genes_relapse_sorted.drop(columns = 'gene_id', inplace = True)
+
+            top_n_genes_relapse_sorted_train = top_n_genes_relapse_sorted
+            top_n_genes_relapse_sorted_train.drop(columns = 'ID_REF', inplace = True)
+
+            # for class 'no relapse'
+            col_to_read_no_relapse = ["ID_REF"]
+            col_to_read_no_relapse.extend(ttest_list_sample_no_relapse)
+            file_training_input_no_relapse = pd.read_csv("GSE2034-22071 (edited).csv", nrows = row_to_read, usecols = col_to_read_no_relapse)
+            top_n_genes_no_relapse = file_training_input_no_relapse.loc[file_training_input_no_relapse['ID_REF'].isin(top_n_genes_name)]
+            top_n_genes_no_relapse['gene_id'] = top_n_genes_no_relapse['ID_REF'].apply(lambda name: top_n_genes_name.index(name))
+            top_n_genes_no_relapse_sorted  = top_n_genes_no_relapse.sort_values(by = ['gene_id'])
+            top_n_genes_no_relapse_sorted.drop(columns = 'gene_id', inplace = True)
+
+            top_n_genes_no_relapse_sorted_train = top_n_genes_no_relapse_sorted
+            top_n_genes_no_relapse_sorted_train.drop(columns = 'ID_REF', inplace = True)
+
+            # Preparing testing data for feature selection
+            
